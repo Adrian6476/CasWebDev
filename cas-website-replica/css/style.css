@@ -8,7 +8,7 @@ body, html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 60%;
+    width: 80%;
     margin: 0 auto;
   }
   
@@ -16,7 +16,7 @@ body, html {
   .top-bar {
     display: flex;
     background-color: #f3f4fa;
-    padding: 5px 0;
+    padding: 0.5em 0em;
     justify-content: space-between;
     align-items: center;
   }
@@ -53,7 +53,7 @@ body, html {
     border-right: none;
     width: 200px;
     border-radius: 20px 0 0 20px;
-    background-color: #3d55a7;
+    background-color: #6871AD;
     height: 16px;
   }
 
@@ -63,8 +63,8 @@ body, html {
   }
 
   .ser_btn {
-    background-color: #3d55a7;
-    border: 1px solid #3d55a7;
+    background-color: #6871AD;
+    border: 0px solid #6871AD;
     border-radius: 0 20px 20px 0;
     border-left: none;
     cursor: pointer;
@@ -115,8 +115,8 @@ body, html {
 
 .main-nav {
     background-color: #3d55a7;
-    padding: 10px 0;
-    text-align: center;
+    padding: 0.8em 0;
+    text-align: justify;
 }
   
 .main-nav .container {
@@ -127,7 +127,7 @@ body, html {
 }
   
 .main-nav a {
-    margin: 0 1.71%;
+    margin: auto;
     text-decoration: none;
     color: white;
     font-family: 'Source Han Serif VF';
@@ -144,10 +144,10 @@ body, html {
 .banner-text {
     color: #3d55a7;
     text-align: center;
-    padding: 0.4% 10%;
+    padding: auto;
     font-family:'Source Han Serif VF';
     line-height: 0.5;
-    font-size: 30px;
+    font-size: 2em;
     font-weight: bold;
 }
 
@@ -157,7 +157,7 @@ body, html {
     text-align: center;
     color: white;
     overflow: hidden;
-    width: 60%;
+    width: 80%;
     margin: 0 auto;
 }
   
@@ -202,109 +202,245 @@ body, html {
 
 /* Main Content Styles */
 .main-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 1em;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1em;
+  margin-top: 1em;
 }
 
 .news {
-    flex: 2;
-    margin-right: 1em;
+  grid-column: 1;
 }
 
 .sidebar {
-    flex: 1;
+  grid-column: 2;
 }
 
 .news-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #3d55a7;
-    padding: 0.5em;
-    margin-bottom: 0.2em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3d55a7;
+  padding: 0.5em;
+  margin-bottom: 0.2em;
 }
 
 .news-tabs {
-    display: flex;
-    font-family: 'Source Han Serif VF';
-    font-weight: bold;
-    font-size: larger;
+  display: flex;
+  font-family: 'Source Han Serif VF';
+  font-weight: bold;
+  font-size: larger;
 }
 
 .news-tab {
-    padding: 0.5em 0.75em;
-    background-color: #3d55a7;
-    color: white;
-    text-decoration: none;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
+  padding: 0.5em 0.75em;
+  background-color: #3d55a7;
+  color: white;
+  text-decoration: none;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
 }
 
 .news-tab.active {
-    background-color: #B3483E;  /* red when active */
+  background-color: #B3483E;  /* red when active */
 }
 
 .news-tab:hover {
-    background-color: #B3483E;  /* turn red when hover */
+  background-color: #B3483E;  /* turn red when hover */
 }
-
-.icon {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    margin-right: 0.2em;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.icon-yaowen {
-    background-image: url('/cas-website-replica/imgs/z19_index_yw1.png');
-}
-
-.icon-yuannei {
-    background-image: url('/cas-website-replica/imgs/z19_index_yw2.png');
-}
-
-/* JS needed to implement the tab switch */
 
 .more-link {
-    color: #ffffff;
-    text-decoration: none;
-    font-family: 'Source Han Serif VF';
-    font-size: 0.8em;
+  color: #ffffff;
+  text-decoration: none;
+  font-family: 'Source Han Serif VF';
+  font-size: 0.8em;
+}
+
+.news-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1em;
+  margin-top: 1em;
+}
+
+.featured-news {
+  background-color: #f0f0f0;
+  padding: 1em;
+  height: 13.5em;
+}
+
+.featured-news img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 0;
+}
+
+.featured-news-info h3 {
+  font-size: 0.9em;
+  font-family: 'Source Han Serif VF';
+  font-weight: lighter;
+  margin-bottom: 0;
+}
+
+.featured-news-info .date {
+  color: #666;
+  font-size: 0.9em;
+  font-family: 'Source Han Serif VF';
+  font-weight: bolder;
+  text-align: right;
 }
 
 .news-list {
-    list-style-type: none;
-    padding: 0;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 .news-list li {
-    margin-bottom: 10px;
+  margin-bottom: 0.5em;
 }
 
 .news-list a {
-    color: #333;
-    text-decoration: none;
+  color: #333;
+  text-decoration: none;
+  font-size: 1em;
+  line-height: 1.4;
+  font-family: 'Source Han Serif VF';
 }
 
 .news-list a:before {
-    content: "• ";
-    color: #4a69bd;
+  content: "> ";
+  color: #4a69bd;
 }
 
-.院长致辞, .通知公告 {
-    background-color: #f0f0f0;
-    padding: 15px;
-    margin-bottom: 20px;
+/*sidebar styles*/
+
+.院长致辞 {
+  margin-bottom: 10px;
 }
 
-.院长致辞 img {
-    width: 100%;
-    height: auto;
+.full-width-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.image-links {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.image-link {
+  width: 49%;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-link img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.image-text {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  padding: 5px 10px;
+  font-size: 1em;
+  font-family: 'Source Han Serif VF';
+  border-radius: 3px;
+}
+
+.image-link:hover .image-text {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.通知公告 {
+  background-color: white;
+  border: 1px solid #4a69bd;
+  padding: 1em;
+}
+
+.notice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+  background-color: #F4F7FE;
+}
+
+.notice-tabs {
+  display: flex;
+}
+
+.notice-tab {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: #F4F7FE;
+  margin-right: 5px;
+  cursor: pointer;
+  font-family: 'Source Han Serif VF';
+}
+
+.notice-tab.active {
+  background-color: #E5ECFC;
+  color: black;
+}
+
+.notice-tab:not(.active):hover {
+  background-color: #E5ECFC;
+}
+
+.notice-icon, .conference-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+}
+
+.notice-tab span {
+  font-size: 14px;
+}
+
+.more-link {
+  color: #4a69bd;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.notice-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notice-list li {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: baseline;
+}
+
+.notice-list .date {
+  color: #666;
+  font-size: 12px;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.notice-list a {
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.notice-list a:hover {
+  color: #4a69bd;
 }
 
 /* Footer Styles */
