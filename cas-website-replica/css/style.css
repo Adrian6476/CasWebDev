@@ -201,6 +201,7 @@ body, html {
 /* Main Content Styles */
 .main-content {
   display: grid;
+  align-items: flex-start;
   grid-template-columns: 2fr 1fr;
   gap: 1em;
   margin-top: 1em;
@@ -257,6 +258,7 @@ body, html {
   grid-template-columns: 1fr 2fr;
   gap: 1em;
   margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 .featured-news {
@@ -478,6 +480,8 @@ body, html {
   padding: 1em;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 2em;
+  margin-bottom: 1em;
 }
 
 .section-right {
@@ -492,6 +496,12 @@ body, html {
   display: flex;
   align-items: center;
   border-top: 2px solid #3d55a7;
+  margin-bottom: 1em;
+}
+
+.section-header-topics {
+  display: flex;
+  align-items: center;
   margin-bottom: 1em;
 }
 
@@ -541,6 +551,13 @@ body, html {
 .section-content {
   display: flex;
   flex-direction: column;
+}
+
+.section-link-content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
 .content-wrapper {
@@ -650,17 +667,124 @@ body, html {
   height: auto;
 }
 
-
-/* Footer Styles */
-footer {
-  background-color: #333;
-  color: white;
-  padding: 20px 0;
-  text-align: center;
+/*Special Topics*/
+.topics-section {
+  background-color: #ffffff;
+  padding: 1em;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1em;
 }
 
-footer nav a {
+.topics-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.topic-image {
+  width: 32%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Communication */
+.communication-section {
+  background-color: #ffffff;
+  padding: 1em;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 1em;
+  justify-content: space-between;
+}
+
+.communication-header {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+}
+
+.communication-tab {
+  display: flex;
+  align-items: center;
+  background-color: #3d55a7;
   color: white;
-  margin: 0 10px;
+  padding: 0.5em 1em;
+  border-radius: 8px 0 0 8px;
+  font-family: 'Source Han Serif VF';
+  font-size: 1em;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.communication-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.communication-links {
+  display: flex;
+  align-items: center;
+  padding: 0.5em 1em;
+  font-family: 'Source Han Serif VF';
+  font-size: 0.9em;
+  color: #333;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.communication-links a {
+  color: #333;
   text-decoration: none;
+  margin: 0 10px;
+}
+
+.communication-links span {
+  color: #dcdcdc;
+}
+
+/* Footer Styles */
+.footer-background {
+  background: linear-gradient(to right, #464D93, #464D93 40%, transparent 100%), url('/cas-website-replica/imgs/cas_intro.jpg') no-repeat right center;
+  background-size: auto 250%;
+  color: white;
+  padding: 1em, 0;
+}
+
+footer .container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.footer-left {
+  padding: 1em;
+  width: 60%; 
+  margin-left: 10%;
+}
+
+.footer-info {
+  text-align: left;
+}
+
+.footer-info p {
+  margin: 1em 0;
+  font-family: 'Source Han Serif VF';
+  font-size: 0.9em;
+  line-height: 0.75em;
+}
+
+.footer-logos {
+  display: flex;
+  justify-content: flex-start; 
+  align-items: center;
+  margin-top: 1em;
+}
+
+.footer-logo {
+  width: 6em; 
+  margin-right: 1em;
 }
