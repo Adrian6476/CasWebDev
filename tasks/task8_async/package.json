@@ -1,0 +1,9 @@
+{
+  "name": "task8_async",
+  "version": "1.0.0",
+  "main": "converter.js",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^3.0.0"
+  }
+}
