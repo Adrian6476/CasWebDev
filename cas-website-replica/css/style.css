@@ -176,25 +176,25 @@ body, html {
 
 @keyframes carousel {
   0% {
-      transform: translateX(0);
+    transform: translateX(0);
   }
   30% {
-      transform: translateX(0);
+    transform: translateX(0);
   }
   33% {
-      transform: translateX(-33.333%);
+    transform: translateX(-33.333%);
   }
   63% {
-      transform: translateX(-33.333%);
+    transform: translateX(-33.333%);
   }
   66% {
-      transform: translateX(-66.666%);
+    transform: translateX(-66.666%);
   }
   96% {
-      transform: translateX(-66.666%);
+    transform: translateX(-66.666%);
   }
   100% {
-      transform: translateX(0);
+    transform: translateX(0);
   }
 }
 
@@ -322,10 +322,10 @@ body, html {
 }
 
 /* Sidebar styles */
-
 .sidebar {
   grid-column: 2;
 }
+
 .院长致辞 {
   margin-bottom: 10px;
 }
