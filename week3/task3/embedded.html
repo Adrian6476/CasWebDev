@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Components</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .slider-container {
+            margin-top: 20px;
+        }
+        .slider-value {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Embedded Components</h1>
+        <div class="slider-container">
+            <h2>Adjust the slider:</h2>
+            <ui-slider v-model="sliderValue" :options="sliderOptions"></ui-slider>
+            <div class="slider-value">Current Value: {{ sliderValue }}</div>
+        </div>
+    </div>
+
+    <script type="text/x-template" id="ui-slider-template">
+        <div></div>
+    </script>
+
+    <script>
+    Vue.component('ui-slider', {
+        template: '#ui-slider-template',
+        props: {
+            value: {
+                type: Number,
+                default: 0
+            },
+            options: {
+                type: Object,
+                default: () => ({})
+            }
+        },
+        mounted() {
+            this.initSlider();
+        },
+        methods: {
+            initSlider() {
+                const vm = this;
+                $(this.$el).slider({
+                    ...this.options,
+                    value: this.value,
+                    slide(event, ui) {
+                        vm.$emit('input', ui.value);
+                    }
+                });
+            }
+        },
+        watch: {
+            value(newValue) {
+                if ($(this.$el).slider('value') !== newValue) {
+                    $(this.$el).slider('value', newValue);
+                }
+            },
+            options: {
+                deep: true,
+                handler() {
+                    $(this.$el).slider('destroy');
+                    this.initSlider();
+                }
+            }
+        },
+        beforeDestroy() {
+            $(this.$el).slider('destroy');
+        }
+    });
+
+    new Vue({
+        el: '#app',
+        data: {
+            sliderValue: 50,
+            sliderOptions: {
+                min: 0,
+                max: 100,
+                step: 1
+            }
+        }
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Task Manager</title>
+    <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .task-item {
+            background-color: #f0f0f0;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .task-item.completed {
+            background-color: #d4edda;
+            text-decoration: line-through;
+        }
+        .task-enter-active, .task-leave-active {
+            transition: all 0.5s;
+        }
+        .task-enter, .task-leave-to {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #cccccc;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Real-time Task Manager</h1>
+        <div>
+            <input v-model="newTask" @keyup.enter="addTask" placeholder="Enter a new task">
+            <button @click="addTask" :disabled="!isValidTask">Add Task</button>
+        </div>
+        <p class="error" v-if="!isValidTask">Task must be between 3 and 50 characters</p>
+        <transition-group name="task" tag="ul" class="task-list">
+            <li v-for="task in tasks" :key="task.id" :class="['task-item', { completed: task.completed }]">
+                <span @click="toggleTask(task)">{{ task.text }}</span>
+                <button @click="removeTask(task)">Remove</button>
+            </li>
+        </transition-group>
+    </div>
+
+    <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAi_yuJciPXLFr_PYPeU3eTvtXf8jbJ8zw",
+        authDomain: "vue-demo-537e6.firebaseapp.com",
+        databaseURL: "https://vue-demo-537e6.firebaseio.com"
+      };
+    firebase.initializeApp(firebaseConfig);
+
+    new Vue({
+        el: '#app',
+        data: {
+            newTask: '',
+            tasks: []
+        },
+        computed: {
+            isValidTask() {
+                return this.newTask.length >= 3 && this.newTask.length <= 50;
+            }
+        },
+        methods: {
+            addTask() {
+                if (this.isValidTask) {
+                    const tasksRef = firebase.database().ref('tasks');
+                    tasksRef.push({
+                        text: this.newTask,
+                        completed: false
+                    });
+                    this.newTask = '';
+                }
+            },
+            removeTask(task) {
+                const taskRef = firebase.database().ref('tasks').child(task.id);
+                taskRef.remove();
+            },
+            toggleTask(task) {
+                const taskRef = firebase.database().ref('tasks').child(task.id);
+                taskRef.update({
+                    completed: !task.completed
+                });
+            }
+        },
+        created() {
+            const tasksRef = firebase.database().ref('tasks');
+            tasksRef.on('value', (snapshot) => {
+                const tasksData = snapshot.val();
+                const tasksArray = [];
+                for (let id in tasksData) {
+                    tasksArray.push({ id, ...tasksData[id] });
+                }
+                this.tasks = tasksArray;
+            });
+        }
+    });
+    </script>
+</body>
+</html>

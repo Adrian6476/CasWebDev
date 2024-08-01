@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative Drawing (with Local Fallback)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/deepstream.io-client-js/2.1.1/deepstream.js"></script>
+    <script src="https://unpkg.com/vue@2"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        #app { max-width: 800px; margin: 0 auto; }
+        .canvas-container { border: 1px solid #ccc; margin-top: 20px; }
+        canvas { display: block; }
+        .tools { margin-top: 10px; }
+        button { margin-right: 10px; }
+        .connection-state { margin-bottom: 20px; }
+        .connection-state em { font-style: normal; font-weight: bold; }
+        .error { color: red; }
+        .warning { color: orange; }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="connection-state" :class="{ error: connectionState === 'ERROR', warning: connectionState === 'OFFLINE' }">
+            Connection State: <em>{{ connectionState }}</em>
+        </div>
+        <p v-if="connectionState === 'OFFLINE'">Working in offline mode. Your drawings won't be synchronized.</p>
+        <drawing-board :ds="ds" :is-online="isOnline"></drawing-board>
+    </div>
+
+    <template id="drawing-board-template">
+        <div>
+            <div class="canvas-container">
+                <canvas ref="canvas" width="800" height="400" @mousedown="startDrawing" @mousemove="draw" @mouseup="stopDrawing" @mouseleave="stopDrawing"></canvas>
+            </div>
+            <div class="tools">
+                <button @click="clearCanvas">Clear Canvas</button>
+                <input type="color" v-model="currentColor">
+                <input type="range" v-model.number="lineWidth" min="1" max="20">
+            </div>
+        </div>
+    </template>
+
+    <script>
+    const DrawingBoard = {
+        template: '#drawing-board-template',
+        props: ['ds', 'isOnline'],
+        data() {
+            return {
+                isDrawing: false,
+                currentColor: '#000000',
+                lineWidth: 5,
+                canvasRecord: null,
+                ctx: null,
+                localLines: []
+            };
+        },
+        mounted() {
+            this.ctx = this.$refs.canvas.getContext('2d');
+            if (this.isOnline) {
+                this.initializeOnline();
+            }
+        },
+        watch: {
+            isOnline(newValue) {
+                if (newValue) {
+                    this.initializeOnline();
+                }
+            }
+        },
+        methods: {
+            initializeOnline() {
+                this.canvasRecord = this.ds.record.getRecord('drawingCanvas');
+                this.canvasRecord.subscribe('lines', this.redrawCanvas);
+                this.ds.event.subscribe('clear-canvas', this.clearCanvasHandler);
+                // Sync local lines if any
+                if (this.localLines.length > 0) {
+                    this.canvasRecord.set('lines', this.localLines);
+                    this.localLines = [];
+                }
+            },
+            startDrawing(e) {
+                this.isDrawing = true;
+                this.draw(e);
+            },
+            draw(e) {
+                if (!this.isDrawing) return;
+                
+                const rect = this.$refs.canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const newLine = { x, y, color: this.currentColor, width: this.lineWidth };
+                
+                if (this.isOnline) {
+                    this.canvasRecord.get('lines', []).push(newLine);
+                    this.canvasRecord.set('lines', this.canvasRecord.get('lines'));
+                } else {
+                    this.localLines.push(newLine);
+                }
+                
+                this.drawLine(newLine);
+            },
+            stopDrawing() {
+                this.isDrawing = false;
+            },
+            drawLine(line) {
+                this.ctx.beginPath();
+                this.ctx.moveTo(line.x, line.y);
+                this.ctx.lineTo(line.x, line.y);
+                this.ctx.strokeStyle = line.color;
+                this.ctx.lineWidth = line.width;
+                this.ctx.lineCap = 'round';
+                this.ctx.stroke();
+            },
+            redrawCanvas(lines) {
+                this.ctx.clearRect(0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
+                lines.forEach(this.drawLine);
+            },
+            clearCanvas() {
+                if (this.isOnline) {
+                    this.ds.event.emit('clear-canvas');
+                } else {
+                    this.clearCanvasHandler();
+                }
+            },
+            clearCanvasHandler() {
+                if (this.isOnline) {
+                    this.canvasRecord.set('lines', []);
+                } else {
+                    this.localLines = [];
+                }
+                this.ctx.clearRect(0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
+            }
+        }
+    };
+
+    new Vue({
+        el: '#app',
+        components: {
+            'drawing-board': DrawingBoard
+        },
+        data: {
+            connectionState: 'CONNECTING',
+            ds: null,
+            isOnline: false
+        },
+        created() {
+            this.initializeDeepstream();
+        },
+        methods: {
+            initializeDeepstream() {
+                try {
+                    this.ds = deepstream('wss://154.deepstreamhub.com?apiKey=97a397bd-ccd2-498f-a520-aacc9f67373c') // the deepstream hub was broken If you want to verify the functionality, build your own deepstream server...
+                        .login()
+                        .on('connectionStateChanged', connectionState => {
+                            this.connectionState = connectionState;
+                            this.isOnline = connectionState === 'OPEN';
+                        });
+                } catch (error) {
+                    console.error('Failed to initialize Deepstream:', error);
+                    this.connectionState = 'OFFLINE';
+                    this.isOnline = false;
+                }
+            }
+        }
+    });
+    </script>
+</body>
+</html>

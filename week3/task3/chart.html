@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive SVG Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        .controls label {
+            display: inline-block;
+            width: 120px;
+        }
+        input, select, button {
+            margin-bottom: 10px;
+        }
+        svg {
+            border: 1px solid #ccc;
+        }
+        .data-input {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .data-input input {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Interactive SVG Chart</h1>
+        <div class="controls">
+            <label>Chart Type:</label>
+            <select v-model="chartType">
+                <option value="bar">Bar Chart</option>
+                <option value="line">Line Chart</option>
+            </select><br>
+            <label>Chart Color:</label>
+            <select v-model="chartColor">
+                <option value="#4CAF50">Green</option>
+                <option value="#2196F3">Blue</option>
+                <option value="#F44336">Red</option>
+            </select><br>
+            <template v-if="chartType === 'bar'">
+                <label>Bar Style:</label>
+                <select v-model="barStyle">
+                    <option value="normal">Normal</option>
+                    <option value="rounded">Rounded</option>
+                </select><br>
+            </template>
+            <button @click="addDataPoint">Add Data Point</button>
+            <h3>Data Points:</h3>
+            <div v-for="(value, index) in dataPoints" :key="index" class="data-input">
+                <input type="number" v-model.number="dataPoints[index]" min="0" max="100">
+                <button @click="removeDataPoint(index)">Remove</button>
+            </div>
+        </div>
+        <svg width="400" height="300" viewBox="0 0 400 300">
+            <rect width="400" height="300" fill="#f0f0f0" />
+            <g v-if="chartType === 'bar'">
+                <rect 
+                    v-for="(value, index) in dataPoints" 
+                    :key="'bar-'+index"
+                    :x="50 + index * (300 / dataPoints.length)" 
+                    :y="280 - value * 2.5" 
+                    :width="(300 / dataPoints.length) * 0.8" 
+                    :height="value * 2.5"
+                    :fill="chartColor"
+                    :rx="barStyle === 'rounded' ? 15 : 0"
+                />
+                <text 
+                    v-for="(value, index) in dataPoints"
+                    :key="'text-'+index"
+                    :x="50 + index * (300 / dataPoints.length) + (300 / dataPoints.length) * 0.4" 
+                    y="295" 
+                    text-anchor="middle"
+                >{{ value }}</text>
+            </g>
+            <g v-else-if="chartType === 'line'">
+                <polyline
+                    :points="lineChartPoints"
+                    fill="none"
+                    :stroke="chartColor"
+                    stroke-width="2"
+                />
+                <circle 
+                    v-for="(point, index) in lineChartPoints.split(' ')"
+                    :key="index"
+                    :cx="point.split(',')[0]"
+                    :cy="point.split(',')[1]"
+                    r="4"
+                    :fill="chartColor"
+                />
+                <text 
+                    v-for="(value, index) in dataPoints"
+                    :key="'text-'+index"
+                    :x="50 + index * (300 / (dataPoints.length - 1))" 
+                    y="295" 
+                    text-anchor="middle"
+                >{{ value }}</text>
+            </g>
+        </svg>
+    </div>
+
+    <script>
+    new Vue({
+        el: '#app',
+        data: {
+            dataPoints: [40, 60, 80],
+            chartColor: '#4CAF50',
+            barStyle: 'normal',
+            chartType: 'bar'
+        },
+        computed: {
+            lineChartPoints() {
+                return this.dataPoints.map((value, index) => 
+                    `${50 + index * (300 / (this.dataPoints.length - 1))},${280 - value * 2.5}`
+                ).join(' ');
+            }
+        },
+        methods: {
+            addDataPoint() {
+                if (this.dataPoints.length < 10) {
+                    this.dataPoints.push(50);
+                }
+            },
+            removeDataPoint(index) {
+                if (this.dataPoints.length > 2) {
+                    this.dataPoints.splice(index, 1);
+                }
+            }
+        }
+    });
+    </script>
+</body>
+</html>

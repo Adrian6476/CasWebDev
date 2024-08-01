@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js Commit Explorer</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; line-height: 1.6; }
+        .commit-list { list-style-type: none; padding: 0; }
+        .commit-item { background: #f0f0f0; margin-bottom: 10px; padding: 10px; border-radius: 4px; }
+        .commit-sha { font-family: monospace; color: #0366d6; }
+        .commit-message { font-weight: bold; }
+        .branch-selector { margin-bottom: 20px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Vue.js Commit Explorer</h1>
+        
+        <div class="branch-selector">
+            <label>Select Branch:</label>
+            <select v-model="selectedBranch" @change="loadCommits">
+                <option v-for="branch in availableBranches" :value="branch">{{ branch }}</option>
+            </select>
+        </div>
+
+        <div v-if="loading">Loading commits...</div>
+        <div v-else-if="error" class="error">{{ error }}</div>
+        <ul v-else class="commit-list">
+            <li v-for="commit in commits" :key="commit.sha" class="commit-item">
+                <div class="commit-sha">{{ commit.sha.substring(0, 7) }}</div>
+                <div class="commit-message">{{ commit.commit.message }}</div>
+                <div>Author: {{ commit.commit.author.name }}</div>
+                <div>Date: {{ formatDate(commit.commit.author.date) }}</div>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+    new Vue({
+        el: '#app',
+        data: {
+            availableBranches: ['main', 'dev'],
+            selectedBranch: 'main',
+            commits: [],
+            loading: false,
+            error: null
+        },
+        methods: {
+            loadCommits() {
+                this.loading = true;
+                this.error = null;
+                const apiUrl = `https://api.github.com/repos/vuejs/vue/commits?per_page=5&sha=${this.selectedBranch}`;
+                
+                fetch(apiUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        this.commits = data;
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.error = `Failed to load commits: ${error.message}`;
+                        this.loading = false;
+                    });
+            },
+            formatDate(dateString) {
+                const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                return new Date(dateString).toLocaleDateString(undefined, options);
+            }
+        },
+        mounted() {
+            this.loadCommits();
+        }
+    });
+    </script>
+</body>
+</html>

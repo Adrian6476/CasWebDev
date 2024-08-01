@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Markdown Editor</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/marked@0.3.6"></script>
+    <style>
+        #app {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        textarea, #preview {
+            width: 50%;
+            height: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: none;
+            font-family: monospace;
+        }
+        #preview {
+            border: 1px solid #ccc;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <textarea v-model="input" placeholder="Enter Markdown here"></textarea>
+        <div id="preview" v-html="compiledMarkdown"></div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                input: '# Welcome to the Markdown Editor :)\n\nType your Markdown in the left and see the rendered output on the right.'
+            },
+            computed: {
+                compiledMarkdown: function() {
+                    return marked(this.input);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

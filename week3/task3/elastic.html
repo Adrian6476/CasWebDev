@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stretchy Sky Header</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            height: 100%;
+        }
+        #app {
+            height: 100%;
+        }
+        .stretchy-header {
+            position: relative;
+            height: 100%;
+            user-select: none;
+        }
+        .sky {
+            position: absolute;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(to bottom, #87CEEB, #E0F6FF);
+        }
+        .sun {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #FFD700;
+            box-shadow: 0 0 20px #FFD700;
+        }
+        .content {
+            position: absolute;
+            top: 40%;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #fff;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        h1 {
+            margin: 0;
+            padding: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        h2, p {
+            margin: 0 0 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <stretchy-header>
+            <template v-slot:header>
+                <h1>Stretchy Sky Header</h1>
+            </template>
+            <template v-slot:content>
+                <h2>Welcome to the Stretchy Sky!</h2>
+                <p>Drag the sky to see it stretch. Release to watch it spring back into place.</p>
+            </template>
+        </stretchy-header>
+    </div>
+
+    <script>
+    Vue.component('stretchy-header', {
+        template: `
+            <div class="stretchy-header" 
+                 @mousedown="startDrag" @touchstart="startDrag"
+                 @mousemove="onDrag" @touchmove="onDrag"
+                 @mouseup="stopDrag" @touchend="stopDrag" @mouseleave="stopDrag">
+                <svg class="sky" :viewBox="'0 0 100 ' + skyHeight">
+                    <path :d="skyPath" fill="url(#sky-gradient)"></path>
+                    <defs>
+                        <linearGradient id="sky-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#87CEEB" />
+                            <stop offset="100%" style="stop-color:#E0F6FF" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="sun" :style="sunPosition"></div>
+                <div class="content" :style="contentStyle">
+                    <slot name="content"></slot>
+                </div>
+                <slot name="header"></slot>
+            </div>
+        `,
+        data() {
+            return {
+                dragging: false,
+                startY: 0,
+                currentY: 0,
+                skyHeight: 40,
+                sunY: 20
+            };
+        },
+        computed: {
+            skyPath() {
+                const stretch = this.currentY - this.startY;
+                const control = 50 + stretch / 2;
+                return `M0,0 L100,0 L100,${this.skyHeight} Q50,${control} 0,${this.skyHeight} Z`;
+            },
+            contentStyle() {
+                return {
+                    transform: `translateY(${Math.max(0, this.currentY - this.startY)}px)`
+                };
+            },
+            sunPosition() {
+                return {
+                    left: '50%',
+                    top: `${this.sunY}%`,
+                    transform: 'translateX(-50%)'
+                };
+            }
+        },
+        methods: {
+            startDrag(e) {
+                this.dragging = true;
+                this.startY = this.getY(e);
+                this.currentY = this.startY;
+            },
+            onDrag(e) {
+                if (this.dragging) {
+                    this.currentY = this.getY(e);
+                    this.sunY = 20 + (this.currentY - this.startY) / 10;
+                }
+            },
+            stopDrag() {
+                if (this.dragging) {
+                    this.dragging = false;
+                    this.animateBack();
+                }
+            },
+            getY(e) {
+                return e.touches ? e.touches[0].clientY : e.clientY;
+            },
+            animateBack() {
+                const start = this.currentY;
+                const end = this.startY;
+                const duration = 500;
+                const startTime = performance.now();
+
+                const animate = (time) => {
+                    const elapsed = time - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easeProgress = this.easeOutElastic(progress);
+
+                    this.currentY = start + (end - start) * easeProgress;
+                    this.sunY = 20 + (this.currentY - this.startY) / 10;
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    }
+                };
+
+                requestAnimationFrame(animate);
+            },
+            easeOutElastic(t) {
+                const p = 0.3;
+                return Math.pow(2, -10 * t) * Math.sin((t - p / 4) * (2 * Math.PI) / p) + 1;
+            }
+        }
+    });
+
+    new Vue({
+        el: '#app'
+    });
+    </script>
+</body>
+</html>

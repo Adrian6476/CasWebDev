@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree View</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        .tree-view {
+            margin-left: 20px;
+        }
+        .tree-item {
+            margin: 5px 0;
+        }
+        .folder {
+            cursor: pointer;
+            user-select: none;
+        }
+        .folder:hover {
+            text-decoration: underline;
+        }
+        .file {
+            margin-left: 20px;
+        }
+        .toggle-icon {
+            display: inline-block;
+            width: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>File Directory Tree View</h1>
+        <tree-view :item="fileSystem"></tree-view>
+    </div>
+
+    <script>
+    Vue.component('tree-view', {
+        template: `
+            <div class="tree-view">
+                <div v-if="isFolder" @click="toggle" class="folder">
+                    <span class="toggle-icon">{{ isOpen ? '▼' : '▶' }}</span>
+                    {{ item.name }}
+                </div>
+                <div v-else class="file">{{ item.name }}</div>
+                <div v-if="isFolder && isOpen">
+                    <tree-view
+                        v-for="child in item.children"
+                        :key="child.name"
+                        :item="child"
+                    ></tree-view>
+                </div>
+            </div>
+        `,
+        props: {
+            item: Object
+        },
+        data() {
+            return {
+                isOpen: false
+            };
+        },
+        computed: {
+            isFolder() {
+                return this.item.children && this.item.children.length;
+            }
+        },
+        methods: {
+            toggle() {
+                if (this.isFolder) {
+                    this.isOpen = !this.isOpen;
+                }
+            }
+        }
+    });
+
+    new Vue({
+        el: '#app',
+        data: {
+            fileSystem: {
+                name: 'root',
+                children: [
+                    {
+                        name: 'src',
+                        children: [
+                            { name: 'main.js' },
+                            { name: 'App.vue' },
+                            {
+                                name: 'components',
+                                children: [
+                                    { name: 'Header.vue' },
+                                    { name: 'Footer.vue' }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: 'public',
+                        children: [
+                            { name: 'index.html' },
+                            { name: 'favicon.ico' }
+                        ]
+                    },
+                    { name: 'package.json' },
+                    { name: 'README.md' }
+                ]
+            }
+        }
+    });
+    </script>
+</body>
+</html>
