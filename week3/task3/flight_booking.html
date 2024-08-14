@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking</title>
+    <style>
+        select,
+        input,
+        button {
+            display: block;
+            margin: 0.5em 0;
+            font-size: 15px;
+        }
+
+        input[disabled] {
+            color: #999;
+        }
+
+        p {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <select v-model="flightType">
+            <option value="one-way flight">One-way Flight</option>
+            <option value="return flight">Return Flight</option>
+        </select>
+
+        <input type="date" v-model="departureDate">
+        <input type="date" v-model="returnDate" :disabled="!isReturn">
+
+        <button :disabled="!canBook" @click="book">Book</button>
+
+        <p>{{ canBook ? '' : 'Return date must be after departure date.' }}</p>
+
+        <p v-if="!canBook">Please choose a valid return date.</p>
+    </div>
+
+    <script src="https://unpkg.com/vue@2"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                flightType: 'one-way flight',
+                departureDate: '',
+                returnDate: '',
+            },
+            computed: {
+                isReturn() {
+                    return this.flightType === 'return flight';
+                },
+                canBook() {
+                    return !this.isReturn || this.stringToDate(this.returnDate) > this.stringToDate(this.departureDate);
+                }
+            },
+            methods: {
+                book() {
+                    alert(
+                        this.isReturn
+                            ? `You have booked a return flight leaving on ${this.departureDate} and returning on ${this.returnDate}.`
+                            : `You have booked a one-way flight leaving on ${this.departureDate}.`
+                    );
+                },
+                stringToDate(str) {
+                    const [y, m, d] = str.split('-');
+                    return new Date(+y, m - 1, +d);
+                },
+                dateToString(date) {
+                    return (
+                        date.getFullYear() +
+                        '-' +
+                        this.pad(date.getMonth() + 1) +
+                        '-' +
+                        this.pad(date.getDate())
+                    );
+                },
+                pad(n, s = String(n)) {
+                    return s.length < 2 ? `0${s}` : s;
+                }
+            },
+            created() {
+                this.departureDate = this.dateToString(new Date());
+                this.returnDate = this.departureDate;
+            }
+        });
+    </script>
+</body>
+</html>

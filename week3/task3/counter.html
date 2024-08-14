@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter</title>
+</head>
+<body>
+    <div id="app">
+        <p>Current Count: {{ count }}</p>
+        <button @click="increment">Count</button>
+        <button @click="reset">Reset</button>
+        <button @click="doubleCount">Double Count</button>
+        <p v-if="count >= 10">You have reached 10 or more!</p>
+    </div>
+
+    <script src="https://unpkg.com/vue@2"></script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                count: 0
+            },
+            methods: {
+                increment() {
+                    this.count++
+                },
+                reset() {
+                    this.count = 0
+                },
+                doubleCount() {
+                    this.count *= 2
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <style>
+        .elapsed-container {
+            width: 300px;
+        }
+
+        .elapsed-bar {
+            background-color: red;
+            height: 10px;
+            transition: width 0.1s ease-in-out;
+        }
+
+        .progress-container {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="progress-container">
+            <label>Elapsed Time:</label>
+            <div class="elapsed-container">
+                <div class="elapsed-bar" :style="{ width: (progressRate * 100) + '%', backgroundColor: barColor }"></div>
+            </div>
+        </div>
+        <div>{{ (elapsed / 1000).toFixed(1) }}s elapsed</div>
+        <div>{{ ((duration - elapsed) / 1000).toFixed(1) }}s remaining</div>
+        <div>
+            Duration: 
+            <input type="range" v-model="duration" min="1000" max="30000">
+            {{ (duration / 1000).toFixed(1) }}s
+        </div>
+        <button @click="reset">Reset</button>
+    </div>
+
+    <script src="https://unpkg.com/vue@2"></script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                duration: 15000,
+                elapsed: 0,
+                handle: null,
+                lastTime: null
+            },
+            computed: {
+                progressRate() {
+                    return Math.min(this.elapsed / this.duration, 1)
+                },
+                barColor() {
+                    return this.progressRate >= 1 ? 'green' : 'red'
+                }
+            },
+            methods: {
+                update() {
+                    this.elapsed = performance.now() - this.lastTime
+                    if (this.elapsed >= this.duration) {
+                        cancelAnimationFrame(this.handle)
+                    } else {
+                        this.handle = requestAnimationFrame(this.update)
+                    }
+                },
+                reset() {
+                    this.elapsed = 0
+                    this.lastTime = performance.now()
+                    this.update()
+                }
+            },
+            mounted() {
+                this.reset()
+            },
+            beforeDestroy() {
+                cancelAnimationFrame(this.handle)
+            }
+        })
+    </script>
+</body>
+</html>

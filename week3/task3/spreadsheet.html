@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spreadsheet</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        th {
+            background-color: #eee;
+        }
+
+        tr:first-of-type th {
+            width: 100px;
+        }
+
+        tr:first-of-type th:first-of-type {
+            width: 25px;
+        }
+
+        td {
+            border: 1px solid #ccc;
+            height: 1.5em;
+            overflow: hidden;
+        }
+
+        .cell, .cell input {
+            height: 1.5em;
+            line-height: 1.5;
+            font-size: 15px;
+        }
+
+        .cell span {
+            padding: 0 6px;
+        }
+
+        .cell input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th v-for="c in cols">{{ c }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="i in rows">
+                    <th>{{ i - 1 }}</th>
+                    <td v-for="(c, j) in cols">
+                        <div class="cell" :title="cells[j][i-1]" @click="startEditing(j, i-1)">
+                            <input
+                                v-if="editingCell.c === j && editingCell.r === i-1"
+                                :value="cells[j][i-1]"
+                                @change="updateCell(j, i-1, $event)"
+                                @blur="stopEditing"
+                                ref="cellInput"
+                            >
+                            <span v-else>{{ evalCell(cells[j][i-1]) }}</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://unpkg.com/vue@2"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                COLS: 5,
+                ROWS: 20,
+                cells: [],
+                editingCell: { c: null, r: null },
+                cols: []
+            },
+            mounted() {
+                this.initCells()
+                this.$nextTick(() => {
+                    this.$refs.cellInput && this.$refs.cellInput.focus()
+                })
+            },
+            methods: {
+                initCells() {
+                    this.cells = Array.from(Array(this.COLS).keys()).map(() =>
+                        Array.from(Array(this.ROWS).keys()).map(() => '')
+                    )
+                    this.cols = this.cells.map((_, i) => String.fromCharCode(65 + i))
+                },
+                evalCell(exp) {
+                    if (!exp.startsWith('=')) {
+                        return exp
+                    }
+                    exp = exp
+                        .slice(1)
+                        .replace(/\b([A-Z])(\d{1,2})\b/g, (_, c, r) => `get(${c.charCodeAt(0) - 65},${r})`)
+                    try {
+                        return new Function('get', `return ${exp}`)(this.getCellValue)
+                    } catch (e) {
+                        return `#ERROR ${e}`
+                    }
+                },
+                getCellValue(c, r) {
+                    const val = this.evalCell(this.cells[c][r])
+                    const num = Number(val)
+                    return Number.isFinite(num) ? num : val
+                },
+                startEditing(c, r) {
+                    this.editingCell = { c, r }
+                    this.$nextTick(() => {
+                        this.$refs.cellInput && this.$refs.cellInput.focus()
+                    })
+                },
+                stopEditing() {
+                    this.editingCell = { c: null, r: null }
+                },
+                updateCell(c, r, event) {
+                    this.cells[c][r] = event.target.value.trim()
+                    this.stopEditing()
+                }
+            },
+            computed: {
+                rows() {
+                    return this.cells[0].length
+                }
+            }
+        })
+    </script>
+</body>
+</html>

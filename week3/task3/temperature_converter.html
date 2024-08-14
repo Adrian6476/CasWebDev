@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+</head>
+<body>
+    <div id="app">
+        <input type="number" :value="c" @input="setC"> Celsius =
+        <input type="number" :value="f" @input="setF"> Fahrenheit
+        <button @click="reset">Reset</button>
+    </div>
+
+    <script src="https://unpkg.com/vue@2"></script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                c: 0,
+                f: 32
+            },
+            methods: {
+                setC(e) {
+                    const v = +e.target.value;
+                    this.c = v;
+                    this.f = v * (9 / 5) + 32;
+                },
+                setF(e) {
+                    const v = +e.target.value;
+                    this.f = v;
+                    this.c = (v - 32) * (5 / 9);
+                },
+                reset() {
+                    this.c = 0;
+                    this.f = 32;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

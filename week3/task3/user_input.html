@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 2 Example</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{ message }}</h1>
+        <button @click="reverseMessage">Reverse Message</button>
+        <button @click="appendMessage">Append "!"</button>
+    </div>
+
+    <script src="https://unpkg.com/vue@2"></script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello World!'
+            },
+            methods: {
+                reverseMessage() {
+                    this.message = this.message.split('').reverse().join('')
+                },
+                appendMessage() {
+                    this.message += '!'
+                },
+                notify() {
+                    alert('navigation was prevented.')
+                }
+            }
+        })
+    </script>
+
+    <style>
+        button, a {
+            display: block;
+            margin-bottom: 1em;
+        }
+    </style>
+</body>
+</html>

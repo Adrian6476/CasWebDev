@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 2 Component Example</title>
+</head>
+<body>
+    <div id="app">
+        <ol>
+            <todo-item
+              v-for="item in groceryList"
+              :todo="item"
+              :key="item.id"
+            ></todo-item>
+        </ol>
+    </div>
+
+    <script src="https://unpkg.com/vue@2"></script>
+
+    <script>
+        // 定义子组件
+        Vue.component('todo-item', {
+            props: {
+                todo: {
+                    type: Object,
+                    required: true
+                }
+            },
+            template: '<li>{{ todo.text }}</li>'
+        });
+
+        // 定义根实例
+        new Vue({
+            el: '#app',
+            data: {
+                groceryList: [
+                    { id: 0, text: 'Vegetables' },
+                    { id: 1, text: 'Cheese' },
+                    { id: 2, text: 'Potatoes' } ,
+                    { id: 3, text: 'Whatever else humans are supposed to eat' }
+                ]
+            }
+        });
+    </script>
+</body>
+</html>
