@@ -1,0 +1,13 @@
+docs:
+  - id: welcome
+    name: Welcome
+    file: welcome.md
+  - id: chapter1
+    name: Chapter 1
+    sub:
+      - id: chapter1/section1
+        name: Section 1
+        file: chapter1/section1.md
+      - id: chapter1/section2
+        name: Section 2
+        file: chapter1/section2.md
