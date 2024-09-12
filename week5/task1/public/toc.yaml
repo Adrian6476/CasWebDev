@@ -1,0 +1,55 @@
+# Document list
+---
+config:
+  path: '.'
+  lang:
+    en-US: English
+    zh-CN: Simplified Chinese
+    ja: Japanese
+    fr: French
+  lang-default: en-US
+
+docs:
+  landing: welcome
+  - 
+    id: intro
+    type: chapter
+    name: Introduction
+    sub:
+      - 
+        id: welcome
+        type: doc
+        name: Welcome
+        file: 'welcome.md'
+      - 
+        id: start
+        type: doc
+        name: Quickstart
+        file: 'start.md'
+      - 
+        id: next
+        type: doc
+        name: About
+        file: 'about.md'
+  - 
+    id: concepts
+    type: chapter
+    name: Basic Concepts
+    sub:
+      -
+        id: more-link
+        type: link
+        name: Learn more about us
+        file: 'https://angular.cn/'
+  -
+    id: advanced
+    type: doc
+    name: Advanced Development
+    file: 'adv.md'
+  -
+    type: sep
+  - 
+    id: bye
+    type: link
+    name: Follow us
+    file: 'https://twitter.com/google'
