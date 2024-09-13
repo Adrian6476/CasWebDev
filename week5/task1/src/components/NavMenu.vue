@@ -1,6 +1,6 @@
 <template>
     <v-navigation-drawer v-model="drawerModel" app>
-      <v-list v-if="menuItems.length > 0">
+      <v-list>
         <template v-for="item in menuItems" :key="item.id">
           <v-list-item 
             v-if="item.type === 'doc' || item.type === 'link'" 
@@ -35,11 +35,6 @@
           <v-divider v-else-if="item.type === 'sep'"></v-divider>
         </template>
       </v-list>
-      <v-list v-else>
-        <v-list-item>
-          <v-list-item-title>{{ errorMessage || 'Error loading menu items' }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
     </v-navigation-drawer>
   </template>
   
@@ -56,26 +51,17 @@
   });
   
   const menuItems = ref([]);
-  const errorMessage = ref('');
   
   onMounted(async () => {
     try {
       const response = await fetch('/src/app/doc/toc.yaml');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
       const yamlText = await response.text();
-      console.log('YAML content:', yamlText); // Debug: Log the YAML content
       const parsedYaml = yaml.load(yamlText) as any;
-      console.log('Parsed YAML:', parsedYaml); // Debug: Log the parsed YAML
       if (parsedYaml && parsedYaml.docs && parsedYaml.docs.chapters) {
         menuItems.value = parsedYaml.docs.chapters;
-      } else {
-        throw new Error('Invalid YAML structure');
       }
     } catch (error) {
       console.error('Error loading YAML file:', error);
-      errorMessage.value = `Error: ${error.message}`;
     }
   });
   </script>
