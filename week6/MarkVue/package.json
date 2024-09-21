@@ -20,6 +20,7 @@
     "js-yaml": "^4.1.0",
     "katex": "^0.16.11",
     "marked": "^14.1.2",
+    "marked-highlight": "^2.1.4",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3",
     "vuetify": "^3.7.1"

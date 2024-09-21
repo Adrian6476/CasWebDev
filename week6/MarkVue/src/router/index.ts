@@ -1,5 +1,3 @@
-// week6/MarkVue/src/router/index.ts
-
 import { createRouter, createWebHistory } from 'vue-router';
 import { RouteService } from '../services/RouteService';
 import { ConfigService } from '../services/ConfigService';
@@ -18,8 +16,8 @@ const router = createRouter({
     {
       path: '/:lang',
       redirect: (to) => {
-        const lang = to.params.lang;
-        return RouteService.getInstance().getLandingPageRoute(lang);
+        const lang = Array.isArray(to.params.lang) ? to.params.lang[0] : to.params.lang;
+        return RouteService.getInstance().getLandingPageRoute(lang as string);
       },
     },
     // Redirect root to default language
@@ -45,7 +43,8 @@ router.beforeEach((to, from, next) => {
   const languages = configService.languages;
   const defaultLang = configService.defaultLang;
 
-  let lang = to.params.lang as string;
+  let langParam = to.params.lang;
+  let lang = Array.isArray(langParam) ? langParam[0] : langParam as string;
 
   if (!lang || !languages[lang]) {
     const storedLang = localStorage.getItem('selectedLanguage');
@@ -54,7 +53,9 @@ router.beforeEach((to, from, next) => {
     } else {
       lang = defaultLang;
     }
-    next({ path: `/${lang}/${to.params.docId || configService.landingPage}` });
+    const docIdParam = to.params.docId;
+    const docId = Array.isArray(docIdParam) ? docIdParam[0] : docIdParam;
+    next({ path: `/${lang}/${docId || configService.landingPage}` });
   } else {
     next();
   }

@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawerModel" :location="mdAndUp ? 'left' : null" :permanent="mdAndUp" :temporary="!mdAndUp" app>
+  <v-navigation-drawer v-model="drawerModel" :location="mdAndUp ? 'left' : undefined" :permanent="mdAndUp" :temporary="!mdAndUp" app>
     <v-list>
       <template v-for="item in menuItems" :key="item.id">
         <!-- Document Item -->
@@ -46,7 +46,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import yaml from 'js-yaml';
-import { ConfigService } from '../services/ConfigService';
 import { useDisplay } from 'vuetify';
 
 const props = defineProps(['modelValue', 'lang']);
@@ -59,7 +58,15 @@ const drawerModel = computed({
   set: (value) => emit('update:modelValue', value),
 });
 
-const menuItems = ref([]);
+interface DocItem {
+  id: string;
+  type: string;
+  name: string;
+  file?: string;
+  sub?: DocItem[];
+}
+
+const menuItems = ref<DocItem[]>([]);
 
 onMounted(async () => {
   try {
@@ -67,7 +74,7 @@ onMounted(async () => {
     const yamlText = await response.text();
     const parsedYaml = yaml.load(yamlText) as any;
     if (parsedYaml && parsedYaml.docs && parsedYaml.docs.chapters) {
-      menuItems.value = parsedYaml.docs.chapters;
+      menuItems.value = parsedYaml.docs.chapters as DocItem[];
     }
   } catch (error) {
     console.error('Error loading YAML file:', error);

@@ -5,40 +5,41 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { marked } from 'marked';
+import { markedHighlight } from 'marked-highlight';
 import DOMPurify from 'dompurify';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
 
-const props = defineProps(['content']);
+const props = defineProps<{ content: string }>();
 
 // Configure marked options
-marked.setOptions({
-  highlight: function (code, lang) {
+marked.use(markedHighlight({
+  langPrefix: 'hljs language-',
+  highlight(code, lang) {
     const language = hljs.getLanguage(lang) ? lang : 'plaintext';
     return hljs.highlight(code, { language }).value;
   },
-  langPrefix: 'hljs language-',
-});  
+}));
 
 // Custom inline extension for inline math
 const inlineMathExtension = {
   name: 'inlineMath',
   level: 'inline',
-  start(src) { return src.indexOf('$'); },
-  tokenizer(src) {
+  start(src: string) { return src.indexOf('$'); },
+  tokenizer(src: string) {
     const match = src.match(/^\$([^\$]+?)\$/);
     if (match) {
       return {
         type: 'inlineMath',
         raw: match[0],
         text: match[1],
-      };
+      } as marked.Tokens.Generic;
     }
   },
-  renderer(token) {
-    return katex.renderToString(token.text, { throwOnError: false });
+  renderer(token: marked.Token) {
+    return katex.renderToString((token as any).text, { throwOnError: false });
   },
 };
 
@@ -46,8 +47,8 @@ const inlineMathExtension = {
 const blockMathExtension = {
   name: 'blockMath',
   level: 'block',
-  start(src) { return src.indexOf('$'); },
-  tokenizer(src) {
+  start(src: string) { return src.indexOf('$'); },
+  tokenizer(this: marked.Lexer, src: string) {
     const match = src.match(/^\$\$([\s\S]+?)\$\$/);
     if (match) {
       return {
@@ -55,18 +56,18 @@ const blockMathExtension = {
         raw: match[0],
         text: match[1],
         tokens: this.lexer.blockTokens(match[1]),
-      };
+      } as marked.Tokens.Generic;
     }
   },
-  renderer(token) {
-    return `<div class="math">${katex.renderToString(token.text, { throwOnError: false, displayMode: true })}</div>`;
+  renderer(token: marked.Token) {
+    return `<div class="math">${katex.renderToString((token as any).text, { throwOnError: false, displayMode: true })}</div>`;
   },
 };
 
 marked.use({ extensions: [inlineMathExtension, blockMathExtension] });
 
 const renderedContent = computed(() => {
-  let html = marked(props.content);
+  let html = marked(props.content) as string;
   html = DOMPurify.sanitize(html, {
     ADD_ATTR: ['class', 'style'],
     ALLOW_UNKNOWN_PROTOCOLS: true,

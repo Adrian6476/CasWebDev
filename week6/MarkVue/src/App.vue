@@ -20,7 +20,7 @@
           <v-list-item 
             v-for="(languageName, languageCode) in languages" 
             :key="languageCode"
-            @click="changeLanguage(languageCode)"
+            @click="changeLanguage(languageCode.toString())"
           >
             <v-list-item-title>{{ languageName }}</v-list-item-title>
           </v-list-item>
@@ -79,7 +79,7 @@ const configService = ConfigService.getInstance();
 
 const currentLang = computed(() => route.params.lang || configService.defaultLang);
 
-const languages = configService.languages;
+const languages: { [key: string]: string } = configService.languages;
 
 const changeLanguage = (languageCode: string) => {
   localStorage.setItem('selectedLanguage', languageCode);
