@@ -1,7 +1,5 @@
-<!-- week6/MarkVue/src/components/NavMenu.vue -->
-
 <template>
-  <v-navigation-drawer v-model="drawerModel" app>
+  <v-navigation-drawer v-model="drawerModel" :location="mdAndUp ? 'left' : null" :permanent="mdAndUp" :temporary="!mdAndUp" app>
     <v-list>
       <template v-for="item in menuItems" :key="item.id">
         <!-- Document Item -->
@@ -49,9 +47,12 @@
 import { ref, onMounted, computed } from 'vue';
 import yaml from 'js-yaml';
 import { ConfigService } from '../services/ConfigService';
+import { useDisplay } from 'vuetify';
 
 const props = defineProps(['modelValue', 'lang']);
 const emit = defineEmits(['update:modelValue']);
+
+const { mdAndUp } = useDisplay();
 
 const drawerModel = computed({
   get: () => props.modelValue,

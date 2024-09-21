@@ -2,7 +2,7 @@
   <v-app :theme="theme">
     <NavMenu v-model="drawer" :lang="currentLang" />
     <v-app-bar app>
-      <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="toggleDrawer" v-if="!mdAndUp"></v-app-bar-nav-icon>
       <v-toolbar-title>Documentation System</v-toolbar-title>
       <v-spacer></v-spacer>
       <!-- Theme toggle button -->
@@ -39,15 +39,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import NavMenu from './components/NavMenu.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ConfigService } from './services/ConfigService';
-import { useTheme } from 'vuetify';
+import { useTheme, useDisplay } from 'vuetify';
 
 const drawer = ref(true);
 const theme = ref('light');
 const vuetifyTheme = useTheme();
+const { mdAndUp, mobile } = useDisplay();
 
 const toggleDrawer = () => {
   drawer.value = !drawer.value;
@@ -65,6 +66,10 @@ onMounted(() => {
     theme.value = savedTheme;
     vuetifyTheme.global.name.value = savedTheme;
   }
+});
+
+watch(mobile, (newValue) => {
+  drawer.value = !newValue;
 });
 
 const route = useRoute();

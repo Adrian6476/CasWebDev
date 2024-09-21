@@ -1,20 +1,30 @@
-<!-- week6/MarkVue/src/components/DocumentViewer.vue -->
-
 <template>
   <div class="document-viewer">
-    <md-content :content="content" />
-    <md-toc :content="content" />
+    <v-row>
+      <v-col :cols="12" :md="showToc ? 9 : 12">
+        <md-content :content="content" />
+      </v-col>
+      <v-col v-if="showToc" cols="3">
+        <md-toc :content="content" />
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import MdContent from './MdContent.vue';
 import MdToc from './MdToc.vue';
 import { ConfigService } from '../services/ConfigService';
+import { useDisplay } from 'vuetify';
 
 const props = defineProps(['docId', 'lang']);
 const content = ref('');
+const { mdAndUp, lgAndUp, name } = useDisplay();
+
+const showToc = computed(() => {
+  return lgAndUp.value || (mdAndUp.value && name.value !== 'md-portrait');
+});
 
 async function fetchContent() {
   const configService = ConfigService.getInstance();
