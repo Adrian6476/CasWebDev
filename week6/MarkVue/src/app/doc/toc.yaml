@@ -1,12 +1,11 @@
-# Document list
+# week6/MarkVue/src/app/doc/toc.yaml
+
 ---
 config:
   path: '.'
   lang:
     en-US: English
     zh-CN: Simplified Chinese
-    ja: Japanese
-    fr: French
   lang-default: en-US
 
 docs:

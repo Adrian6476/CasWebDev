@@ -1,4 +1,7 @@
+// week6/MarkVue/src/services/RouteService.ts
+
 import yaml from 'js-yaml';
+import { ConfigService } from './ConfigService';
 
 interface DocItem {
   id: string;
@@ -11,6 +14,7 @@ interface DocItem {
 export class RouteService {
   private static instance: RouteService;
   private routes: any[] = [];
+  private configService = ConfigService.getInstance();
 
   private constructor() {}
 
@@ -23,9 +27,7 @@ export class RouteService {
 
   public async generateRoutes(): Promise<any[]> {
     try {
-      const response = await fetch('/src/app/doc/toc.yaml');
-      const yamlText = await response.text();
-      const parsedYaml: any = yaml.load(yamlText);
+      const parsedYaml = await this.loadTocYaml();
 
       if (parsedYaml && parsedYaml.docs && parsedYaml.docs.chapters) {
         this.routes = this.processChapters(parsedYaml.docs.chapters);
@@ -38,24 +40,56 @@ export class RouteService {
     }
   }
 
+  private async loadTocYaml(): Promise<any> {
+    try {
+      const response = await fetch('/src/app/doc/toc.yaml');
+      const yamlText = await response.text();
+      return yaml.load(yamlText);
+    } catch (error) {
+      console.error('Error loading toc.yaml:', error);
+      return null;
+    }
+  }
+
   private processChapters(chapters: DocItem[]): any[] {
     const routes: any[] = [];
+    const languages = this.configService.languages;
 
-    for (const item of chapters) {
-      if (item.type === 'doc' || item.type === 'chapter') {
-        routes.push({
-          path: `/${item.id}`,
-          name: item.id,
-          component: () => import('../components/DocumentViewer.vue'),
-          props: { docId: item.id }
-        });
+    for (const langCode in languages) {
+      for (const item of chapters) {
+        routes.push(...this.generateRoutesForItem(item, langCode));
+      }
+    }
 
-        if (item.sub) {
-          routes.push(...this.processChapters(item.sub));
+    return routes;
+  }
+
+  private generateRoutesForItem(item: DocItem, lang: string): any[] {
+    const routes: any[] = [];
+
+    if (item.type === 'doc' || item.type === 'chapter') {
+      routes.push({
+        path: `/${lang}/${item.id}`,
+        name: `${lang}-${item.id}`,
+        component: () => import('../components/DocumentViewer.vue'),
+        props: { docId: item.id, lang },
+      });
+
+      if (item.sub) {
+        for (const subItem of item.sub) {
+          routes.push(...this.generateRoutesForItem(subItem, lang));
         }
       }
     }
 
     return routes;
+  }
+
+  public getDefaultLang(): string {
+    return this.configService.defaultLang;
+  }
+
+  public getLandingPageRoute(lang: string): string {
+    return `/${lang}/${this.configService.landingPage}`;
   }
 }
