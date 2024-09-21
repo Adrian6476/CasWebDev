@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { marked } from 'marked';
+import type { Tokens, MarkedExtension } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 import DOMPurify from 'dompurify';
 import katex from 'katex';
@@ -15,52 +16,65 @@ import 'highlight.js/styles/github.css';
 const props = defineProps<{ content: string }>();
 
 // Configure marked options
-marked.use(markedHighlight({
-  langPrefix: 'hljs language-',
-  highlight(code, lang) {
-    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-    return hljs.highlight(code, { language }).value;
-  },
-}));
+marked.use(
+  markedHighlight({
+    langPrefix: 'hljs language-',
+    highlight(code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+      return hljs.highlight(code, { language }).value;
+    },
+  })
+);
+
+// Define custom token interface
+interface MathToken extends Tokens.Generic {
+  type: 'inlineMath' | 'blockMath';
+  text: string;
+}
 
 // Custom inline extension for inline math
-const inlineMathExtension = {
+const inlineMathExtension: MarkedExtension = {
   name: 'inlineMath',
   level: 'inline',
-  start(src: string) { return src.indexOf('$'); },
-  tokenizer(src: string) {
+  start(src: string) {
+    return src.indexOf('$');
+  },
+  tokenizer(src: string): MathToken | void {
     const match = src.match(/^\$([^\$]+?)\$/);
     if (match) {
       return {
         type: 'inlineMath',
         raw: match[0],
         text: match[1],
-      } as marked.Tokens.Generic;
+      };
     }
   },
-  renderer(token: marked.Token) {
-    return katex.renderToString((token as any).text, { throwOnError: false });
+  renderer(token: Tokens.Generic): string | false | void {
+    const mathToken = token as MathToken;
+    return katex.renderToString(mathToken.text, { throwOnError: false });
   },
 };
 
 // Custom block extension for display math
-const blockMathExtension = {
+const blockMathExtension: MarkedExtension = {
   name: 'blockMath',
   level: 'block',
-  start(src: string) { return src.indexOf('$'); },
-  tokenizer(this: marked.Lexer, src: string) {
+  start(src: string) {
+    return src.indexOf('$$');
+  },
+  tokenizer(src: string): MathToken | void {
     const match = src.match(/^\$\$([\s\S]+?)\$\$/);
     if (match) {
       return {
         type: 'blockMath',
         raw: match[0],
         text: match[1],
-        tokens: this.lexer.blockTokens(match[1]),
-      } as marked.Tokens.Generic;
+      };
     }
   },
-  renderer(token: marked.Token) {
-    return `<div class="math">${katex.renderToString((token as any).text, { throwOnError: false, displayMode: true })}</div>`;
+  renderer(token: Tokens.Generic): string | false | void {
+    const mathToken = token as MathToken;
+    return `<div class="math">${katex.renderToString(mathToken.text, { throwOnError: false, displayMode: true })}</div>`;
   },
 };
 

@@ -20,10 +20,10 @@ import { useDisplay } from 'vuetify';
 
 const props = defineProps(['docId', 'lang']);
 const content = ref('');
-const { mdAndUp, lgAndUp, orientation } = useDisplay();
+const { mdAndUp, lgAndUp } = useDisplay();
 
 const showToc = computed(() => {
-  return lgAndUp.value || (mdAndUp.value && orientation.value !== 'portrait');
+  return lgAndUp.value || mdAndUp.value;
 });
 
 async function fetchContent() {
