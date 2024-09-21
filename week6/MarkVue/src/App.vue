@@ -1,3 +1,4 @@
+<!-- src/App.vue -->
 <template>
   <v-app>
     <NavMenu v-model="drawer" />
