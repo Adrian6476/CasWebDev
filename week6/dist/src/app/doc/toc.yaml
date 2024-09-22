@@ -1,0 +1,50 @@
+# week6/MarkVue/src/app/doc/toc.yaml
+
+---
+config:
+  path: '.'
+  lang:
+    en-US: English
+    zh-CN: Simplified Chinese
+  lang-default: en-US
+
+docs:
+  landing: welcome
+  chapters:
+    - 
+      id: intro
+      type: chapter
+      name: Introduction
+      sub:
+        - 
+          id: welcome
+          type: doc
+          name: Welcome
+          file: 'welcome.md'
+        - 
+          id: start
+          type: doc
+          name: Quickstart
+          file: 'start.md'
+        - 
+          id: about
+          type: doc
+          name: About
+          file: 'about.md'
+    - 
+      id: concepts
+      type: chapter
+      name: Basic Concepts
+      sub:
+        -
+          id: more-link
+          type: link
+          name: Learn more about us
+          file: 'https://angular.cn/'
+    -
+      type: sep
+    - 
+      id: bye
+      type: link
+      name: Follow us
+      file: 'https://twitter.com/google'
