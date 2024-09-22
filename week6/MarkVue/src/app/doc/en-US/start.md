@@ -48,7 +48,7 @@ def hello_world():
 
 ## Mathematical Formula
 
-Inline formula example: $ a^2 + b^2 = c^2 $.
+Inline formula example: $a^2 + b^2 = c^2$.
 
 Here is a block formula:
 
