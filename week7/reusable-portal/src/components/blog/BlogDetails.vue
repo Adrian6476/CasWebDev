@@ -19,52 +19,56 @@
         </v-col>
       </v-row>
     </v-container>
-  </template>
-  
-  <script>
-  import RecommendedPosts from './RecommendedPosts.vue';
-  import api from '@/services/api.js';
-  
-  export default {
-    name: 'BlogDetails',
-    components: {
-      RecommendedPosts,
+</template>
+
+<script>
+import RecommendedPosts from './RecommendedPosts.vue';
+import api from '@/services/api.js';
+
+export default {
+  name: 'BlogDetails',
+  components: {
+    RecommendedPosts,
+  },
+  props: {
+    id: {
+      type: String,
+      required: true,
     },
-    data() {
-      return {
-        post: {},
-        isLoading: false,
-        errorMessage: '',
-        imageSrc: 'https://via.placeholder.com/800x400?text=Blog+Image',
-      };
+  },
+  data() {
+    return {
+      post: {},
+      isLoading: false,
+      errorMessage: '',
+      imageSrc: 'https://via.placeholder.com/800x400?text=Blog+Image',
+    };
+  },
+  methods: {
+    fetchPost() {
+      this.isLoading = true;
+      api.getPost(this.id)
+        .then((response) => {
+          this.post = response.data;
+        })
+        .catch((error) => {
+          this.errorMessage = 'Failed to load the blog post.';
+          console.error(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
-    methods: {
-      fetchPost() {
-        this.isLoading = true;
-        const postId = this.$route.params.id;
-        api.getPost(postId)
-          .then((response) => {
-            this.post = response.data;
-          })
-          .catch((error) => {
-            this.errorMessage = 'Failed to load the blog post.';
-            console.error(error);
-          })
-          .finally(() => {
-            this.isLoading = false;
-          });
-      },
+  },
+  watch: {
+    id(newId, oldId) {
+      if (newId !== oldId) {
+        this.fetchPost();
+      }
     },
-    watch: {
-      '$route.params.id': 'fetchPost',
-    },
-    created() {
-      this.fetchPost();
-    },
-  };
-  </script>
-  
-  <style scoped>
-  /* Add any specific styles for the BlogDetails component */
-  </style>
-  
+  },
+  created() {
+    this.fetchPost();
+  },
+};
+</script>
