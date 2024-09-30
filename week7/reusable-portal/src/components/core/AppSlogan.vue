@@ -1,3 +1,4 @@
+<!-- src/components/core/AppSlogan.vue -->
 <template>
   <v-container class="slogan-container">
     <v-row justify="center">
@@ -30,11 +31,22 @@ export default {
   padding-top: 50px;
   padding-bottom: 50px;
 }
+
 .display-1 {
   font-size: 3rem;
 }
+
 .subtitle-1 {
   font-size: 1.25rem;
   color: grey;
+}
+
+@media (max-width: 600px) {
+  .display-1 {
+    font-size: 2rem;
+  }
+  .subtitle-1 {
+    font-size: 1rem;
+  }
 }
 </style>

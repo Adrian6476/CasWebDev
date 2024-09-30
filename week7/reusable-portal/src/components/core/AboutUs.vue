@@ -22,12 +22,12 @@
   </template>
   
   <script>
-  import AppParagraph from './AppParagraph.vue'; // Updated import
+  import AppParagraph from './AppParagraph.vue';
   
   export default {
     name: 'AboutUs',
     components: {
-      AppParagraph, // Updated component registration
+      AppParagraph,
     },
     props: {
       title: {
@@ -44,11 +44,7 @@
       },
       paragraphs: {
         type: Array,
-        default: () => [
-          'We are a forward-thinking company committed to excellence.',
-          'Our team works tirelessly to innovate and improve our services.',
-          'We value collaboration, integrity, and customer satisfaction.',
-        ],
+        default: () => [],
       },
     },
   };

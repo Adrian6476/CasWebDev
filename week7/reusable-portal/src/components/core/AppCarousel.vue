@@ -41,30 +41,11 @@
 
 <script>
 export default {
-  name: 'AppCarousel', // Updated component name
+  name: 'AppCarousel',
   props: {
     items: {
       type: Array,
-      default: () => [
-        {
-          src: new URL('@/assets/slide1.jpg', import.meta.url).href,
-          alt: 'Slide 1',
-          title: 'First Slide',
-          subtitle: 'This is the first slide subtitle.',
-        },
-        {
-          src: new URL('@/assets/slide2.jpg', import.meta.url).href,
-          alt: 'Slide 2',
-          title: 'Second Slide',
-          subtitle: 'This is the second slide subtitle.',
-        },
-        {
-          src: new URL('@/assets/slide3.jpg', import.meta.url).href,
-          alt: 'Slide 3',
-          title: 'Third Slide',
-          subtitle: 'This is the third slide subtitle.',
-        },
-      ],
+      default: () => [],
     },
     showArrows: {
       type: Boolean,

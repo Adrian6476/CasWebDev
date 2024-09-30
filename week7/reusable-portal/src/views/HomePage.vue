@@ -1,60 +1,88 @@
 <!-- src/views/HomePage.vue -->
 <template>
-    <div>
-      <AppSlogan :title="sloganTitle" :subtitle="sloganSubtitle" />
-      <AboutUs :title="aboutTitle" :paragraphs="aboutParagraphs" />
-      <AppCarousel :items="carouselItems" /> <!-- Updated component name -->
-    </div>
-  </template>
+    <v-container fluid>
+      <!-- Slogan Section -->
+      <section class="section-slogan">
+        <AppSlogan :title="sloganTitle" :subtitle="sloganSubtitle" />
+      </section>
   
-  <script>
-  import AppSlogan from '@/components/core/AppSlogan.vue';
-  import AboutUs from '@/components/core/AboutUs.vue';
-  import AppCarousel from '@/components/core/AppCarousel.vue'; // Updated import
+      <!-- About Us Section -->
+      <section class="section-about-us">
+        <AboutUs :title="aboutTitle" :paragraphs="aboutParagraphs" />
+      </section>
   
-  export default {
-    name: 'HomePage', // Updated component name
-    components: {
-      AppSlogan,
-      AboutUs,
-      AppCarousel, // Updated component registration
+      <!-- News Carousel Section -->
+      <section class="section-carousel">
+        <AppCarousel :items="carouselItems" />
+      </section>
+    </v-container>
+</template>
+
+<script>
+import AppSlogan from '@/components/core/AppSlogan.vue';
+import AboutUs from '@/components/core/AboutUs.vue';
+import AppCarousel from '@/components/core/AppCarousel.vue';
+import api from '@/services/api.js';
+
+export default {
+name: 'HomePage',
+components: {
+    AppSlogan,
+    AboutUs,
+    AppCarousel,
+},
+data() {
+    return {
+    sloganTitle: 'Welcome to Our Portal',
+    sloganSubtitle: 'Empowering teams across the company',
+    aboutTitle: 'About Our Company',
+    aboutParagraphs: [],
+    carouselItems: [],
+    };
+},
+methods: {
+    fetchAboutUs() {
+    // Simulate fetching 'about us' content
+    api.getUsers().then((response) => {
+        const user = response.data[0]; // Using the first user as example
+        this.aboutParagraphs = [
+        `Welcome to ${user.company.name}.`,
+        user.company.catchPhrase,
+        user.company.bs,
+        ];
+    });
     },
-    data() {
-      return {
-        sloganTitle: 'Welcome to Our Portal',
-        sloganSubtitle: 'Empowering teams across the company',
-        aboutTitle: 'About Our Company',
-        aboutParagraphs: [
-          'We are dedicated to providing the best services.',
-          'Our mission is to innovate and lead the industry.',
-          'Join us on our journey towards excellence.',
-        ],
-        carouselItems: [
-          {
-            src: new URL('@/assets/slide1.jpg', import.meta.url).href,
-            alt: 'Slide 1',
-            title: 'First Slide',
-            subtitle: 'This is the first slide subtitle.',
-          },
-          {
-            src: new URL('@/assets/slide2.jpg', import.meta.url).href,
-            alt: 'Slide 2',
-            title: 'Second Slide',
-            subtitle: 'This is the second slide subtitle.',
-          },
-          {
-            src: new URL('@/assets/slide3.jpg', import.meta.url).href,
-            alt: 'Slide 3',
-            title: 'Third Slide',
-            subtitle: 'This is the third slide subtitle.',
-          },
-        ],
-      };
+    fetchNews() {
+    api.getPosts().then((response) => {
+        // Use the first 5 posts as news items
+        this.carouselItems = response.data.slice(0, 5).map((post) => ({
+        src: 'https://via.placeholder.com/800x400?text=News', // Placeholder image
+        alt: post.title,
+        title: post.title,
+        subtitle: post.body,
+        }));
+    });
     },
-  };
-  </script>
-  
-  <style scoped>
-  /* Add any specific styles for the HomePage view here */
-  </style>
-  
+},
+created() {
+    this.fetchAboutUs();
+    this.fetchNews();
+},
+};
+</script>
+
+<style scoped>
+.section-slogan,
+.section-about-us,
+.section-carousel {
+padding: 50px 0;
+}
+
+@media (max-width: 600px) {
+.section-slogan,
+.section-about-us,
+.section-carousel {
+    padding: 30px 0;
+}
+}
+</style>

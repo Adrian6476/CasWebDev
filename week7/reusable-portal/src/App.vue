@@ -5,16 +5,19 @@
     <v-main>
       <router-view />
     </v-main>
+    <AppFooter />
   </v-app>
 </template>
 
 <script>
 import AppHeader from '@/components/core/AppHeader.vue';
+import AppFooter from '@/components/core/AppFooter.vue';
 
 export default {
   name: 'App',
   components: {
     AppHeader,
+    AppFooter,
   },
   data() {
     return {
@@ -32,4 +35,13 @@ export default {
 
 <style>
 /* Global styles */
+html,
+body,
+#app {
+  height: 100%;
+}
+
+.v-application {
+  min-height: 100%;
+}
 </style>
