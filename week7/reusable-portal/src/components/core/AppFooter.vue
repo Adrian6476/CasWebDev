@@ -1,18 +1,26 @@
 <!-- src/components/core/AppFooter.vue -->
 <template>
-  <v-footer color="primary" app>
+  <v-footer color="primary">
     <v-container>
       <v-row>
         <!-- Section: Company Info -->
         <v-col cols="12" md="4">
           <FTitle title="Company" />
-          <FLink v-for="(link, index) in companyLinks" :key="index" :link="link" />
+          <v-row dense>
+            <v-col v-for="(link, index) in companyLinks" :key="index" cols="auto">
+              <FLink :link="link" />
+            </v-col>
+          </v-row>
         </v-col>
 
         <!-- Section: Resources -->
         <v-col cols="12" md="4">
           <FTitle title="Resources" />
-          <FLink v-for="(link, index) in resourceLinks" :key="index" :link="link" />
+          <v-row dense>
+            <v-col v-for="(link, index) in resourceLinks" :key="index" cols="auto">
+              <FLink :link="link" />
+            </v-col>
+          </v-row>
         </v-col>
 
         <!-- Section: Language Switcher -->
@@ -29,8 +37,12 @@
         <v-col cols="12" sm="6">
           <span class="white--text">&copy; {{ new Date().getFullYear() }} Company Name</span>
         </v-col>
-        <v-col cols="12" sm="6" class="text-sm-right">
-          <FLink v-for="(link, index) in legalLinks" :key="index" :link="link" />
+        <v-col cols="12" sm="6">
+          <v-row justify="end" dense>
+            <v-col v-for="(link, index) in legalLinks" :key="index" cols="auto">
+              <FLink :link="link" />
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>
@@ -76,9 +88,5 @@ export default {
   padding-top: 40px;
   padding-bottom: 20px;
   color: white;
-}
-
-.text-sm-right {
-  text-align: right;
 }
 </style>
