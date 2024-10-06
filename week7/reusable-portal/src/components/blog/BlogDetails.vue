@@ -1,24 +1,27 @@
 <!-- src/components/blog/BlogDetails.vue -->
 <template>
-    <v-container>
-      <v-row>
-        <v-col cols="12" md="8">
-          <v-card>
-            <v-img
-              :src="imageSrc"
-              height="400px"
-            ></v-img>
-            <v-card-title class="headline">{{ post.title }}</v-card-title>
-            <v-card-text>
-              <p>{{ post.body }}</p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="4">
-          <RecommendedPosts :excludeId="post.id" />
-        </v-col>
-      </v-row>
-    </v-container>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <v-card v-if="post">
+          <v-card-title>{{ post.title }}</v-card-title>
+          <v-card-text>
+            <p>{{ post.body }}</p>
+          </v-card-text>
+        </v-card>
+        <v-skeleton-loader
+          v-else
+          type="article"
+          class="mx-auto"
+        ></v-skeleton-loader>
+    </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <RecommendedPosts :excludeId="Number(id)" />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -38,33 +41,18 @@ export default {
   },
   data() {
     return {
-      post: {},
-      isLoading: false,
-      errorMessage: '',
-      imageSrc: 'https://via.placeholder.com/800x400?text=Blog+Image',
+      post: null,
     };
   },
   methods: {
     fetchPost() {
-      this.isLoading = true;
       api.getPost(this.id)
         .then((response) => {
           this.post = response.data;
         })
         .catch((error) => {
-          this.errorMessage = 'Failed to load the blog post.';
-          console.error(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
+          console.error('Failed to load the blog post:', error);
         });
-    },
-  },
-  watch: {
-    id(newId, oldId) {
-      if (newId !== oldId) {
-        this.fetchPost();
-      }
     },
   },
   created() {

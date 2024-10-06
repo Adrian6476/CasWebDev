@@ -14,21 +14,9 @@
     >
       {{ link.name }}
     </v-btn>
-    <v-menu v-if="user" offset-y>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn icon v-bind="attrs" v-on="on">
-          <v-icon>mdi-account</v-icon>
-        </v-btn>
-      </template>
-      <v-list>
-        <v-list-item :to="'/profile'" router>
-          <v-list-item-title>My Profile</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="logout">
-          <v-list-item-title>Logout</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
+    <v-btn v-if="isAuthenticated" @click="handleUserAction" icon>
+      <v-icon>mdi-account</v-icon>
+    </v-btn>
     <v-btn v-else text :to="'/login'" router>
       Login
     </v-btn>
@@ -37,7 +25,6 @@
 
 <script>
 import BrandIcon from './BrandIcon.vue';
-import { ref, onMounted } from 'vue';
 import { auth } from '@/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
@@ -61,29 +48,34 @@ export default {
       ],
     },
   },
-  setup() {
-    const user = ref(null);
-
-    onMounted(() => {
-      onAuthStateChanged(auth, (currentUser) => {
-        user.value = currentUser;
-      });
-    });
-
-    const logout = () => {
-      signOut(auth)
-        .then(() => {
-          alert('Logged out successfully!');
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    };
-
+  data() {
     return {
-      user,
-      logout,
+      user: null,
     };
+  },
+  computed: {
+    isAuthenticated() {
+      return !!this.user;
+    },
+  },
+  methods: {
+    handleUserAction() {
+      this.$router.push('/profile');
+    },
+    async logout() {
+      try {
+        await signOut(auth);
+        this.$router.push('/');
+        alert('Logged out successfully!');
+      } catch (error) {
+        alert('Error logging out: ' + error.message);
+      }
+    },
+  },
+  created() {
+    onAuthStateChanged(auth, (currentUser) => {
+      this.user = currentUser;
+    });
   },
 };
 </script>
