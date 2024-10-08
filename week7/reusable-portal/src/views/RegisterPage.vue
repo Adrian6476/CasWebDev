@@ -20,9 +20,21 @@
       <v-text-field
         v-model="password"
         :rules="[rules.required, rules.min]"
+        :type="showPassword ? 'text' : 'password'"
         label="Password"
-        type="password"
         required
+        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+        @click:append="showPassword = !showPassword"
+      ></v-text-field>
+
+      <v-text-field
+        v-model="confirmPassword"
+        :rules="[rules.required, rules.passwordMatch]"
+        :type="showConfirmPassword ? 'text' : 'password'"
+        label="Confirm Password"
+        required
+        :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+        @click:append="showConfirmPassword = !showConfirmPassword"
       ></v-text-field>
 
       <v-btn :disabled="!valid" color="primary" @click="register">
@@ -50,7 +62,11 @@ export default {
     const name = ref('');
     const email = ref('');
     const password = ref('');
+    const confirmPassword = ref('');
+    const showPassword = ref(false);
+    const showConfirmPassword = ref(false);
     const router = useRouter();
+
     const rules = {
       required: (value) => !!value || 'Required.',
       email: (value) => {
@@ -58,6 +74,7 @@ export default {
         return pattern.test(value) || 'Invalid e-mail.';
       },
       min: (value) => (value && value.length >= 6) || 'Min 6 characters',
+      passwordMatch: (value) => value === password.value || 'Passwords do not match',
     };
 
     const register = async () => {
@@ -92,6 +109,9 @@ export default {
       name,
       email,
       password,
+      confirmPassword,
+      showPassword,
+      showConfirmPassword,
       rules,
       register,
     };
