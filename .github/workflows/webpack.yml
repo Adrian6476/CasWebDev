@@ -1,9 +1,9 @@
-name: Vue.js CI
+name: Vue.js CI with Ngrok
 
 on:
   push:
     branches:
-      - main
+      - main  
 
 jobs:
   build:
@@ -23,10 +23,20 @@ jobs:
       working-directory: ./week7/reusable-portal  
 
     - name: Run the application in week7 folder
-      run: npm run serve
-      working-directory: ./week7/reusable-portal  
+      run: npm run serve &
+      working-directory: ./week7/reusable-portal
 
-    - name: Keep the application running
-      run: |
-        while true; do sleep 1000; done
-      working-directory: ./week7/reusable-portal  
+    - name: Install ngrok
+      run: npm install -g ngrok
+
+    - name: Start ngrok and expose the server
+      run: ngrok http 8080 &  
+
+    - name: Display ngrok public URL
+      run: curl --silent http://localhost:4040/api/tunnels | jq '.tunnels[0].public_url'
+
+    - name: Wait for 5 minutes
+      run: sleep 300  
+
+    - name: Stop the server
+      run: killall node
