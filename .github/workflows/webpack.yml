@@ -1,0 +1,32 @@
+name: Vue.js CI
+
+on:
+  push:
+    branches:
+      - origin
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22'  
+
+    - name: Install dependencies in week7 folder
+      run: npm install
+      working-directory: ./week7/reusable-portal  
+
+    - name: Run the application in week7 folder
+      run: npm run serve
+      working-directory: ./week7/reusable-portal  
+
+    - name: Keep the application running
+      run: |
+        while true; do sleep 1000; done
+      working-directory: ./week7/reusable-portal  
