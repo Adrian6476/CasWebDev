@@ -3,7 +3,7 @@ name: Vue.js CI
 on:
   push:
     branches:
-      - origin
+      - main
 
 jobs:
   build:
