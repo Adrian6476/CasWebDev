@@ -29,6 +29,9 @@ jobs:
     - name: Install ngrok
       run: npm install -g ngrok
 
+    - name: Set ngrok authtoken
+      run: ngrok config add-authtoken ${{ secrets.NGROK_AUTHTOKEN }}
+
     - name: Start ngrok and expose the server
       run: ngrok http 8080 &  
 
