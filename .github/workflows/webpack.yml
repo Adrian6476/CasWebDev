@@ -23,7 +23,7 @@ jobs:
       working-directory: ./week7/reusable-portal  
 
     - name: Run the application in week7 folder
-      run: npm run serve
+      run: npm run serve &
       working-directory: ./week7/reusable-portal
 
     - name: Install ngrok
@@ -33,7 +33,7 @@ jobs:
       run: ngrok config add-authtoken ${{ secrets.NGROK_AUTHTOKEN }}
 
     - name: Start ngrok and expose the server
-      run: ngrok http 8080 &  
+      run: ngrok http https://localhost:8080 &
 
     - name: Display ngrok public URL
       run: curl --silent http://localhost:4040/api/tunnels | jq '.tunnels[0].public_url'
