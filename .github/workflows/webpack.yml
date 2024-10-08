@@ -19,7 +19,7 @@ jobs:
         node-version: '26'  
 
     - name: Install dependencies in week7 folder
-      run: npm ci  # Ensure package-lock.json exists
+      run: npm install  # Ensure package-lock.json exists
       working-directory: ./week7/reusable-portal
 
     - name: Run the application in week7 folder
