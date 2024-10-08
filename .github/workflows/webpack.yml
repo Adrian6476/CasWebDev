@@ -16,11 +16,11 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '26'  
+        node-version: '22'  
 
     - name: Install dependencies in week7 folder
-      run: npm install  # Ensure package-lock.json exists
-      working-directory: ./week7/reusable-portal
+      run: npm install
+      working-directory: ./week7/reusable-portal  
 
     - name: Run the application in week7 folder
       run: npm run serve &
