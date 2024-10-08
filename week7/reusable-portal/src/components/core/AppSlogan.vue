@@ -1,11 +1,11 @@
 <!-- src/components/core/AppSlogan.vue -->
 <template>
   <div class="slogan-container" :style="backgroundStyle">
-    <v-container fluid :class="[`px-${sideSpacing}`]">
+    <v-container fluid>
       <v-row justify="center" align="center" class="slogan-content">
         <v-col cols="12" :md="contentWidth" class="text-center">
-          <h1 class="display-1 font-weight-bold white--text">{{ title }}</h1>
-          <p class="subtitle-1 white--text">{{ subtitle }}</p>
+          <h1 class="slogan-title">{{ title }}</h1>
+          <p class="slogan-subtitle">{{ subtitle }}</p>
         </v-col>
       </v-row>
     </v-container>
@@ -23,10 +23,6 @@ export default {
     subtitle: {
       type: String,
       default: 'Empowering teams across the company',
-    },
-    sideSpacing: {
-      type: [Number, String],
-      default: 6, // Vuetify's default spacing
     },
     contentWidth: {
       type: [Number, String],
@@ -47,12 +43,11 @@ export default {
 
 <style scoped>
 .slogan-container {
-  min-height: 100vh;
+  min-height: 70vh;
   display: flex;
   align-items: center;
   position: relative;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  padding: 0 1rem;
 }
 
 .slogan-container::before {
@@ -70,22 +65,32 @@ export default {
   z-index: 1;
 }
 
-.display-1 {
-  font-size: 4rem;
+.slogan-title {
+  font-size: 3rem;
   color: white;
   margin-bottom: 1rem;
+  font-weight: bold;
 }
 
-.subtitle-1 {
-  font-size: 1.75rem;
+.slogan-subtitle {
+  font-size: 1.5rem;
   color: white;
+}
+
+@media (max-width: 960px) {
+  .slogan-title {
+    font-size: 2.5rem;
+  }
+  .slogan-subtitle {
+    font-size: 1.25rem;
+  }
 }
 
 @media (max-width: 600px) {
-  .display-1 {
+  .slogan-title {
     font-size: 2rem;
   }
-  .subtitle-1 {
+  .slogan-subtitle {
     font-size: 1rem;
   }
 }

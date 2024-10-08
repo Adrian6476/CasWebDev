@@ -22,5 +22,8 @@ export default {
   getUser(id) {
     return apiClient.get(`/users/${id}`);
   },
+  getComments(postId) {
+    return apiClient.get(`/posts/${postId}/comments`);
+  },
   // Add other API calls as needed
 };
