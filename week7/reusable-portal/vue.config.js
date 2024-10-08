@@ -12,5 +12,12 @@ module.exports = defineConfig({
   devServer: {
     host: '0.0.0.0',
     allowedHosts: 'all',
+    client: {
+      webSocketURL: {
+        protocol: 'wss',
+        port: 8080,
+      }
+    },
+    https: true,
   }
 })
