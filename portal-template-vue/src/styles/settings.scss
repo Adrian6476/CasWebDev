@@ -6,6 +6,42 @@ $accent: #FF4081;
 // Theme light/dark specific variables
 :root {
   --section-spacing: 4rem;
+  
+  // Theme transition variables
+  --theme-transition-duration: 400ms;
+  --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  // Light theme colors
+  --background-color: #ffffff;
+  --text-color: rgba(0, 0, 0, 0.87);
+  --surface-color: #ffffff;
+  --hover-color: rgba(0, 0, 0, 0.04);
+}
+
+// Dark theme variables
+.v-theme--dark {
+  --background-color: #121212;
+  --text-color: rgba(255, 255, 255, 0.87);
+  --surface-color: #1e1e1e;
+  --hover-color: rgba(255, 255, 255, 0.08);
+}
+
+// Theme transition styles
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: 
+    background-color var(--theme-transition-duration) var(--theme-transition-timing),
+    color var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+.v-card,
+.v-btn,
+.v-toolbar {
+  transition: 
+    background-color var(--theme-transition-duration) var(--theme-transition-timing),
+    color var(--theme-transition-duration) var(--theme-transition-timing),
+    box-shadow var(--theme-transition-duration) var(--theme-transition-timing) !important;
 }
 
 // Global styles

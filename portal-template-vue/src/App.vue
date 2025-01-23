@@ -25,6 +25,20 @@ html, body {
   overflow-x: hidden;
 }
 
+/* Theme transition styles */
+.theme-transitioning * {
+  transition: 
+    background-color var(--theme-transition-duration) var(--theme-transition-timing),
+    border-color var(--theme-transition-duration) var(--theme-transition-timing),
+    color var(--theme-transition-duration) var(--theme-transition-timing) !important;
+}
+
+/* Ensure page transitions work independently */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
+}
+
 :root {
   --section-spacing: 4rem;
 }
