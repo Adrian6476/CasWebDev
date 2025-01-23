@@ -21,21 +21,24 @@ const handleSystemThemeChange = () => {
 
 // 应用主题设置
 const applyTheme = () => {
-  // 添加过渡类
+  // 添加过渡类并等待下一帧
   document.body.classList.add('theme-transitioning')
   
-  // 如果跟随系统主题，则使用系统主题
-  if (settingsStore.isFollowingSystemTheme) {
-    theme.global.name.value = systemThemeMedia.matches ? 'dark' : 'light'
-  } else {
-    // 否则使用手动设置的主题
-    theme.global.name.value = settingsStore.isDarkMode ? 'dark' : 'light'
-  }
+  // 使用 requestAnimationFrame 确保过渡类已被应用
+  requestAnimationFrame(() => {
+    // 如果跟随系统主题，则使用系统主题
+    if (settingsStore.isFollowingSystemTheme) {
+      theme.global.name.value = systemThemeMedia.matches ? 'dark' : 'light'
+    } else {
+      // 否则使用手动设置的主题
+      theme.global.name.value = settingsStore.isDarkMode ? 'dark' : 'light'
+    }
 
-  // 在过渡结束后移除过渡类
-  setTimeout(() => {
-    document.body.classList.remove('theme-transitioning')
-  }, 400) // 与 CSS 变量 --theme-transition-duration 保持一致
+    // 在过渡结束后移除过渡类
+    setTimeout(() => {
+      document.body.classList.remove('theme-transitioning')
+    }, 400) // 与 CSS 变量 --theme-transition-duration 保持一致
+  })
 
   // 更新主题颜色
   theme.themes.value.light = {

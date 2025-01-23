@@ -55,6 +55,15 @@
           </v-list>
         </v-menu>
 
+        <!-- Theme Toggle -->
+        <v-btn
+          variant="text"
+          class="mx-2"
+          size="small"
+          :icon="settingsStore.isDarkMode ? 'mdi-weather-night' : 'mdi-weather-sunny'"
+          @click="toggleTheme"
+        ></v-btn>
+
         <!-- Auth Buttons -->
         <template v-if="!authStore.isAuthenticated">
           <v-btn
@@ -135,6 +144,15 @@
           :to="item.to"
           :title="$t(`nav.${item.title.toLowerCase()}`)"
           :value="item.title"
+        ></v-list-item>
+
+        <v-divider class="my-2"></v-divider>
+
+        <!-- Theme Toggle -->
+        <v-list-item
+          :title="$t('settings.darkMode')"
+          :prepend-icon="settingsStore.isDarkMode ? 'mdi-weather-night' : 'mdi-weather-sunny'"
+          @click="toggleTheme"
         ></v-list-item>
 
         <v-divider class="my-2"></v-divider>
@@ -262,6 +280,14 @@ const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 const settingsStore = useSettingsStore()
+
+// Theme toggle function
+const toggleTheme = () => {
+  if (settingsStore.isFollowingSystemTheme) {
+    settingsStore.toggleFollowSystemTheme() // 关闭跟随系统
+  }
+  settingsStore.toggleDarkMode() // 切换深色模式
+}
 
 // Snackbar state
 const snackbar = ref({
