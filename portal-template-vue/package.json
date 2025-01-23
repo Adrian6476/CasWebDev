@@ -1,0 +1,31 @@
+{
+  "name": "portal-template-vue",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "@pinia/nuxt": "^0.9.0",
+    "@vueuse/core": "^12.4.0",
+    "axios": "^1.7.9",
+    "firebase": "^11.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "pinia": "^2.3.1",
+    "pinia-plugin-persistedstate": "^4.2.0",
+    "sass": "^1.83.4",
+    "vue": "^3.5.13",
+    "vue-i18n": "^9.14.2",
+    "vue-router": "^4.5.0",
+    "vuetify": "^3.7.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.0.7",
+    "vite-plugin-vuetify": "^2.0.4"
+  }
+}
