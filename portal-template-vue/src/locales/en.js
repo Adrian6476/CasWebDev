@@ -113,13 +113,17 @@ export default {
     signUp: 'Sign Up',
     passwordRequirements: 'Password must be at least 8 characters',
     passwordMatch: 'Passwords must match',
+    username: 'Username',
+    usernameRequired: 'Username is required',
     emailRequired: 'Email is required',
     passwordRequired: 'Password is required',
     invalidCredentials: 'Invalid email or password',
     accountCreated: 'Account created successfully!',
     logoutSuccess: 'You have been logged out successfully',
     emailInUse: 'This email is already in use',
-    loginSuccess: 'Login successful!'
+    loginSuccess: 'Login successful!',
+    registrationError: 'Registration failed, please try again later',
+    profileCreationError: 'Failed to create user profile'
   },
   settings: {
     title: 'Settings',

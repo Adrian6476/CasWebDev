@@ -113,6 +113,8 @@ export default {
     signUp: '注册',
     passwordRequirements: '密码至少需要8个字符',
     passwordMatch: '密码必须匹配',
+    username: '用户名',
+    usernameRequired: '请输入用户名',
     emailRequired: '请输入邮箱',
     passwordRequired: '请输入密码',
     invalidCredentials: '邮箱或密码错误',
@@ -120,6 +122,8 @@ export default {
     logoutSuccess: '您已成功退出登录',
     emailInUse: '该邮箱已被注册',
     loginSuccess: '登录成功！',
+    registrationError: '注册失败，请稍后重试',
+    profileCreationError: '创建用户资料失败',
     timeout: '请求超时，请检查网络连接后重试'
   },
   settings: {

@@ -53,30 +53,52 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async register({ email, password }) {
+    async register({ username, email, password }, t) {
+      if (this.loading) return
       this.loading = true
+      this.error = null
+      
       try {
+        // 1. 创建认证用户
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-        this.user = userCredential.user
-        await this.loadUserProfile(userCredential.user.uid)
-        this.error = null
-        return { success: true, message: useI18n().t('auth.accountCreated') }
+        
+        try {
+          // 2. 创建用户配置文件
+          const newProfile = {
+            name: username,
+            phone: '',
+            bio: '',
+            createdAt: new Date().toISOString()
+          }
+          await setDoc(doc(db, 'users', userCredential.user.uid), newProfile)
+          
+          // 3. 更新状态
+          this.user = userCredential.user
+          this.userProfile = newProfile
+          
+          return { success: true, message: t('auth.accountCreated') }
+        } catch (profileError) {
+          // 如果创建配置文件失败，删除认证用户
+          await userCredential.user.delete()
+          throw new Error(t('auth.profileCreationError'))
+        }
       } catch (error) {
-        const { t } = useI18n()
+        let errorMessage;
         switch (error.code) {
           case 'auth/email-already-in-use':
-            this.error = t('auth.emailInUse')
+            errorMessage = t('auth.emailInUse')
             break
           case 'auth/invalid-email':
-            this.error = t('contact.form.emailValid')
+            errorMessage = t('contact.form.emailValid')
             break
           case 'auth/weak-password':
-            this.error = t('auth.passwordRequirements')
+            errorMessage = t('auth.passwordRequirements')
             break
           default:
-            this.error = error.message
+            errorMessage = error.message
         }
-        return { success: false, message: this.error }
+        this.error = errorMessage
+        throw new Error(errorMessage)
       } finally {
         this.loading = false
       }
