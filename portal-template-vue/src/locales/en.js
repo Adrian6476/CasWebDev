@@ -118,7 +118,8 @@ export default {
     invalidCredentials: 'Invalid email or password',
     accountCreated: 'Account created successfully!',
     logoutSuccess: 'You have been logged out successfully',
-    emailInUse: 'This email is already in use'
+    emailInUse: 'This email is already in use',
+    loginSuccess: 'Login successful!'
   },
   settings: {
     title: 'Settings',

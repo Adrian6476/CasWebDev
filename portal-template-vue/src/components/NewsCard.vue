@@ -7,6 +7,11 @@
       cover
       class="news-card-image"
     >
+      <!-- Date -->
+      <v-card-subtitle class="date-badge text-grey-darken-2">
+        {{ formatDate(date) }}
+      </v-card-subtitle>
+
       <!-- Category Badge -->
       <v-chip
         color="primary"
@@ -18,24 +23,19 @@
       </v-chip>
     </v-img>
 
-    <v-card-item>
-      <!-- Date -->
-      <v-card-subtitle class="mb-2 text-grey">
-        {{ formatDate(date) }}
-      </v-card-subtitle>
-
+    <v-card-item class="pa-4 pb-0">
       <!-- Title -->
-      <v-card-title class="text-h6 mb-2 news-title">
+      <v-card-title class="text-h6 pa-0 mb-3 news-title">
         {{ title }}
       </v-card-title>
 
       <!-- Abstract -->
-      <v-card-text class="text-body-2 text-grey-darken-1">
+      <v-card-text class="pa-0 text-body-2 text-grey-darken-1">
         {{ abstract }}
       </v-card-text>
     </v-card-item>
 
-    <v-card-actions class="pa-4 pt-0">
+    <v-card-actions class="px-4 pb-4">
       <v-btn
         variant="text"
         color="primary"
@@ -108,6 +108,15 @@ const formatDate = (dateString) => {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.date-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 0 0 0 8px;
+  padding: 8px 16px;
 }
 
 .news-title {

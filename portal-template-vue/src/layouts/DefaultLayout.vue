@@ -1,5 +1,15 @@
 <template>
   <v-app>
+    <!-- Global Snackbar -->
+    <v-snackbar
+      v-model="snackbar.visible"
+      :color="snackbar.color"
+      :timeout="5000"
+      location="top"
+    >
+      {{ snackbar.message }}
+    </v-snackbar>
+
     <!-- App Bar -->
     <v-app-bar :color="$vuetify.theme.current.dark ? 'surface' : 'background'" elevation="1" height="64">
       <v-container class="d-flex align-center px-4">
@@ -248,22 +258,6 @@
       </v-container>
     </v-footer>
 
-    <!-- Snackbar for notifications -->
-    <v-snackbar
-      v-model="snackbar.show"
-      :color="snackbar.color"
-      :timeout="3000"
-    >
-      {{ snackbar.text }}
-      <template v-slot:actions>
-        <v-btn
-          variant="text"
-          @click="snackbar.show = false"
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
   </v-app>
 </template>
 
@@ -275,6 +269,7 @@ import { useAuthStore } from '@/store/auth'
 import { useSettingsStore } from '@/store/settings'
 import vueLogo from '@/assets/vue.svg'
 
+const { t } = useI18n()
 const i18n = useI18n()
 const route = useRoute()
 const router = useRouter()
@@ -287,21 +282,6 @@ const toggleTheme = () => {
     settingsStore.toggleFollowSystemTheme() // 关闭跟随系统
   }
   settingsStore.toggleDarkMode() // 切换深色模式
-}
-
-// Snackbar state
-const snackbar = ref({
-  show: false,
-  text: '',
-  color: 'success'
-})
-
-const showNotification = (text, color = 'success') => {
-  snackbar.value = {
-    show: true,
-    text,
-    color
-  }
 }
 
 const userMenuItems = [
@@ -319,18 +299,33 @@ const userMenuItems = [
     title: 'logout',
     icon: 'mdi-logout',
     action: async () => {
-      const result = await authStore.logout()
-      if (result.success) {
-        showNotification(result.message)
-        router.push('/')
-      } else {
-        showNotification(result.message, 'error')
+      try {
+        const result = await authStore.logout(t)
+        snackbar.value = {
+          visible: true,
+          message: result.message,
+          color: result.success ? 'success' : 'error'
+        }
+        setTimeout(() => {
+          router.push('/')
+        }, 1000)
+      } catch (error) {
+        snackbar.value = {
+          visible: true,
+          message: error.message,
+          color: 'error'
+        }
       }
     }
   }
 ]
 
 const drawer = ref(false)
+const snackbar = ref({
+  visible: false,
+  message: '',
+  color: 'success'
+})
 
 // Language settings
 const currentLocale = computed({
@@ -370,7 +365,7 @@ const activeTab = computed(() => route.path)
 // Watch auth errors
 watch(() => authStore.error, (error) => {
   if (error) {
-    showNotification(error, 'error')
+    console.error(error)
     authStore.clearError()
   }
 })

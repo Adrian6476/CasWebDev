@@ -1,5 +1,14 @@
 <template>
   <v-container class="fill-height">
+    <v-snackbar
+      v-model="snackbar.visible"
+      :color="snackbar.color"
+      :timeout="3000"
+      location="top"
+    >
+      {{ snackbar.message }}
+    </v-snackbar>
+
     <v-row justify="center" align="center">
       <v-col cols="12" sm="8" md="6" lg="4">
         <v-card class="elevation-12 pa-6">
@@ -83,6 +92,12 @@ const password = ref('')
 const rememberMe = ref(false)
 const showPassword = ref(false)
 const loading = ref(false)
+const snackbar = ref({
+  visible: false,
+  message: '',
+  color: 'success',
+  timeout: 10000 // 延长显示时间以应对Firebase认证延迟
+})
 
 const handleLogin = async () => {
   const { valid } = await form.value.validate()
@@ -90,16 +105,58 @@ const handleLogin = async () => {
 
   loading.value = true
   try {
-    await authStore.login({
+    // 添加超时处理
+    const result = await authStore.login({
       email: email.value,
       password: password.value,
       rememberMe: rememberMe.value
-    })
-    router.push({ name: 'home' })
+    }, t)
+    
+    snackbar.value = {
+      visible: true,
+      message: result.message,
+      color: result.success ? 'success' : 'error',
+      timeout: 10000
+    }
+    
+    if (result.success) {
+      // 等待提示显示完成后再跳转
+      setTimeout(() => {
+        router.push({ name: 'Home' })
+      }, 1000)
+    }
   } catch (error) {
-    // Handle error
+    snackbar.value = {
+      visible: true,
+      message: error.message,
+      color: 'error',
+      timeout: 10000
+    }
   } finally {
     loading.value = false
+  }
+}
+
+const handleLogout = async () => {
+  try {
+    const result = await authStore.logout({ t })
+    snackbar.value = {
+      visible: true,
+      message: result.message,
+      color: result.success ? 'success' : 'error',
+      timeout: 10000
+    }
+    // 等待提示显示完成后再跳转
+    setTimeout(() => {
+      router.push({ name: 'Home' })
+    }, 5000)
+  } catch (error) {
+    snackbar.value = {
+      visible: true,
+      message: error.message,
+      color: 'error',
+      timeout: 10000
+    }
   }
 }
 </script>

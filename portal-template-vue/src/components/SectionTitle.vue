@@ -3,7 +3,7 @@
     <h2 class="text-h4 font-weight-bold mb-3" :class="titleClass">
       {{ title }}
     </h2>
-    <div v-if="subtitle" class="text-subtitle-1 text-grey" :class="subtitleClass">
+    <div v-if="subtitle" class="text-subtitle-1 text-medium-emphasis" :class="subtitleClass">
       {{ subtitle }}
     </div>
     <v-divider

@@ -118,7 +118,9 @@ export default {
     invalidCredentials: '邮箱或密码错误',
     accountCreated: '账户创建成功！',
     logoutSuccess: '您已成功退出登录',
-    emailInUse: '该邮箱已被注册'
+    emailInUse: '该邮箱已被注册',
+    loginSuccess: '登录成功！',
+    timeout: '请求超时，请检查网络连接后重试'
   },
   settings: {
     title: '设置',

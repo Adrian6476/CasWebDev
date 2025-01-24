@@ -82,7 +82,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async login({ email, password, rememberMe = false }) {
+    async login({ email, password, rememberMe = false }, t) {
       this.loading = true
       try {
         await setPersistence(auth, 
@@ -92,38 +92,33 @@ export const useAuthStore = defineStore('auth', {
         this.user = userCredential.user
         await this.loadUserProfile(userCredential.user.uid)
         this.error = null
-        return { success: true }
+        return { success: true, message: t('auth.loginSuccess') }
       } catch (error) {
-        const { t } = useI18n()
-        switch (error.code) {
-          case 'auth/invalid-email':
-          case 'auth/user-disabled':
-          case 'auth/user-not-found':
-          case 'auth/wrong-password':
-            this.error = t('auth.invalidCredentials')
-            break
-          default:
-            this.error = error.message
+        let errorMessage = error.message
+        if (error.code === 'auth/invalid-credential') {
+          errorMessage = t('auth.invalidCredentials')
         }
-        return { success: false, message: this.error }
+        this.error = errorMessage
+        return { success: false, message: errorMessage }
       } finally {
         this.loading = false
       }
     },
 
-    async logout() {
-      this.loading = true
+    async logout(t) { // 直接接收 t 函数作为参数
       try {
         await signOut(auth)
         this.user = null
         this.userProfile = null
-        this.error = null
-        return { success: true, message: useI18n().t('auth.logoutSuccess') }
+        return { 
+          success: true, 
+          message: t('auth.logoutSuccess') // 使用传入的 t 函数
+        }
       } catch (error) {
-        this.error = error.message
-        return { success: false, message: this.error }
-      } finally {
-        this.loading = false
+        return { 
+          success: false, 
+          message: t('auth.logoutError') || error.message // 统一使用i18n
+        }
       }
     },
 

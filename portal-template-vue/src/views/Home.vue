@@ -30,7 +30,7 @@
     </section>
 
     <!-- Features Section -->
-    <section class="features-section bg-grey-lighten-4">
+    <section class="features-section theme-section">
       <v-container class="py-16">
         <section-title
           :title="$t('home.features.title')"
@@ -83,7 +83,7 @@
     </section>
 
     <!-- Team Section -->
-    <section class="team-section bg-grey-lighten-4">
+    <section class="team-section theme-section">
       <v-container class="py-16">
         <section-title
           :title="$t('home.team.title')"
@@ -206,9 +206,15 @@ onMounted(() => {
   min-height: 600px;
 }
 
-.features-section, .team-section {
-  background-color: var(--v-grey-lighten-4);
+.theme-section {
+  background-color: rgb(var(--v-theme-surface));
 }
+
+/* 浅色模式下使用柔和的灰色 */
+.v-theme--light .theme-section {
+  background-color: #f8f8f8;
+}
+
 
 .feature-card {
   transition: transform 0.3s ease;
