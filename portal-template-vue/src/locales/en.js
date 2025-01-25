@@ -135,9 +135,6 @@ export default {
     accentColor: 'Accent Color',
     language: 'Language',
     selectLanguage: 'Select Language',
-    notifications: 'Notifications',
-    emailNotifications: 'Email Notifications',
-    pushNotifications: 'Push Notifications',
     saved: 'Settings saved successfully',
     error: 'Failed to save settings',
     updated: 'Settings Updated'

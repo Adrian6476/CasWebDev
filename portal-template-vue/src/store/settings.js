@@ -16,12 +16,6 @@ import throttle from 'lodash/throttle'
  * @property {ThemeColors} colors - Theme colors
  */
 
-/**
- * @typedef {Object} NotificationSettings
- * @property {boolean} email - Email notifications enabled
- * @property {boolean} push - Push notifications enabled
- */
-
 export const useSettingsStore = defineStore('settings', {
   state: () => ({
     theme: {
@@ -33,11 +27,7 @@ export const useSettingsStore = defineStore('settings', {
         accent: '#FF4081'
       }
     },
-    language: 'en',
-    notifications: {
-      email: true,
-      push: true
-    }
+    language: 'en'
   }),
 
   actions: {
@@ -81,13 +71,6 @@ export const useSettingsStore = defineStore('settings', {
       }
     },
 
-    toggleNotification(type) {
-      if (type in this.notifications) {
-        this.notifications[type] = !this.notifications[type]
-        this.saveSettings()
-      }
-    },
-
     // 从本地存储加载设置
     async loadSettings() {
       try {
@@ -112,8 +95,7 @@ export const useSettingsStore = defineStore('settings', {
       try {
         const settingsToSave = {
           theme: this.theme,
-          language: this.language,
-          notifications: this.notifications
+          language: this.language
         }
         localStorage.setItem('settings', JSON.stringify(settingsToSave))
       } catch (error) {
@@ -129,7 +111,6 @@ export const useSettingsStore = defineStore('settings', {
     themeColors: (state) => state.theme.colors,
     primaryColor: (state) => state.theme.colors.primary,
     secondaryColor: (state) => state.theme.colors.secondary,
-    accentColor: (state) => state.theme.colors.accent,
-    notificationSettings: (state) => state.notifications
+    accentColor: (state) => state.theme.colors.accent
   }
 })

@@ -136,9 +136,6 @@ export default {
     accentColor: '强调颜色',
     language: '语言',
     selectLanguage: '选择语言',
-    notifications: '通知',
-    emailNotifications: '邮件通知',
-    pushNotifications: '推送通知',
     saved: '设置保存成功',
     error: '设置保存失败',
     updated: '设置已更新'

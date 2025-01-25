@@ -55,27 +55,6 @@
               @update:model-value="value => handleLanguageChange(value)"
             ></v-select>
           </v-card-text>
-
-          <v-divider class="my-4"></v-divider>
-
-          <!-- Notification Settings -->
-          <v-card-text>
-            <h3 class="text-h6 mb-4">{{ i18n.t('settings.notifications') }}</h3>
-            <v-switch
-              v-model="notifications.email"
-              :label="i18n.t('settings.emailNotifications')"
-              color="primary"
-              class="mb-2"
-              @change="() => handleNotificationChange('email')"
-            ></v-switch>
-            <v-switch
-              v-model="notifications.push"
-              :label="i18n.t('settings.pushNotifications')"
-              color="primary"
-              class="mb-2"
-              @change="() => handleNotificationChange('push')"
-            ></v-switch>
-          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -179,17 +158,9 @@ const availableLanguages = [
   { title: '中文', value: 'zh' }
 ]
 
-// Notification settings
-const notifications = computed(() => ({ ...settingsStore.notifications }))
-
 // Handlers
 const handleLanguageChange = (value) => {
   settingsStore.setLanguage(value)
-  showNotification(i18n.t('settings.updated'))
-}
-
-const handleNotificationChange = (type) => {
-  settingsStore.toggleNotification(type)
   showNotification(i18n.t('settings.updated'))
 }
 </script>
