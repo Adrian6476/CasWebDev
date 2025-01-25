@@ -39,46 +39,6 @@
               :disabled="isFollowingSystemTheme"
               @update:model-value="() => showNotification(i18n.t('settings.updated'))"
             ></v-switch>
-
-            <!-- Theme Colors -->
-            <v-row class="mb-4">
-              <v-col cols="12" sm="4">
-                <v-color-picker
-                  v-model="primaryColor"
-                  :label="i18n.t('settings.primaryColor')"
-                  dot-size="25"
-                  mode="hex"
-                  elevation="2"
-                  class="mb-2"
-                  @update:model-value="value => handleColorChange('primary', value)"
-                ></v-color-picker>
-                <div class="text-caption">{{ i18n.t('settings.primaryColor') }}</div>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <v-color-picker
-                  v-model="secondaryColor"
-                  :label="i18n.t('settings.secondaryColor')"
-                  dot-size="25"
-                  mode="hex"
-                  elevation="2"
-                  class="mb-2"
-                  @update:model-value="value => handleColorChange('secondary', value)"
-                ></v-color-picker>
-                <div class="text-caption">{{ i18n.t('settings.secondaryColor') }}</div>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <v-color-picker
-                  v-model="accentColor"
-                  :label="i18n.t('settings.accentColor')"
-                  dot-size="25"
-                  mode="hex"
-                  elevation="2"
-                  class="mb-2"
-                  @update:model-value="value => handleColorChange('accent', value)"
-                ></v-color-picker>
-                <div class="text-caption">{{ i18n.t('settings.accentColor') }}</div>
-              </v-col>
-            </v-row>
           </v-card-text>
 
           <v-divider class="my-4"></v-divider>
@@ -205,27 +165,6 @@ systemThemeMedia.addEventListener('change', () => {
   settingsStore.updateSystemTheme()
 })
 
-const themeColors = computed(() => ({
-  primary: settingsStore.primaryColor,
-  secondary: settingsStore.secondaryColor,
-  accent: settingsStore.accentColor
-}))
-
-const primaryColor = computed({
-  get: () => themeColors.value.primary,
-  set: (value) => settingsStore.setThemeColor('primary', value)
-})
-
-const secondaryColor = computed({
-  get: () => themeColors.value.secondary,
-  set: (value) => settingsStore.setThemeColor('secondary', value)
-})
-
-const accentColor = computed({
-  get: () => themeColors.value.accent,
-  set: (value) => settingsStore.setThemeColor('accent', value)
-})
-
 // Language settings
 const currentLanguage = computed({
   get: () => {
@@ -244,11 +183,6 @@ const availableLanguages = [
 const notifications = computed(() => ({ ...settingsStore.notifications }))
 
 // Handlers
-const handleColorChange = (key, value) => {
-  settingsStore.setThemeColor(key, value)
-  showNotification(i18n.t('settings.updated'))
-}
-
 const handleLanguageChange = (value) => {
   settingsStore.setLanguage(value)
   showNotification(i18n.t('settings.updated'))
@@ -259,11 +193,3 @@ const handleNotificationChange = (type) => {
   showNotification(i18n.t('settings.updated'))
 }
 </script>
-
-<style scoped>
-.v-color-picker {
-  max-width: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
-}
-</style>
