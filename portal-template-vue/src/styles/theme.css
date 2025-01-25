@@ -1,0 +1,26 @@
+:root {
+  --theme-transition-duration: 400ms;
+}
+
+/* 主题切换过渡效果 */
+.theme-transitioning,
+.theme-transitioning * {
+  transition: background-color var(--theme-transition-duration) ease,
+              color var(--theme-transition-duration) ease,
+              border-color var(--theme-transition-duration) ease,
+              box-shadow var(--theme-transition-duration) ease !important;
+  will-change: background-color, color, border-color, box-shadow;
+}
+
+/* 优化性能：禁用不必要的过渡效果 */
+.theme-transitioning img,
+.theme-transitioning video,
+.theme-transitioning canvas {
+  transition: none !important;
+}
+
+/* 优化渲染性能 */
+.v-application {
+  will-change: background-color;
+  contain: content;
+}

@@ -1,5 +1,26 @@
 import { defineStore } from 'pinia'
 import { useI18n } from 'vue-i18n'
+import throttle from 'lodash/throttle'
+
+/**
+ * @typedef {Object} ThemeColors
+ * @property {string} primary - Primary color
+ * @property {string} secondary - Secondary color
+ * @property {string} accent - Accent color
+ */
+
+/**
+ * @typedef {Object} ThemeSettings
+ * @property {boolean} dark - Dark mode enabled
+ * @property {boolean} followSystem - Follow system theme
+ * @property {ThemeColors} colors - Theme colors
+ */
+
+/**
+ * @typedef {Object} NotificationSettings
+ * @property {boolean} email - Email notifications enabled
+ * @property {boolean} push - Push notifications enabled
+ */
 
 export const useSettingsStore = defineStore('settings', {
   state: () => ({
@@ -69,7 +90,7 @@ export const useSettingsStore = defineStore('settings', {
 
     // 从本地存储加载设置
     async loadSettings() {
-      return new Promise((resolve) => {
+      try {
         const savedSettings = localStorage.getItem('settings')
         if (savedSettings) {
           const settings = JSON.parse(savedSettings)
@@ -81,26 +102,34 @@ export const useSettingsStore = defineStore('settings', {
             i18n.locale.value = settings.language
           }
         }
-        resolve()
-      })
+      } catch (error) {
+        console.error('Failed to load settings:', error)
+      }
     },
 
-    // 保存设置到本地存储
-    saveSettings() {
-      localStorage.setItem('settings', JSON.stringify({
-        theme: this.theme,
-        language: this.language,
-        notifications: this.notifications
-      }))
-    }
+    // 使用节流处理保存设置
+    saveSettings: throttle(function() {
+      try {
+        const settingsToSave = {
+          theme: this.theme,
+          language: this.language,
+          notifications: this.notifications
+        }
+        localStorage.setItem('settings', JSON.stringify(settingsToSave))
+      } catch (error) {
+        console.error('Failed to save settings:', error)
+      }
+    }, 1000)
   },
 
   getters: {
     isDarkMode: (state) => state.theme.dark,
     isFollowingSystemTheme: (state) => state.theme.followSystem,
     currentLanguage: (state) => state.language,
+    themeColors: (state) => state.theme.colors,
     primaryColor: (state) => state.theme.colors.primary,
     secondaryColor: (state) => state.theme.colors.secondary,
-    accentColor: (state) => state.theme.colors.accent
+    accentColor: (state) => state.theme.colors.accent,
+    notificationSettings: (state) => state.notifications
   }
 })
