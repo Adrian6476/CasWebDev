@@ -111,10 +111,7 @@ export const useAuthStore = defineStore('auth', {
     async login({ email, password, rememberMe = false }, t) {
       this.loading = true
       try {
-        // Clear any existing persistence settings
-        await auth._setPersistence(null)
-        
-        // Set new persistence based on rememberMe
+        // Set persistence based on rememberMe
         const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence
         await setPersistence(auth, persistence)
         
