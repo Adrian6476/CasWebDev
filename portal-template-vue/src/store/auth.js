@@ -111,13 +111,24 @@ export const useAuthStore = defineStore('auth', {
     async login({ email, password, rememberMe = false }, t) {
       this.loading = true
       try {
-        await setPersistence(auth, 
-          rememberMe ? browserLocalPersistence : browserSessionPersistence
-        )
+        // Clear any existing persistence settings
+        await auth._setPersistence(null)
+        
+        // Set new persistence based on rememberMe
+        const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence
+        await setPersistence(auth, persistence)
+        
+        // Sign in with new persistence settings
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
+        
+        // Update store state
         this.user = userCredential.user
         await this.loadUserProfile(userCredential.user.uid)
         this.error = null
+        
+        // Store persistence setting in localStorage
+        localStorage.setItem('auth_persistence', rememberMe ? 'local' : 'session')
+        
         return { success: true, message: t('auth.loginSuccess') }
       } catch (error) {
         let errorMessage = error.message
@@ -149,14 +160,42 @@ export const useAuthStore = defineStore('auth', {
     },
 
     initializeAuthListener() {
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          this.user = user
-          await this.loadUserProfile(user.uid)
-        } else {
-          this.user = null
-          this.userProfile = null
+      return new Promise((resolve) => {
+        // Apply saved persistence setting on initialization
+        const savedPersistence = localStorage.getItem('auth_persistence')
+        if (savedPersistence) {
+          const persistence = savedPersistence === 'local' 
+            ? browserLocalPersistence 
+            : browserSessionPersistence
+          setPersistence(auth, persistence)
         }
+
+        // Track if initial auth state has been resolved
+        let initialAuthResolved = false
+
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            this.user = user
+            await this.loadUserProfile(user.uid)
+          } else {
+            this.user = null
+            this.userProfile = null
+          }
+
+          // Resolve promise on first auth state change
+          if (!initialAuthResolved) {
+            initialAuthResolved = true
+            resolve()
+          }
+        })
+
+        // Fallback timeout in case auth state doesn't change
+        setTimeout(() => {
+          if (!initialAuthResolved) {
+            initialAuthResolved = true
+            resolve()
+          }
+        }, 1000)
       })
     },
 

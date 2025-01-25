@@ -98,6 +98,10 @@ const router = createRouter({
 // Navigation guards
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
+  
+  // Wait for auth state to initialize
+  await authStore.initializeAuthListener()
+  
   const isAuthenticated = authStore.isAuthenticated
 
   // Update document title
