@@ -99,7 +99,7 @@
             <template v-slot:activator="{ props }">
               <v-btn
                 variant="text"
-                class="mx-2 pa-2"
+                class="mx-2 pa-2 user-menu-button"
                 v-bind="props"
                 height="40"
               >
@@ -415,27 +415,55 @@ watch(() => authStore.error, (error) => {
 
 /* User menu styling */
 .v-menu :deep(.v-list) {
-  padding: 8px;
+  padding: 14px;
+  min-width: 100px;
+}
+
+/* Avatar and username alignment */
+.v-btn.user-menu-button {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 8px;
+}
+
+.v-btn.user-menu-button .v-avatar {
+  margin-right: 8px;
+}
+
+.v-btn.user-menu-button .text-body-2 {
+  line-height: 1;
+  margin-top: 0;
 }
 
 .v-menu :deep(.v-list-item) {
   min-height: 40px;
-  padding: 0 16px;
+  padding: 0 8px 0 12px;
   border-radius: 4px;
   margin: 4px 0;
+  transition: all 0.2s ease;
 }
 
 .v-menu :deep(.v-list-item:hover) {
-  background-color: rgb(var(--v-theme-primary), 0.1);
+  background-color: rgb(var(--v-theme-primary), 0.08);
+  transform: translateX(4px);
 }
 
 .v-menu :deep(.v-list-item-title) {
   font-size: 14px;
   font-weight: 500;
+  letter-spacing: 0.2px;
 }
 
 .v-menu :deep(.v-list-item__prepend) {
   margin-right: 12px;
+  width: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.v-menu :deep(.v-list-item__prepend .v-icon) {
+  font-size: 18px;
 }
 
 /* Mobile drawer styling */
@@ -463,6 +491,32 @@ watch(() => authStore.error, (error) => {
 /* Auth buttons styling */
 .v-btn {
   letter-spacing: 0.3px;
+}
+
+/* User menu button styling */
+.v-app-bar .v-btn.user-menu-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 40px;
+  padding: 0 12px;
+}
+
+.v-app-bar .v-btn.user-menu-button .v-avatar {
+  margin-right: 8px;
+  align-self: center !important;
+  margin-top: -1px;
+}
+
+.v-app-bar .v-btn.user-menu-button .text-body-2 {
+  line-height: 1.2 !important;
+  align-self: center !important;
+  margin-top: 0;
+  transform: translateY(1px);
+  vertical-align: middle;
+}
+
+.v-app-bar .v-btn.user-menu-button .v-icon {
+  margin-top: -1px;
 }
 
 .v-btn.v-btn--size-default {
