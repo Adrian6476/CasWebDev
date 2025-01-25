@@ -199,7 +199,7 @@
 
     <!-- Footer -->
     <v-footer
-      :color="$vuetify.theme.current.dark ? 'surface' : 'background'"
+      :color="$vuetify.theme.current.dark ? '#121212' : 'background'"
     >
       <v-container>
         <v-row class="py-8">
