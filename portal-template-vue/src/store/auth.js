@@ -45,11 +45,15 @@ export const useAuthStore = defineStore('auth', {
 
     async updateUserProfile(uid, data) {
       try {
-        await updateDoc(doc(db, 'users', uid), data)
-        this.userProfile = { ...this.userProfile, ...data }
+        const userRef = doc(db, 'users', uid)
+        await updateDoc(userRef, data)
+        // 获取并返回更新后的完整数据
+        const docSnap = await getDoc(userRef)
+        this.userProfile = docSnap.data()
+        return docSnap.data()
       } catch (error) {
-        console.error('Error updating user profile:', error)
-        throw error
+        console.error('Error updating profile:', error)
+        throw error // 抛出错误以便在组件层处理
       }
     },
 

@@ -152,6 +152,9 @@ export default {
     avatarUpdated: 'Profile picture updated successfully',
     avatarError: 'Failed to update profile picture',
     saved: 'Profile saved successfully',
-    error: 'Failed to save profile'
+    error: 'Failed to save profile',
+    phoneRequired: 'Phone number is required',
+    phoneValid: 'Please enter a valid phone number',
+    bioLength: 'Bio cannot exceed 500 characters'
   }
 }

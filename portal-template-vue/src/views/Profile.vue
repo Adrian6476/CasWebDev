@@ -50,17 +50,24 @@
             <v-text-field
               v-model="profile.phone"
               :label="$t('profile.phone')"
+              :rules="[
+                v => !!v || $t('profile.phoneRequired'),
+                v => /^\+?\d{1,4}?\d{7,15}$/.test(v) || $t('profile.phoneValid')
+              ]"
               variant="outlined"
               class="mb-4"
+              clearable
             ></v-text-field>
 
             <v-textarea
               v-model="profile.bio"
               :label="$t('profile.bio')"
+              :rules="[v => (v || '').length <= 500 || $t('profile.bioLength')]"
               variant="outlined"
               auto-grow
               rows="3"
               class="mb-4"
+              counter="500"
             ></v-textarea>
 
             <div class="d-flex justify-end">
@@ -157,24 +164,37 @@ const handleAvatarChange = async (file) => {
 const saveProfile = async () => {
   if (!form.value.validate()) return
 
+  loading.value = true
   try {
-    loading.value = true
-    // 更新用户配置文件
+    // 保存核心资料并等待结果
     await authStore.updateUserProfile(authStore.currentUser.uid, {
       name: profile.value.displayName,
       phone: profile.value.phone,
       bio: profile.value.bio
     })
     
-    // 同时更新Auth显示名称以保持一致性
-    await updateProfile(authStore.currentUser, {
-      displayName: profile.value.displayName
-    })
+    // 重新加载最新数据确保一致性
+    await authStore.loadUserProfile(authStore.currentUser.uid)
     
     showNotification(t('profile.saved'))
+    
+    // 异步处理显示名称更新（静默失败）
+    if (profile.value.displayName !== authStore.userProfile?.name) {
+      updateProfile(authStore.currentUser, {
+        displayName: profile.value.displayName
+      }).then(() => {
+        console.log('显示名称更新成功')
+        authStore.userProfile.name = profile.value.displayName
+      }).catch(updateError => {
+        console.debug('显示名称更新非关键错误:', updateError)
+      })
+    }
   } catch (error) {
-    console.error('Error updating profile:', error)
-    showNotification(t('profile.error'), 'error')
+    console.error('资料保存失败:', error)
+    showNotification(
+      error.code ? t(`errors.${error.code}`) : t('profile.error'), 
+      'error'
+    )
   } finally {
     loading.value = false
   }

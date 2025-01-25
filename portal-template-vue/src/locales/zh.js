@@ -152,7 +152,11 @@ export default {
     bio: '个人简介',
     avatarUpdated: '头像更新成功',
     avatarError: '头像更新失败',
-    saved: '个人资料保存成功',
-    error: '保存失败，请重试'
+    displayNameUpdateWarning: '资料保存成功，但显示名称更新失败（需重新登录生效）',
+    saved: '资料保存成功',
+    saveFailed: '资料保存失败，请重试',
+    phoneRequired: '请输入手机号码',
+    phoneValid: '请输入有效的手机号码',
+    bioLength: '个人简介不能超过500字'
   }
 }
