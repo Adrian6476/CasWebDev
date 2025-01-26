@@ -11,13 +11,14 @@
     </section>
 
     <!-- News List Section -->
-    <v-container class="py-16">
-      <!-- Categories -->
-      <v-row class="mb-8">
-        <v-col cols="12">
+    <v-container class="py-8">
+      <!-- Categories and Search -->
+      <v-row class="mb-3 align-center" style="min-height: 48px">
+        <v-col cols="12" md="8" class="py-2">
           <v-chip-group
             v-model="selectedCategory"
             selected-class="primary"
+            class="mt-n1"
           >
             <v-chip
               v-for="category in categories"
@@ -29,19 +30,17 @@
             </v-chip>
           </v-chip-group>
         </v-col>
-      </v-row>
-
-      <!-- Search -->
-      <v-row class="mb-8">
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="4" class="py-2">
           <v-text-field
             v-model="searchQuery"
             :label="$t('news.search')"
             prepend-inner-icon="mdi-magnify"
             variant="outlined"
-            density="comfortable"
+            density="compact"
             hide-details
             clearable
+            class="mt-n1"
+            bg-color="surface"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -56,7 +55,7 @@
       </div>
 
       <!-- News List -->
-      <v-row v-else>
+      <v-row v-else class="mt-n2">
         <v-col
           v-for="article in filteredNews"
           :key="article.id"
