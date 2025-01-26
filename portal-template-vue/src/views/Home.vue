@@ -215,18 +215,28 @@ onMounted(() => {
   background-color: #f8f8f8;
 }
 
-
 .feature-card {
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  background-color: rgba(30, 30, 30, 0.7); /* 深色半透明背景 */
+  backdrop-filter: blur(10px); /* 添加模糊效果 */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* 轻微边框 */
 }
 
 .feature-card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* 添加悬停阴影 */
 }
 
 /* Team member card styling */
 .team-section .v-card {
   padding-bottom: 16px;
+  background-color: rgba(30, 30, 30, 0.5); /* 半透明背景 */
+  backdrop-filter: blur(8px); /* 模糊效果 */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* 轻微边框 */
+}
+
+.team-section .v-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 悬停阴影 */
 }
 
 .team-section .v-card-subtitle {
