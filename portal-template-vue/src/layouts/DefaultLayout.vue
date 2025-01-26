@@ -491,7 +491,7 @@ watch(() => authStore.error, (error) => {
 }
 
 .main-content {
-  padding-bottom: 32px !important;
+  padding-bottom: 0 !important;
 }
 
 /* Add smooth transitions */
