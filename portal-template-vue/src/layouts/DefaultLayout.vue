@@ -235,19 +235,41 @@
                 <template v-slot:prepend>
                   <v-icon color="primary" icon="mdi-map-marker"></v-icon>
                 </template>
-                <v-list-item-title>123 Business Street</v-list-item-title>
+                <v-list-item-title>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=123+Business+Street"
+                    target="_blank"
+                    class="text-decoration-none text-primary-darken-1"
+                  >
+                    123 Business Street
+                  </a>
+                </v-list-item-title>
               </v-list-item>
               <v-list-item>
                 <template v-slot:prepend>
                   <v-icon color="primary" icon="mdi-phone"></v-icon>
                 </template>
-                <v-list-item-title>+1 234 567 890</v-list-item-title>
+                <v-list-item-title>
+                  <a
+                    href="tel:+1234567890"
+                    class="text-decoration-none text-primary-darken-1"
+                  >
+                    +1 234 567 890
+                  </a>
+                </v-list-item-title>
               </v-list-item>
               <v-list-item>
                 <template v-slot:prepend>
                   <v-icon color="primary" icon="mdi-email"></v-icon>
                 </template>
-                <v-list-item-title>contact@company.com</v-list-item-title>
+                <v-list-item-title>
+                  <a
+                    href="mailto:contact@company.com"
+                    class="text-decoration-none text-primary-darken-1"
+                  >
+                    contact@company.com
+                  </a>
+                </v-list-item-title>
               </v-list-item>
             </v-list>
           </v-col>

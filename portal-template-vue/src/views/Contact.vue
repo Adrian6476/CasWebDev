@@ -83,7 +83,7 @@
                 <a
                   href="https://www.google.com/maps/search/?api=1&query=123+Business+Street,+Suite+100,+City,+Country"
                   target="_blank"
-                  class="text-decoration-none text-primary"
+                  class="text-decoration-none text-primary-darken-1"
                 >
                   {{ $t('contact.info.address') }}
                 </a>
@@ -92,7 +92,7 @@
                 <a
                   href="https://www.google.com/maps/search/?api=1&query=123+Business+Street,+Suite+100,+City,+Country"
                   target="_blank"
-                  class="text-decoration-none text-darken-1"
+                  class="text-decoration-none text-primary-darken-1"
                 >
                   123 Business Street, Suite 100, City, Country
                 </a>
@@ -105,7 +105,7 @@
               <v-list-item-title>
                 <a
                   href="tel:+1234567890"
-                  class="text-decoration-none text-primary"
+                  class="text-decoration-none text-primary-darken-1"
                 >
                   {{ $t('contact.info.phone') }}
                 </a>
@@ -113,7 +113,7 @@
               <v-list-item-subtitle>
                 <a
                   href="tel:+1234567890"
-                  class="text-decoration-none text-darken-1"
+                  class="text-decoration-none text-primary-darken-1"
                 >
                   +1 234 567 890
                 </a>
@@ -126,7 +126,7 @@
               <v-list-item-title>
                 <a
                   href="mailto:contact@company.com"
-                  class="text-decoration-none text-primary"
+                  class="text-decoration-none text-primary-darken-1"
                 >
                   {{ $t('contact.info.email') }}
                 </a>
@@ -134,7 +134,7 @@
               <v-list-item-subtitle>
                 <a
                   href="mailto:contact@company.com"
-                  class="text-decoration-none text-darken-1"
+                  class="text-decoration-none text-primary-darken-1"
                 >
                   contact@company.com
                 </a>
