@@ -217,9 +217,9 @@ onMounted(() => {
 
 .feature-card {
   transition: all 0.3s ease;
-  background-color: rgba(30, 30, 30, 0.7); /* 深色半透明背景 */
+  background-color: rgba(var(--v-theme-surface), 0.9); /* 使用主题surface颜色 */
   backdrop-filter: blur(10px); /* 添加模糊效果 */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* 轻微边框 */
+  border: 1px solid rgba(var(--v-theme-on-surface), 0.1); /* 使用主题on-surface颜色 */
 }
 
 .feature-card:hover {
@@ -230,9 +230,9 @@ onMounted(() => {
 /* Team member card styling */
 .team-section .v-card {
   padding-bottom: 16px;
-  background-color: rgba(30, 30, 30, 0.5); /* 半透明背景 */
+  background-color: rgba(var(--v-theme-surface), 0.9); /* 使用主题surface颜色 */
   backdrop-filter: blur(8px); /* 模糊效果 */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* 轻微边框 */
+  border: 1px solid rgba(var(--v-theme-on-surface), 0.1); /* 使用主题on-surface颜色 */
 }
 
 .team-section .v-card:hover {

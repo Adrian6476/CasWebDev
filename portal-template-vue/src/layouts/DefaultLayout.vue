@@ -193,9 +193,12 @@
     </v-navigation-drawer>
 
     <!-- Main Content -->
-    <v-main>
+    <v-main class="main-content">
       <slot></slot>
     </v-main>
+
+    <!-- Content Footer Divider -->
+    <div class="content-divider"></div>
 
     <!-- Footer -->
     <v-footer
@@ -475,6 +478,20 @@ watch(() => authStore.error, (error) => {
   min-height: 48px;
   margin: 4px;
   border-radius: 4px;
+}
+
+/* Content divider */
+.content-divider {
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.12);
+}
+
+.v-theme--dark .content-divider {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.main-content {
+  padding-bottom: 32px !important;
 }
 
 /* Add smooth transitions */
