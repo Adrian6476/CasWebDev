@@ -1,5 +1,14 @@
 <template>
   <div>
+    <v-snackbar
+      v-model="snackbar.visible"
+      :color="snackbar.color"
+      :timeout="snackbar.timeout"
+      location="top"
+    >
+      {{ snackbar.message }}
+    </v-snackbar>
+    
     <!-- Banner Section -->
     <section class="contact-banner">
       <v-parallax src="https://picsum.photos/1920/1080?random=2">
@@ -10,7 +19,7 @@
             color="primary"
             size="x-large"
             rounded
-            href="#contact-form"
+            @click="scrollToForm"
           >
             {{ $t('contact.form.getInTouch') }}
           </v-btn>
@@ -110,6 +119,13 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { contactApi } from '@/api'
 
+const snackbar = ref({
+  visible: false,
+  message: '',
+  color: 'success',
+  timeout: 3000
+})
+
 const { t } = useI18n()
 
 const form = ref(null)
@@ -138,6 +154,16 @@ const rules = {
 }
 
 // Submit form
+const scrollToForm = () => {
+  const formSection = document.getElementById('contact-form')
+  if (formSection) {
+    formSection.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    })
+  }
+}
+
 const submitForm = async () => {
   const { valid } = await form.value.validate()
   
@@ -155,10 +181,20 @@ const submitForm = async () => {
       }
       
       // Show success message
-      alert(t('contact.form.success'))
+      snackbar.value = {
+        visible: true,
+        message: t('contact.form.success'),
+        color: 'success',
+        timeout: 3000
+      }
     } catch (error) {
       console.error('Failed to send message:', error)
-      alert(t('contact.form.error'))
+      snackbar.value = {
+        visible: true,
+        message: t('contact.form.error'),
+        color: 'error',
+        timeout: 3000
+      }
     } finally {
       loading.value = false
     }
