@@ -79,22 +79,66 @@
               <template v-slot:prepend>
                 <v-icon color="primary" icon="mdi-map-marker"></v-icon>
               </template>
-              <v-list-item-title>{{ $t('contact.info.address') }}</v-list-item-title>
-              <v-list-item-subtitle>123 Business Street, Suite 100, City, Country</v-list-item-subtitle>
+              <v-list-item-title>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=123+Business+Street,+Suite+100,+City,+Country"
+                  target="_blank"
+                  class="text-decoration-none text-primary"
+                >
+                  {{ $t('contact.info.address') }}
+                </a>
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=123+Business+Street,+Suite+100,+City,+Country"
+                  target="_blank"
+                  class="text-decoration-none text-darken-1"
+                >
+                  123 Business Street, Suite 100, City, Country
+                </a>
+              </v-list-item-subtitle>
             </v-list-item>
             <v-list-item>
               <template v-slot:prepend>
                 <v-icon color="primary" icon="mdi-phone"></v-icon>
               </template>
-              <v-list-item-title>{{ $t('contact.info.phone') }}</v-list-item-title>
-              <v-list-item-subtitle>+1 234 567 890</v-list-item-subtitle>
+              <v-list-item-title>
+                <a
+                  href="tel:+1234567890"
+                  class="text-decoration-none text-primary"
+                >
+                  {{ $t('contact.info.phone') }}
+                </a>
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                <a
+                  href="tel:+1234567890"
+                  class="text-decoration-none text-darken-1"
+                >
+                  +1 234 567 890
+                </a>
+              </v-list-item-subtitle>
             </v-list-item>
             <v-list-item>
               <template v-slot:prepend>
                 <v-icon color="primary" icon="mdi-email"></v-icon>
               </template>
-              <v-list-item-title>{{ $t('contact.info.email') }}</v-list-item-title>
-              <v-list-item-subtitle>contact@company.com</v-list-item-subtitle>
+              <v-list-item-title>
+                <a
+                  href="mailto:contact@company.com"
+                  class="text-decoration-none text-primary"
+                >
+                  {{ $t('contact.info.email') }}
+                </a>
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                <a
+                  href="mailto:contact@company.com"
+                  class="text-decoration-none text-darken-1"
+                >
+                  contact@company.com
+                </a>
+              </v-list-item-subtitle>
             </v-list-item>
           </v-list>
 
@@ -102,10 +146,10 @@
           <div class="mt-8">
             <h3 class="text-h6 mb-4">{{ $t('contact.social.title') }}</h3>
             <div class="d-flex gap-4">
-              <v-btn icon="mdi-facebook" variant="text" color="primary" href="#" target="_blank"></v-btn>
-              <v-btn icon="mdi-twitter" variant="text" color="primary" href="#" target="_blank"></v-btn>
-              <v-btn icon="mdi-linkedin" variant="text" color="primary" href="#" target="_blank"></v-btn>
-              <v-btn icon="mdi-instagram" variant="text" color="primary" href="#" target="_blank"></v-btn>
+              <v-btn icon="mdi-facebook" variant="text" color="primary" href="https://www.facebook.com" target="_blank"></v-btn>
+              <v-btn icon="mdi-twitter" variant="text" color="primary" href="https://x.com" target="_blank"></v-btn>
+              <v-btn icon="mdi-linkedin" variant="text" color="primary" href="https://www.linkedin.com" target="_blank"></v-btn>
+              <v-btn icon="mdi-instagram" variant="text" color="primary" href="https://www.instagram.com" target="_blank"></v-btn>
             </div>
           </div>
         </v-col>
