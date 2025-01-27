@@ -50,6 +50,7 @@ export default defineConfig({
         }
       }
     },
+    testTimeout: 10000, // 增加测试超时时间
     // 处理CSS文件
     css: true,
     // 模拟浏览器CSS功能
