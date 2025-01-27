@@ -1,11 +1,6 @@
 <template>
   <v-container class="fill-height">
-    <v-snackbar
-      v-model="snackbar.visible"
-      :color="snackbar.color"
-      :timeout="3000"
-      location="top"
-    >
+    <v-snackbar v-model="snackbar.visible" :color="snackbar.color" :timeout="3000" location="top">
       {{ snackbar.message }}
     </v-snackbar>
     <v-row justify="center" align="center">
@@ -14,7 +9,7 @@
           <v-card-title class="text-center text-h5 font-weight-bold mb-4">
             {{ $t('auth.createAccount') }}
           </v-card-title>
-          <v-form @submit.prevent="handleRegister" ref="form">
+          <v-form ref="form" @submit.prevent="handleRegister">
             <v-text-field
               v-model="username"
               :label="$t('auth.username')"
@@ -64,23 +59,13 @@
               :append-inner-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
               @click:append-inner="showConfirmPassword = !showConfirmPassword"
             />
-            <v-btn
-              type="submit"
-              color="primary"
-              block
-              :loading="loading"
-              class="mb-4"
-            >
+            <v-btn type="submit" color="primary" block :loading="loading" class="mb-4">
               {{ $t('auth.signUp') }}
             </v-btn>
           </v-form>
           <v-divider class="mb-4" />
           <div class="text-center">
-            <v-btn
-              variant="text"
-              color="primary"
-              :to="{ name: 'login' }"
-            >
+            <v-btn variant="text" color="primary" :to="{ name: 'login' }">
               {{ $t('auth.haveAccount') }} {{ $t('auth.signIn') }}
             </v-btn>
           </div>
@@ -91,64 +76,67 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useAuthStore } from '@/store/auth'
-import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
+  import { ref } from 'vue'
+  import { useAuthStore } from '@/store/auth'
+  import { useRouter } from 'vue-router'
+  import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
-const authStore = useAuthStore()
-const router = useRouter()
+  const { t } = useI18n()
+  const authStore = useAuthStore()
+  const router = useRouter()
 
-const form = ref(null)
-const username = ref('')
-const email = ref('')
-const password = ref('')
-const confirmPassword = ref('')
-const showPassword = ref(false)
-const showConfirmPassword = ref(false)
-const loading = ref(false)
-const snackbar = ref({
-  visible: false,
-  message: '',
-  color: 'success',
-  timeout: 10000
-})
+  const form = ref(null)
+  const username = ref('')
+  const email = ref('')
+  const password = ref('')
+  const confirmPassword = ref('')
+  const showPassword = ref(false)
+  const showConfirmPassword = ref(false)
+  const loading = ref(false)
+  const snackbar = ref({
+    visible: false,
+    message: '',
+    color: 'success',
+    timeout: 10000
+  })
 
-const handleRegister = async () => {
-  const { valid } = await form.value.validate()
-  if (!valid) return
+  const handleRegister = async () => {
+    const { valid } = await form.value.validate()
+    if (!valid) return
 
-  loading.value = true
-  try {
-    await authStore.register({
-      username: username.value,
-      email: email.value,
-      password: password.value
-    }, t)
-    
-    // 如果注册成功
-    snackbar.value = {
-      visible: true,
-      message: t('auth.accountCreated'),
-      color: 'success',
-      timeout: 10000
+    loading.value = true
+    try {
+      await authStore.register(
+        {
+          username: username.value,
+          email: email.value,
+          password: password.value
+        },
+        t
+      )
+
+      // 如果注册成功
+      snackbar.value = {
+        visible: true,
+        message: t('auth.accountCreated'),
+        color: 'success',
+        timeout: 10000
+      }
+
+      // 等待提示显示完成后再跳转
+      setTimeout(() => {
+        router.push({ name: 'login' })
+      }, 1000)
+    } catch (error) {
+      console.error('Registration error:', error)
+      snackbar.value = {
+        visible: true,
+        message: error.message || t('auth.registrationError'),
+        color: 'error',
+        timeout: 10000
+      }
+    } finally {
+      loading.value = false
     }
-    
-    // 等待提示显示完成后再跳转
-    setTimeout(() => {
-      router.push({ name: 'login' })
-    }, 1000)
-  } catch (error) {
-    console.error('Registration error:', error)
-    snackbar.value = {
-      visible: true,
-      message: error.message || t('auth.registrationError'),
-      color: 'error',
-      timeout: 10000
-    }
-  } finally {
-    loading.value = false
   }
-}
 </script>

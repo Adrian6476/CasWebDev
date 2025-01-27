@@ -32,9 +32,11 @@ if (missingEnvVars.length > 0) {
     ===============================================
   `
   console.error(errorMessage)
-  showErrorPage('Missing Environment Variables', 
+  showErrorPage(
+    'Missing Environment Variables',
     'The application cannot start due to missing required environment variables.',
-    missingEnvVars)
+    missingEnvVars
+  )
   throw new Error('Missing required environment variables. Please check your .env file.')
 }
 
@@ -63,14 +65,18 @@ function showErrorPage(title, message, details = []) {
     ">
       <h2 style="color: #d32f2f">🚫 ${title}</h2>
       <p>${message}</p>
-      ${details.length ? `
+      ${
+        details.length
+          ? `
         <pre style="
           background: #f5f5f5;
           padding: 15px;
           border-radius: 4px;
           overflow-x: auto;
         ">${details.join('\n')}</pre>
-      ` : ''}
+      `
+          : ''
+      }
       <p><strong>Resolution Steps:</strong></p>
       <ol>
         <li>Ensure <code>.env</code> file exists in the project root directory</li>
@@ -82,7 +88,7 @@ function showErrorPage(title, message, details = []) {
   `
 }
 
-let app, auth, storage, db;
+let app, auth, storage, db
 
 try {
   // Initialize Firebase
@@ -98,10 +104,10 @@ try {
   db = getFirestore(app)
 } catch (error) {
   console.error('Firebase initialization error:', error)
-  
+
   let errorMessage = 'Invalid Firebase Configuration'
   let errorDetails = []
-  
+
   if (error.code === 'auth/invalid-api-key') {
     errorMessage = 'Invalid Firebase API Key'
     errorDetails = ['The provided Firebase API key is invalid or incorrect.']

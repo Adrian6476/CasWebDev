@@ -22,7 +22,7 @@
             :centered="false"
             :show-divider="false"
           />
-          
+
           <div class="text-body-1 mb-6">
             <slot>{{ content }}</slot>
           </div>
@@ -44,78 +44,78 @@
 </template>
 
 <script setup>
-import SectionTitle from './SectionTitle.vue'
+  import SectionTitle from './SectionTitle.vue'
 
-defineProps({
-  image: {
-    type: String,
-    required: true
-  },
-  title: {
-    type: String,
-    required: true
-  },
-  subtitle: {
-    type: String,
-    default: ''
-  },
-  content: {
-    type: String,
-    default: ''
-  },
-  imageRight: {
-    type: Boolean,
-    default: false
-  },
-  alignTextWithImage: {
-    type: Boolean,
-    default: true
-  },
-  imageWidth: {
-    type: [Number, String],
-    default: undefined
-  },
-  imageHeight: {
-    type: [Number, String],
-    default: undefined
-  },
-  cover: {
-    type: Boolean,
-    default: true
-  },
-  imageClass: {
-    type: String,
-    default: ''
-  },
-  buttonText: {
-    type: String,
-    default: ''
-  },
-  buttonColor: {
-    type: String,
-    default: 'primary'
-  },
-  buttonVariant: {
-    type: String,
-    default: 'tonal'
-  },
-  buttonLink: {
-    type: String,
-    default: ''
-  },
-  buttonHref: {
-    type: String,
-    default: ''
-  },
-  buttonTarget: {
-    type: String,
-    default: '_self'
-  }
-})
+  defineProps({
+    image: {
+      type: String,
+      required: true
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    subtitle: {
+      type: String,
+      default: ''
+    },
+    content: {
+      type: String,
+      default: ''
+    },
+    imageRight: {
+      type: Boolean,
+      default: false
+    },
+    alignTextWithImage: {
+      type: Boolean,
+      default: true
+    },
+    imageWidth: {
+      type: [Number, String],
+      default: undefined
+    },
+    imageHeight: {
+      type: [Number, String],
+      default: undefined
+    },
+    cover: {
+      type: Boolean,
+      default: true
+    },
+    imageClass: {
+      type: String,
+      default: ''
+    },
+    buttonText: {
+      type: String,
+      default: ''
+    },
+    buttonColor: {
+      type: String,
+      default: 'primary'
+    },
+    buttonVariant: {
+      type: String,
+      default: 'tonal'
+    },
+    buttonLink: {
+      type: String,
+      default: ''
+    },
+    buttonHref: {
+      type: String,
+      default: ''
+    },
+    buttonTarget: {
+      type: String,
+      default: '_self'
+    }
+  })
 </script>
 
 <style scoped>
-.image-section {
-  overflow: hidden;
-}
+  .image-section {
+    overflow: hidden;
+  }
 </style>

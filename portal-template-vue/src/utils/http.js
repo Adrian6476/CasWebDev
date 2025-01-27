@@ -11,24 +11,24 @@ const http = axios.create({
 
 // Request interceptors
 http.interceptors.request.use(
-  (config) => {
+  config => {
     // Add any request modifications here
     // For example: adding auth tokens
     // config.headers.Authorization = `Bearer ${getToken()}`
     return config
   },
-  (error) => {
+  error => {
     return Promise.reject(error)
   }
 )
 
 // Response interceptors
 http.interceptors.response.use(
-  (response) => {
+  response => {
     // Handle successful responses
     return response.data
   },
-  (error) => {
+  error => {
     // Handle API errors
     if (error.response) {
       // Server returned error code (4xx, 5xx)

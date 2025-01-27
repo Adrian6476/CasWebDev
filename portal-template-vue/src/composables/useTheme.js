@@ -8,12 +8,12 @@ const themeCache = new WeakMap()
 export function useThemeManager(settingsStore) {
   const theme = useTheme()
   const isTransitioning = ref(false)
-  
+
   // 缓存系统主题媒体查询
   const systemThemeMedia = window.matchMedia('(prefers-color-scheme: dark)')
-  
+
   // 使用防抖处理主题切换
-  const debouncedApplyTheme = debounce((newTheme) => {
+  const debouncedApplyTheme = debounce(newTheme => {
     applyTheme(newTheme)
   }, 300)
 
@@ -28,30 +28,36 @@ export function useThemeManager(settingsStore) {
   // 应用主题设置
   const applyTheme = async (themeName = currentTheme.value) => {
     if (isTransitioning.value) return
-    
+
     isTransitioning.value = true
     document.body.classList.add('theme-transitioning')
-    
+
     // 使用 requestAnimationFrame 确保过渡类已被应用
     requestAnimationFrame(() => {
       // 更新主题
       theme.global.name.value = themeName
-      
+
       // 更新主题颜色
       const colors = {
         primary: settingsStore.primaryColor,
         secondary: settingsStore.secondaryColor,
         accent: settingsStore.accentColor
       }
-      
+
       // 使用缓存减少重复计算
       if (!themeCache.has(colors)) {
         themeCache.set(colors, {
-          light: { ...theme.themes.value.light, colors: { ...theme.themes.value.light.colors, ...colors } },
-          dark: { ...theme.themes.value.dark, colors: { ...theme.themes.value.dark.colors, ...colors } }
+          light: {
+            ...theme.themes.value.light,
+            colors: { ...theme.themes.value.light.colors, ...colors }
+          },
+          dark: {
+            ...theme.themes.value.dark,
+            colors: { ...theme.themes.value.dark.colors, ...colors }
+          }
         })
       }
-      
+
       const cachedThemes = themeCache.get(colors)
       theme.themes.value.light = cachedThemes.light
       theme.themes.value.dark = cachedThemes.dark

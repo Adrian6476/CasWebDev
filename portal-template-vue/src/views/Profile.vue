@@ -7,10 +7,16 @@
             <div class="avatar-container">
               <v-avatar size="128" class="mb-4 avatar-hover" @click="$refs.fileInput.click()">
                 <v-img
-                  :src="authStore.currentUser?.photoURL || 'https://ui-avatars.com/api/?name=' + (authStore.currentUser?.name || authStore.currentUser?.displayName || authStore.currentUser?.email)"
+                  :src="
+                    authStore.currentUser?.photoURL ||
+                    'https://ui-avatars.com/api/?name=' +
+                      (authStore.currentUser?.name ||
+                        authStore.currentUser?.displayName ||
+                        authStore.currentUser?.email)
+                  "
                   alt="Profile"
                 >
-                  <template v-slot:placeholder>
+                  <template #placeholder>
                     <v-row class="fill-height ma-0" align="center" justify="center">
                       <v-progress-circular indeterminate color="primary"></v-progress-circular>
                     </v-row>
@@ -26,7 +32,7 @@
                 accept="image/*"
                 style="display: none"
                 @change="handleAvatarChange"
-              >
+              />
             </div>
           </div>
 
@@ -71,12 +77,7 @@
             ></v-textarea>
 
             <div class="d-flex justify-end">
-              <v-btn
-                :loading="loading"
-                type="submit"
-                color="primary"
-                :disabled="!isValid"
-              >
+              <v-btn :loading="loading" type="submit" color="primary" :disabled="!isValid">
                 {{ $t('common.save') }}
               </v-btn>
             </div>
@@ -85,18 +86,11 @@
       </v-col>
     </v-row>
 
-    <!-- 通知提示 -->
-    <v-snackbar
-      v-model="snackbar.show"
-      :color="snackbar.color"
-      :timeout="3000"
-    >
+    <!-- Notification -->
+    <v-snackbar v-model="snackbar.show" :color="snackbar.color" :timeout="3000">
       {{ snackbar.text }}
-      <template v-slot:actions>
-        <v-btn
-          variant="text"
-          @click="snackbar.show = false"
-        >
+      <template #actions>
+        <v-btn variant="text" @click="snackbar.show = false">
           {{ $t('common.close') }}
         </v-btn>
       </template>
@@ -105,146 +99,145 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
-import { useAuthStore } from '@/store/auth'
-import { useI18n } from 'vue-i18n'
-import { updateProfile } from 'firebase/auth'
-import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { storage } from '@/firebase'
+  import { ref, watch } from 'vue'
+  import { useAuthStore } from '@/store/auth'
+  import { useI18n } from 'vue-i18n'
+  import { updateProfile } from 'firebase/auth'
+  import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
+  import { storage } from '@/firebase'
 
-const { t } = useI18n()
-const authStore = useAuthStore()
-const form = ref(null)
-const isValid = ref(false)
-const loading = ref(false)
-const avatarFile = ref(null)
+  const { t } = useI18n()
+  const authStore = useAuthStore()
+  const form = ref(null)
+  const isValid = ref(false)
+  const loading = ref(false)
 
-const snackbar = ref({
-  show: false,
-  text: '',
-  color: 'success'
-})
+  const snackbar = ref({
+    show: false,
+    text: '',
+    color: 'success'
+  })
 
-const profile = ref({
-  displayName: '',
-  phone: '',
-  bio: ''
-})
+  const profile = ref({
+    displayName: '',
+    phone: '',
+    bio: ''
+  })
 
-const showNotification = (text, color = 'success') => {
-  snackbar.value = {
-    show: true,
-    text,
-    color
+  const showNotification = (text, color = 'success') => {
+    snackbar.value = {
+      show: true,
+      text,
+      color
+    }
   }
-}
 
-const handleAvatarChange = async (file) => {
-  if (!file) return
+  const handleAvatarChange = async event => {
+    const file = event?.target?.files?.[0]
+    if (!file) return
 
-  try {
-    loading.value = true
-    const avatarRef = storageRef(storage, `avatars/${authStore.currentUser.uid}`)
-    await uploadBytes(avatarRef, file)
-    const photoURL = await getDownloadURL(avatarRef)
-    
-    await updateProfile(authStore.currentUser, {
-      photoURL
-    })
-    
-    showNotification(t('profile.avatarUpdated'))
-  } catch (error) {
-    console.error('Error uploading avatar:', error)
-    showNotification(t('profile.avatarError'), 'error')
-  } finally {
-    loading.value = false
-  }
-}
+    try {
+      loading.value = true
+      const avatarRef = storageRef(storage, `avatars/${authStore.currentUser.uid}`)
+      await uploadBytes(avatarRef, file)
+      const photoURL = await getDownloadURL(avatarRef)
 
-const saveProfile = async () => {
-  if (!form.value.validate()) return
-
-  loading.value = true
-  try {
-    // 保存核心资料并等待结果
-    await authStore.updateUserProfile(authStore.currentUser.uid, {
-      name: profile.value.displayName,
-      phone: profile.value.phone,
-      bio: profile.value.bio
-    })
-    
-    // 重新加载最新数据确保一致性
-    await authStore.loadUserProfile(authStore.currentUser.uid)
-    
-    showNotification(t('profile.saved'))
-    
-    // 异步处理显示名称更新（静默失败）
-    if (profile.value.displayName !== authStore.userProfile?.name) {
-      updateProfile(authStore.currentUser, {
-        displayName: profile.value.displayName
-      }).then(() => {
-        console.log('显示名称更新成功')
-        authStore.userProfile.name = profile.value.displayName
-      }).catch(updateError => {
-        console.debug('显示名称更新非关键错误:', updateError)
+      await updateProfile(authStore.currentUser, {
+        photoURL
       })
-    }
-  } catch (error) {
-    console.error('资料保存失败:', error)
-    showNotification(
-      error.code ? t(`errors.${error.code}`) : t('profile.error'), 
-      'error'
-    )
-  } finally {
-    loading.value = false
-  }
-}
 
-// 监听用户配置文件变化
-watch(() => authStore.currentUser, async (user) => {
-  if (user) {
-    // 确保用户配置文件已加载
-    if (!authStore.userProfile) {
-      await authStore.loadUserProfile(user.uid)
-    }
-    profile.value = {
-      displayName: authStore.userProfile?.name || '',
-      phone: authStore.userProfile?.phone || '',
-      bio: authStore.userProfile?.bio || ''
+      showNotification(t('profile.avatarUpdated'))
+    } catch (error) {
+      showNotification(t('profile.avatarError'), 'error')
+    } finally {
+      loading.value = false
     }
   }
-}, { immediate: true })
+
+  const saveProfile = async () => {
+    if (!form.value.validate()) return
+
+    loading.value = true
+    try {
+      // Save core profile and wait for result
+      await authStore.updateUserProfile(authStore.currentUser.uid, {
+        name: profile.value.displayName,
+        phone: profile.value.phone,
+        bio: profile.value.bio
+      })
+
+      // Reload latest data for consistency
+      await authStore.loadUserProfile(authStore.currentUser.uid)
+
+      showNotification(t('profile.saved'))
+
+      // Handle display name update asynchronously
+      if (profile.value.displayName !== authStore.userProfile?.name) {
+        try {
+          await updateProfile(authStore.currentUser, {
+            displayName: profile.value.displayName
+          })
+          authStore.userProfile.name = profile.value.displayName
+        } catch {
+          // Silently fail as this is not critical
+        }
+      }
+    } catch (error) {
+      showNotification(error.code ? t(`errors.${error.code}`) : t('profile.error'), 'error')
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // Watch for user profile changes
+  watch(
+    () => authStore.currentUser,
+    async user => {
+      if (user) {
+        // Ensure user profile is loaded
+        if (!authStore.userProfile) {
+          await authStore.loadUserProfile(user.uid)
+        }
+        profile.value = {
+          displayName: authStore.userProfile?.name || '',
+          phone: authStore.userProfile?.phone || '',
+          bio: authStore.userProfile?.bio || ''
+        }
+      }
+    },
+    { immediate: true }
+  )
 </script>
 
 <style scoped>
-.avatar-container {
-  position: relative;
-  cursor: pointer;
-}
+  .avatar-container {
+    position: relative;
+    cursor: pointer;
+  }
 
-.avatar-hover:hover .avatar-overlay {
-  opacity: 1;
-}
+  .avatar-hover:hover .avatar-overlay {
+    opacity: 1;
+  }
 
-.avatar-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 6px; /* Reduced padding */
-  text-align: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-bottom-left-radius: 50%;
-  border-bottom-right-radius: 50%;
-  box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1); /* Reduced shadow opacity */
-}
+  .avatar-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 6px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
+  }
 
-.change-text {
-  font-size: 16px; /* Increased font size */
-  font-weight: bold; /* Made text bold for emphasis */
-  text-transform: uppercase;
-}
+  .change-text {
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
 </style>

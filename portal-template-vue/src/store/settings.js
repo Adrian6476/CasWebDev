@@ -63,7 +63,7 @@ export const useSettingsStore = defineStore('settings', {
     setLanguage(lang) {
       this.language = lang
       this.saveSettings()
-      
+
       // Update i18n locale - needs to be after saveSettings to ensure persistence
       const i18n = useI18n()
       if (i18n.locale.value !== lang) {
@@ -78,7 +78,7 @@ export const useSettingsStore = defineStore('settings', {
         if (savedSettings) {
           const settings = JSON.parse(savedSettings)
           this.$patch(settings)
-          
+
           // Sync i18n locale with loaded settings
           const i18n = useI18n()
           if (settings.language && i18n.locale.value !== settings.language) {
@@ -91,7 +91,7 @@ export const useSettingsStore = defineStore('settings', {
     },
 
     // 使用节流处理保存设置
-    saveSettings: throttle(function() {
+    saveSettings: throttle(function () {
       try {
         const settingsToSave = {
           theme: this.theme,
@@ -105,12 +105,12 @@ export const useSettingsStore = defineStore('settings', {
   },
 
   getters: {
-    isDarkMode: (state) => state.theme.dark,
-    isFollowingSystemTheme: (state) => state.theme.followSystem,
-    currentLanguage: (state) => state.language,
-    themeColors: (state) => state.theme.colors,
-    primaryColor: (state) => state.theme.colors.primary,
-    secondaryColor: (state) => state.theme.colors.secondary,
-    accentColor: (state) => state.theme.colors.accent
+    isDarkMode: state => state.theme.dark,
+    isFollowingSystemTheme: state => state.theme.followSystem,
+    currentLanguage: state => state.language,
+    themeColors: state => state.theme.colors,
+    primaryColor: state => state.theme.colors.primary,
+    secondaryColor: state => state.theme.colors.secondary,
+    accentColor: state => state.theme.colors.accent
   }
 })

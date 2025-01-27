@@ -13,7 +13,8 @@ export default {
     },
     about: {
       title: 'About Us',
-      description: 'Your company description goes here. This is a brief introduction about your organization and its mission.',
+      description:
+        'Your company description goes here. This is a brief introduction about your organization and its mission.',
       productTitle: 'About Our Product',
       productSubtitle: 'Discover what makes us unique',
       learnMore: 'Learn More'
@@ -24,7 +25,8 @@ export default {
       items: {
         fast: {
           title: 'Fast & Efficient',
-          description: 'Our solution provides lightning-fast performance and efficient resource utilization.'
+          description:
+            'Our solution provides lightning-fast performance and efficient resource utilization.'
         },
         secure: {
           title: 'Secure',

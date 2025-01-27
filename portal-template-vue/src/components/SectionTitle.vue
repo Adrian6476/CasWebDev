@@ -15,44 +15,44 @@
 </template>
 
 <script setup>
-defineProps({
-  title: {
-    type: String,
-    required: true
-  },
-  subtitle: {
-    type: String,
-    default: ''
-  },
-  centered: {
-    type: Boolean,
-    default: false
-  },
-  showDivider: {
-    type: Boolean,
-    default: true
-  },
-  dividerWidth: {
-    type: [Number, String],
-    default: 100
-  },
-  titleClass: {
-    type: String,
-    default: ''
-  },
-  subtitleClass: {
-    type: String,
-    default: ''
-  }
-})
+  defineProps({
+    title: {
+      type: String,
+      required: true
+    },
+    subtitle: {
+      type: String,
+      default: ''
+    },
+    centered: {
+      type: Boolean,
+      default: false
+    },
+    showDivider: {
+      type: Boolean,
+      default: true
+    },
+    dividerWidth: {
+      type: [Number, String],
+      default: 100
+    },
+    titleClass: {
+      type: String,
+      default: ''
+    },
+    subtitleClass: {
+      type: String,
+      default: ''
+    }
+  })
 </script>
 
 <style scoped>
-.section-title {
-  margin-bottom: var(--section-spacing);
-}
+  .section-title {
+    margin-bottom: var(--section-spacing);
+  }
 
-.section-title.centered {
-  text-align: center;
-}
+  .section-title.centered {
+    text-align: center;
+  }
 </style>

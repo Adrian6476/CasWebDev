@@ -1,16 +1,16 @@
 // Vuetify theme customization
-$primary: #1867C0;
-$secondary: #5CBBF6;
-$accent: #FF4081;
+$primary: #1867c0;
+$secondary: #5cbbf6;
+$accent: #ff4081;
 
 // Theme light/dark specific variables
 :root {
   --section-spacing: 4rem;
-  
+
   // Theme transition variables
   --theme-transition-duration: 400ms;
   --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
-  
+
   // Light theme colors
   --background-color: #ffffff;
   --text-color: rgba(0, 0, 0, 0.87);
@@ -42,7 +42,7 @@ body,
 .text-primary,
 .text-secondary,
 [class*='text-'] {
-  transition: 
+  transition:
     background-color var(--theme-transition-duration) var(--theme-transition-timing),
     color var(--theme-transition-duration) var(--theme-transition-timing),
     border-color var(--theme-transition-duration) var(--theme-transition-timing),

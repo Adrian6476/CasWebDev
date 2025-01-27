@@ -98,10 +98,10 @@ const router = createRouter({
 // Navigation guards
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
-  
+
   // Wait for auth state to initialize
   await authStore.initializeAuthListener()
-  
+
   const isAuthenticated = authStore.isAuthenticated
 
   // Update document title
@@ -118,7 +118,7 @@ router.beforeEach(async (to, from, next) => {
       next()
     }
   }
-  
+
   // Handle guest only routes (login, register)
   else if (to.matched.some(record => record.meta.guest)) {
     if (isAuthenticated) {
@@ -126,9 +126,7 @@ router.beforeEach(async (to, from, next) => {
     } else {
       next()
     }
-  }
-  
-  else {
+  } else {
     next()
   }
 })

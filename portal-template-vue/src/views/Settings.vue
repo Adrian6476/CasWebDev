@@ -3,15 +3,8 @@
     <v-row justify="center">
       <v-col cols="12" md="8" lg="6">
         <!-- Loading overlay -->
-        <v-overlay
-          :model-value="isLoading"
-          class="align-center justify-center"
-        >
-          <v-progress-circular
-            color="primary"
-            indeterminate
-            size="64"
-          ></v-progress-circular>
+        <v-overlay :model-value="isLoading" class="align-center justify-center">
+          <v-progress-circular color="primary" indeterminate size="64"></v-progress-circular>
         </v-overlay>
 
         <v-card class="mx-auto pa-6">
@@ -20,7 +13,7 @@
           <!-- Theme Settings -->
           <v-card-text>
             <h3 class="text-h6 mb-4">{{ i18n.t('settings.appearance') }}</h3>
-            
+
             <!-- Follow System Theme -->
             <v-switch
               v-model="isFollowingSystemTheme"
@@ -60,17 +53,10 @@
     </v-row>
 
     <!-- Notification Snackbar -->
-    <v-snackbar
-      v-model="snackbar.show"
-      :color="snackbar.color"
-      :timeout="3000"
-    >
+    <v-snackbar v-model="snackbar.show" :color="snackbar.color" :timeout="3000">
       {{ snackbar.text }}
-      <template v-slot:actions>
-        <v-btn
-          variant="text"
-          @click="snackbar.show = false"
-        >
+      <template #actions>
+        <v-btn variant="text" @click="snackbar.show = false">
           {{ i18n.t('common.close') }}
         </v-btn>
       </template>
@@ -79,88 +65,88 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
-import { useSettingsStore } from '@/store/settings'
-import { useI18n } from 'vue-i18n'
+  import { ref, computed, onMounted, watch } from 'vue'
+  import { useSettingsStore } from '@/store/settings'
+  import { useI18n } from 'vue-i18n'
 
-const i18n = useI18n()
-const settingsStore = useSettingsStore()
+  const i18n = useI18n()
+  const settingsStore = useSettingsStore()
 
-// Snackbar state
-const snackbar = ref({
-  show: false,
-  text: '',
-  color: 'success'
-})
+  // Snackbar state
+  const snackbar = ref({
+    show: false,
+    text: '',
+    color: 'success'
+  })
 
-const showNotification = (text, color = 'success') => {
-  snackbar.value = {
-    show: true,
-    text,
-    color
-  }
-}
-
-// 等待设置加载完成
-const isLoading = ref(true)
-
-onMounted(async () => {
-  try {
-    await settingsStore.loadSettings()
-  } finally {
-    isLoading.value = false
-  }
-})
-
-// Keep language state in sync with single source of truth
-watch(
-  () => settingsStore.currentLanguage,
-  (newLang) => {
-    if (newLang !== i18n.locale.value) {
-      i18n.locale.value = newLang
-    }
-  },
-  { immediate: true }
-)
-
-// Theme settings
-const isFollowingSystemTheme = computed({
-  get: () => settingsStore.isFollowingSystemTheme,
-  set: () => settingsStore.toggleFollowSystemTheme()
-})
-
-const isDarkMode = computed({
-  get: () => settingsStore.isDarkMode,
-  set: () => {
-    if (!settingsStore.isFollowingSystemTheme) {
-      settingsStore.toggleDarkMode()
+  const showNotification = (text, color = 'success') => {
+    snackbar.value = {
+      show: true,
+      text,
+      color
     }
   }
-})
 
-// Watch system theme changes
-const systemThemeMedia = window.matchMedia('(prefers-color-scheme: dark)')
-systemThemeMedia.addEventListener('change', () => {
-  settingsStore.updateSystemTheme()
-})
+  // 等待设置加载完成
+  const isLoading = ref(true)
 
-// Language settings
-const currentLanguage = computed({
-  get: () => {
-    // Always return the store's language value to ensure consistency
-    return settingsStore.currentLanguage
-  },
-  set: (value) => settingsStore.setLanguage(value)
-})
+  onMounted(async () => {
+    try {
+      await settingsStore.loadSettings()
+    } finally {
+      isLoading.value = false
+    }
+  })
 
-const availableLanguages = [
-  { title: 'English', value: 'en' },
-  { title: '中文', value: 'zh' }
-]
+  // Keep language state in sync with single source of truth
+  watch(
+    () => settingsStore.currentLanguage,
+    newLang => {
+      if (newLang !== i18n.locale.value) {
+        i18n.locale.value = newLang
+      }
+    },
+    { immediate: true }
+  )
 
-// Handlers
-const handleLanguageChange = (value) => {
-  settingsStore.setLanguage(value)
-  showNotification(i18n.t('settings.updated'))
-}
+  // Theme settings
+  const isFollowingSystemTheme = computed({
+    get: () => settingsStore.isFollowingSystemTheme,
+    set: () => settingsStore.toggleFollowSystemTheme()
+  })
+
+  const isDarkMode = computed({
+    get: () => settingsStore.isDarkMode,
+    set: () => {
+      if (!settingsStore.isFollowingSystemTheme) {
+        settingsStore.toggleDarkMode()
+      }
+    }
+  })
+
+  // Watch system theme changes
+  const systemThemeMedia = window.matchMedia('(prefers-color-scheme: dark)')
+  systemThemeMedia.addEventListener('change', () => {
+    settingsStore.updateSystemTheme()
+  })
+
+  // Language settings
+  const currentLanguage = computed({
+    get: () => {
+      // Always return the store's language value to ensure consistency
+      return settingsStore.currentLanguage
+    },
+    set: value => settingsStore.setLanguage(value)
+  })
+
+  const availableLanguages = [
+    { title: 'English', value: 'en' },
+    { title: '中文', value: 'zh' }
+  ]
+
+  // Handlers
+  const handleLanguageChange = value => {
+    settingsStore.setLanguage(value)
+    showNotification(i18n.t('settings.updated'))
+  }
 </script>

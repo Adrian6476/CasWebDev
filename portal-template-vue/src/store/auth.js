@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { auth, db } from '@/firebase'
-import { 
+import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
@@ -10,14 +10,14 @@ import {
   browserSessionPersistence
 } from 'firebase/auth'
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
-import { useI18n } from 'vue-i18n'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null,
     userProfile: null,
     loading: false,
-    error: null
+    error: null,
+    authUnsubscribe: null // Store the unsubscribe function
   }),
 
   actions: {
@@ -27,9 +27,9 @@ export const useAuthStore = defineStore('auth', {
         if (userDoc.exists()) {
           this.userProfile = userDoc.data()
         } else {
-          // 创建新的用户配置文件
+          // Create new user profile
           const newProfile = {
-            name: "Adrian Wang", // 默认使用此名称
+            name: 'Adrian Wang', // Default name
             phone: '',
             bio: '',
             createdAt: new Date().toISOString()
@@ -47,13 +47,13 @@ export const useAuthStore = defineStore('auth', {
       try {
         const userRef = doc(db, 'users', uid)
         await updateDoc(userRef, data)
-        // 获取并返回更新后的完整数据
+        // Get and return updated complete data
         const docSnap = await getDoc(userRef)
         this.userProfile = docSnap.data()
         return docSnap.data()
       } catch (error) {
         console.error('Error updating profile:', error)
-        throw error // 抛出错误以便在组件层处理
+        throw error // Throw error to handle in component
       }
     },
 
@@ -61,13 +61,13 @@ export const useAuthStore = defineStore('auth', {
       if (this.loading) return
       this.loading = true
       this.error = null
-      
+
       try {
-        // 1. 创建认证用户
+        // 1. Create authentication user
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-        
+
         try {
-          // 2. 创建用户配置文件
+          // 2. Create user profile
           const newProfile = {
             name: username,
             phone: '',
@@ -75,19 +75,19 @@ export const useAuthStore = defineStore('auth', {
             createdAt: new Date().toISOString()
           }
           await setDoc(doc(db, 'users', userCredential.user.uid), newProfile)
-          
-          // 3. 更新状态
+
+          // 3. Update state
           this.user = userCredential.user
           this.userProfile = newProfile
-          
+
           return { success: true, message: t('auth.accountCreated') }
         } catch (profileError) {
-          // 如果创建配置文件失败，删除认证用户
+          // If profile creation fails, delete the authentication user
           await userCredential.user.delete()
           throw new Error(t('auth.profileCreationError'))
         }
       } catch (error) {
-        let errorMessage;
+        let errorMessage
         switch (error.code) {
           case 'auth/email-already-in-use':
             errorMessage = t('auth.emailInUse')
@@ -114,18 +114,18 @@ export const useAuthStore = defineStore('auth', {
         // Set persistence based on rememberMe
         const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence
         await setPersistence(auth, persistence)
-        
+
         // Sign in with new persistence settings
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
-        
+
         // Update store state
         this.user = userCredential.user
         await this.loadUserProfile(userCredential.user.uid)
         this.error = null
-        
+
         // Store persistence setting in localStorage
         localStorage.setItem('auth_persistence', rememberMe ? 'local' : 'session')
-        
+
         return { success: true, message: t('auth.loginSuccess') }
       } catch (error) {
         let errorMessage = error.message
@@ -139,38 +139,43 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async logout(t) { // 直接接收 t 函数作为参数
+    async logout(t) {
+      if (this.authUnsubscribe) {
+        this.authUnsubscribe()
+        this.authUnsubscribe = null
+      }
+
       try {
         await signOut(auth)
         this.user = null
         this.userProfile = null
-        return { 
-          success: true, 
-          message: t('auth.logoutSuccess') // 使用传入的 t 函数
+        return {
+          success: true,
+          message: t('auth.logoutSuccess')
         }
       } catch (error) {
-        return { 
-          success: false, 
-          message: t('auth.logoutError') || error.message // 统一使用i18n
+        return {
+          success: false,
+          message: t('auth.logoutError') || error.message
         }
       }
     },
 
     initializeAuthListener() {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         // Apply saved persistence setting on initialization
         const savedPersistence = localStorage.getItem('auth_persistence')
         if (savedPersistence) {
-          const persistence = savedPersistence === 'local' 
-            ? browserLocalPersistence 
-            : browserSessionPersistence
+          const persistence =
+            savedPersistence === 'local' ? browserLocalPersistence : browserSessionPersistence
           setPersistence(auth, persistence)
         }
 
         // Track if initial auth state has been resolved
         let initialAuthResolved = false
 
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        // Store unsubscribe function in state for cleanup
+        this.authUnsubscribe = onAuthStateChanged(auth, async user => {
           if (user) {
             this.user = user
             await this.loadUserProfile(user.uid)
@@ -202,12 +207,12 @@ export const useAuthStore = defineStore('auth', {
   },
 
   getters: {
-    isAuthenticated: (state) => !!state.user,
-    currentUser: (state) => ({
+    isAuthenticated: state => !!state.user,
+    currentUser: state => ({
       ...state.user,
       name: state.userProfile?.name
     }),
-    hasError: (state) => !!state.error,
-    authError: (state) => state.error
+    hasError: state => !!state.error,
+    authError: state => state.error
   }
 })

@@ -22,17 +22,17 @@ export const newsApi = {
    * @param {string|number} id - News ID
    * @returns {Promise<Object>}
    */
-  getNewsDetail: (id) => {
+  getNewsDetail: id => {
     return http.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
   },
 
   /**
    * Get related news
-   * @param {string|number} id - Current news ID
+   * @param {string|number} _id - Current news ID (unused in demo)
    * @returns {Promise<Array>}
    */
-  getRelatedNews: (id) => {
-    // For demo, just get 3 random posts
+  getRelatedNews: _id => {
+    // For demonstration purposes, fetching 3 random posts instead of actual related news
     return http.get(`https://jsonplaceholder.typicode.com/posts`, {
       params: {
         _limit: 3,
@@ -60,7 +60,7 @@ export const contactApi = {
    * @param {Object} data - Form data
    * @returns {Promise<Object>}
    */
-  sendContactForm: (data) => {
+  sendContactForm: data => {
     return http.post(`https://jsonplaceholder.typicode.com/posts`, data)
   }
 }

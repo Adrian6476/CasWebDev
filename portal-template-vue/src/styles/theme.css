@@ -5,10 +5,11 @@
 /* 主题切换过渡效果 */
 .theme-transitioning,
 .theme-transitioning * {
-  transition: background-color var(--theme-transition-duration) ease,
-              color var(--theme-transition-duration) ease,
-              border-color var(--theme-transition-duration) ease,
-              box-shadow var(--theme-transition-duration) ease !important;
+  transition:
+    background-color var(--theme-transition-duration) ease,
+    color var(--theme-transition-duration) ease,
+    border-color var(--theme-transition-duration) ease,
+    box-shadow var(--theme-transition-duration) ease !important;
   will-change: background-color, color, border-color, box-shadow;
 }
 

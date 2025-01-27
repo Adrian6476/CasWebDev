@@ -3,20 +3,18 @@
     <v-container>
       <!-- Loading State -->
       <div v-if="loading" class="d-flex justify-center align-center" style="min-height: 400px">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-          size="64"
-        ></v-progress-circular>
+        <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
       </div>
 
       <!-- Error State -->
-      <div v-else-if="error" class="d-flex flex-column justify-center align-center" style="min-height: 400px">
+      <div
+        v-else-if="error"
+        class="d-flex flex-column justify-center align-center"
+        style="min-height: 400px"
+      >
         <v-icon color="error" size="64" class="mb-4">mdi-alert-circle</v-icon>
         <div class="text-h6">{{ error }}</div>
-        <v-btn color="primary" class="mt-4" to="/news">
-          Back to News
-        </v-btn>
+        <v-btn color="primary" class="mt-4" to="/news"> Back to News </v-btn>
       </div>
 
       <!-- Content -->
@@ -52,20 +50,20 @@
           <h2 class="text-h5 mb-6">{{ $t('news.relatedArticles') }}</h2>
           <v-row>
             <v-col
-              v-for="article in relatedArticles"
-              :key="article.id"
+              v-for="relatedArticle in relatedArticles"
+              :key="relatedArticle.id"
               cols="12"
               md="4"
             >
-              <v-card :to="`/news/${article.id}`" class="h-100">
+              <v-card :to="`/news/${relatedArticle.id}`" class="h-100">
                 <v-img
                   height="200"
-                  :src="`https://picsum.photos/400/200?random=${article.id}`"
+                  :src="`https://picsum.photos/400/200?random=${relatedArticle.id}`"
                   cover
                 ></v-img>
-                <v-card-title>{{ article.title }}</v-card-title>
+                <v-card-title>{{ relatedArticle.title }}</v-card-title>
                 <v-card-text>
-                  {{ article.abstract }}
+                  {{ relatedArticle.abstract }}
                 </v-card-text>
               </v-card>
             </v-col>
@@ -77,94 +75,92 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import { newsApi } from '@/api'
+  import { ref, onMounted } from 'vue'
+  import { useRoute } from 'vue-router'
+  import { newsApi } from '@/api'
 
-const route = useRoute()
-const router = useRouter()
-const { t } = useI18n()
+  const route = useRoute()
 
-const article = ref(null)
-const relatedArticles = ref([])
-const loading = ref(true)
-const error = ref(null)
-const category = ref('News') // This would come from API in real app
+  const article = ref(null)
+  const relatedArticles = ref([])
+  const loading = ref(true)
+  const error = ref(null)
+  const category = ref('News') // This would come from API in real app
 
-// Format date
-const formatDate = (dateString) => {
-  try {
-    const date = new Date(dateString)
-    return new Intl.DateTimeFormat('default', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }).format(date)
-  } catch (e) {
-    return dateString
-  }
-}
-
-// Share article
-const shareArticle = () => {
-  if (navigator.share) {
-    navigator.share({
-      title: article.value.title,
-      text: article.value.abstract,
-      url: window.location.href
-    }).catch(console.error)
-  }
-}
-
-// Fetch article and related articles
-const fetchArticleData = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    
-    // Get article ID from route
-    const id = route.params.id
-    
-    // Fetch article detail
-    const articleData = await newsApi.getNewsDetail(id)
-    article.value = {
-      ...articleData,
-      date: new Date().toISOString(), // Mock date
-      content: articleData.body, // Use body as content
-      abstract: articleData.body.substring(0, 120) + '...'
+  // Format date
+  const formatDate = dateString => {
+    try {
+      const date = new Date(dateString)
+      return new Intl.DateTimeFormat('default', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }).format(date)
+    } catch (e) {
+      return dateString
     }
-
-    // Fetch related articles
-    const relatedData = await newsApi.getRelatedNews(id)
-    relatedArticles.value = relatedData.map(item => ({
-      id: item.id,
-      title: item.title,
-      abstract: item.body.substring(0, 120) + '...',
-      date: new Date().toISOString()
-    }))
-
-  } catch (err) {
-    console.error('Failed to fetch article:', err)
-    error.value = 'Failed to load the article. Please try again later.'
-  } finally {
-    loading.value = false
   }
-}
 
-onMounted(() => {
-  fetchArticleData()
-})
+  // Share article
+  const shareArticle = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: article.value.title,
+          text: article.value.abstract,
+          url: window.location.href
+        })
+        .catch(console.error)
+    }
+  }
+
+  // Fetch article and related articles
+  const fetchArticleData = async () => {
+    try {
+      loading.value = true
+      error.value = null
+
+      // Get article ID from route
+      const id = route.params.id
+
+      // Fetch article detail
+      const articleData = await newsApi.getNewsDetail(id)
+      article.value = {
+        ...articleData,
+        date: new Date().toISOString(), // Mock date
+        content: articleData.body, // Use body as content
+        abstract: articleData.body.substring(0, 120) + '...'
+      }
+
+      // Fetch related articles
+      const relatedData = await newsApi.getRelatedNews(id)
+      relatedArticles.value = relatedData.map(item => ({
+        id: item.id,
+        title: item.title,
+        abstract: item.body.substring(0, 120) + '...',
+        date: new Date().toISOString()
+      }))
+    } catch (err) {
+      console.error('Failed to fetch article:', err)
+      error.value = 'Failed to load the article. Please try again later.'
+    } finally {
+      loading.value = false
+    }
+  }
+
+  onMounted(() => {
+    fetchArticleData()
+  })
 </script>
 
 <style scoped>
-.article-content {
-  max-width: 800px;
-  margin: 0 auto;
-}
+  .article-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
 
-.article-content p {
-  margin-bottom: 1.5rem;
-  line-height: 1.8;
-}
+  .article-content p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+  }
 </style>
