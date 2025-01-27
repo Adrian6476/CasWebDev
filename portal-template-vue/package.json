@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "node scripts/check-env.js",
     "dev": "vite",
+    "prebuild": "node scripts/check-env.js",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -13,6 +15,7 @@
     "@pinia/nuxt": "^0.9.0",
     "@vueuse/core": "^12.4.0",
     "axios": "^1.7.9",
+    "chalk": "^4.1.2",
     "firebase": "^11.2.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
