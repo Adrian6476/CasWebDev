@@ -9,7 +9,7 @@ export const newsApi = {
    * @returns {Promise<Array>}
    */
   getNewsList: (page = 1, limit = 10) => {
-    return http.get(`https://jsonplaceholder.typicode.com/posts`, {
+    return http.get('/posts', {
       params: {
         _page: page,
         _limit: limit
@@ -23,7 +23,7 @@ export const newsApi = {
    * @returns {Promise<Object>}
    */
   getNewsDetail: id => {
-    return http.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+    return http.get(`/posts/${id}`)
   },
 
   /**
@@ -33,7 +33,7 @@ export const newsApi = {
    */
   getRelatedNews: _id => {
     // For demonstration purposes, fetching 3 random posts instead of actual related news
-    return http.get(`https://jsonplaceholder.typicode.com/posts`, {
+    return http.get('/posts', {
       params: {
         _limit: 3,
         _start: Math.floor(Math.random() * 97) // Random start position
@@ -49,7 +49,7 @@ export const teamApi = {
    * @returns {Promise<Array>}
    */
   getTeamMembers: () => {
-    return http.get(`https://jsonplaceholder.typicode.com/users`)
+    return http.get('/users')
   }
 }
 
@@ -61,6 +61,6 @@ export const contactApi = {
    * @returns {Promise<Object>}
    */
   sendContactForm: data => {
-    return http.post(`https://jsonplaceholder.typicode.com/posts`, data)
+    return http.post('/posts', data)
   }
 }
