@@ -174,8 +174,40 @@
 
 <style scoped>
   .hero-section {
-    height: 100vh;
-    min-height: 600px;
+    height: calc(100vh - 64px);
+    min-height: 500px;
+    position: relative;
+  }
+
+  .hero-section :deep(.v-parallax) {
+    height: 100% !important;
+  }
+
+  .hero-section :deep(.v-parallax__image) {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    transform: none !important;
+  }
+
+  .hero-section :deep(.v-parallax__content) {
+    padding: 0;
+  }
+
+  /* 移动端优化 */
+  @media (max-width: 600px) {
+    .hero-section {
+      height: calc(100vh - 64px);
+      min-height: 400px;
+    }
+  }
+
+  /* 平板设备优化 */
+  @media (min-width: 601px) and (max-width: 960px) {
+    .hero-section {
+      height: calc(100vh - 64px);
+      min-height: 450px;
+    }
   }
 
   .theme-section {
