@@ -130,7 +130,7 @@ export default defineConfig(({ command, mode }) => {
 
     // 开发服务器配置
     server: {
-      host: env.VITE_DEV_SERVER_HOST || 'localhost',
+      host: '0.0.0.0',
       port: parseInt(env.VITE_DEV_SERVER_PORT || 3000),
       open: true,
       cors: true,
