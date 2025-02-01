@@ -88,9 +88,7 @@
 
         <!-- Article Content -->
         <v-sheet class="article-content py-8">
-          <div class="text-body-1">
-            {{ article.content }}
-          </div>
+          <div class="text-body-1" v-html="renderedContent"></div>
         </v-sheet>
 
         <!-- Related Articles -->
@@ -131,6 +129,7 @@
   import { useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import { newsApi } from '@/api'
+  import { marked } from 'marked'
 
   const route = useRoute()
   const { locale } = useI18n()
@@ -142,6 +141,10 @@
 
   const canNativeShare = computed(() => typeof navigator.share !== 'undefined')
   const isEnglish = computed(() => locale.value === 'en')
+  const renderedContent = computed(() => {
+    if (!article.value?.content) return ''
+    return marked(article.value.content)
+  })
 
   // Share Functions
   const showMessage = (text, color = 'success') => {
@@ -295,8 +298,67 @@
     margin: 0 auto;
   }
 
-  .article-content p {
+  /* Markdown styles */
+  .article-content :deep(h1) {
+    font-size: 2em;
+    margin-bottom: 1rem;
+  }
+  .article-content :deep(h2) {
+    font-size: 1.5em;
+    margin-bottom: 0.875rem;
+  }
+  .article-content :deep(h3) {
+    font-size: 1.25em;
+    margin-bottom: 0.75rem;
+  }
+  .article-content :deep(p) {
     margin-bottom: 1.5rem;
     line-height: 1.8;
+  }
+  .article-content :deep(ul),
+  .article-content :deep(ol) {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+  }
+  .article-content :deep(code) {
+    background: #f5f5f5;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+  }
+  .article-content :deep(pre) {
+    background: #f5f5f5;
+    padding: 1em;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+  }
+  .article-content :deep(blockquote) {
+    border-left: 4px solid #ccc;
+    margin: 0;
+    padding-left: 1em;
+  }
+  .article-content :deep(img) {
+    max-width: 100%;
+    height: auto;
+  }
+  .article-content :deep(a) {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  .article-content :deep(a:hover) {
+    text-decoration: underline;
+  }
+  .article-content :deep(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+  }
+  .article-content :deep(th),
+  .article-content :deep(td) {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: left;
+  }
+  .article-content :deep(th) {
+    background: #f5f5f5;
   }
 </style>
