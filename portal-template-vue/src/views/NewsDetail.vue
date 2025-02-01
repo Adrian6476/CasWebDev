@@ -33,7 +33,56 @@
             </v-avatar>
             <span class="text-subtitle-1">{{ article.author || 'Anonymous' }}</span>
             <v-spacer></v-spacer>
-            <v-btn icon="mdi-share-variant" @click="shareArticle"></v-btn>
+            <v-menu>
+              <template #activator="{ props }">
+                <v-btn icon="mdi-share-variant" v-bind="props"></v-btn>
+              </template>
+              <v-list>
+                <v-list-item v-if="canNativeShare" @click="shareArticle">
+                  <template #prepend>
+                    <v-icon>mdi-share</v-icon>
+                  </template>
+                  <v-list-item-title>{{ isEnglish ? 'Share' : '系统分享' }}</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="copyLink">
+                  <template #prepend>
+                    <v-icon>mdi-link</v-icon>
+                  </template>
+                  <v-list-item-title>{{ isEnglish ? 'Copy Link' : '复制链接' }}</v-list-item-title>
+                </v-list-item>
+                <!-- Chinese Social Media -->
+                <template v-if="!isEnglish">
+                  <v-list-item target="_blank" :href="getWeiboShareUrl()">
+                    <template #prepend>
+                      <v-icon>mdi-sina-weibo</v-icon>
+                    </template>
+                    <v-list-item-title>分享到微博</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item target="_blank" :href="getQQShareUrl()">
+                    <template #prepend>
+                      <v-icon>mdi-qqchat</v-icon>
+                    </template>
+                    <v-list-item-title>分享到QQ</v-list-item-title>
+                  </v-list-item>
+                </template>
+
+                <!-- English Social Media -->
+                <template v-else>
+                  <v-list-item target="_blank" :href="getTwitterShareUrl()">
+                    <template #prepend>
+                      <v-icon>mdi-twitter</v-icon>
+                    </template>
+                    <v-list-item-title>Share on Twitter</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item target="_blank" :href="getFacebookShareUrl()">
+                    <template #prepend>
+                      <v-icon>mdi-facebook</v-icon>
+                    </template>
+                    <v-list-item-title>Share on Facebook</v-list-item-title>
+                  </v-list-item>
+                </template>
+              </v-list>
+            </v-menu>
           </div>
         </div>
 
@@ -71,15 +120,98 @@
         </div>
       </template>
     </v-container>
+    <v-snackbar v-model="snackbar.show" :color="snackbar.color" :timeout="3000">
+      {{ snackbar.text }}
+    </v-snackbar>
   </div>
 </template>
 
 <script setup>
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, computed } from 'vue'
   import { useRoute } from 'vue-router'
+  import { useI18n } from 'vue-i18n'
   import { newsApi } from '@/api'
 
   const route = useRoute()
+  const { locale } = useI18n()
+  const snackbar = ref({
+    show: false,
+    text: '',
+    color: 'success'
+  })
+
+  const canNativeShare = computed(() => typeof navigator.share !== 'undefined')
+  const isEnglish = computed(() => locale.value === 'en')
+
+  // Share Functions
+  const showMessage = (text, color = 'success') => {
+    snackbar.value = {
+      show: true,
+      text,
+      color
+    }
+  }
+
+  const copyLink = () => {
+    try {
+      // 创建临时文本区域
+      const el = document.createElement('textarea')
+      el.value = window.location.href
+      el.setAttribute('readonly', '')
+      el.style.position = 'absolute'
+      el.style.left = '-9999px'
+      document.body.appendChild(el)
+      // 选择文本并复制
+      el.select()
+      document.execCommand('copy')
+      document.body.removeChild(el)
+
+      showMessage(isEnglish.value ? 'Link copied to clipboard' : '链接已复制到剪贴板')
+    } catch (err) {
+      console.error('Failed to copy:', err)
+      showMessage(isEnglish.value ? 'Failed to copy link' : '复制链接失败', 'error')
+    }
+  }
+
+  const getWeiboShareUrl = () => {
+    const baseUrl = 'http://service.weibo.com/share/share.php'
+    const params = new URLSearchParams({
+      url: window.location.href,
+      title: article.value?.title || '',
+      pic: `https://picsum.photos/400/200?random=${article.value?.id}`,
+      appkey: '',
+      ralateUid: ''
+    })
+    return `${baseUrl}?${params.toString()}`
+  }
+
+  const getQQShareUrl = () => {
+    const baseUrl = 'http://connect.qq.com/widget/shareqq/index.html'
+    const params = new URLSearchParams({
+      url: window.location.href,
+      title: article.value?.title || '',
+      desc: article.value?.abstract || '',
+      pics: `https://picsum.photos/400/200?random=${article.value?.id}`
+    })
+    return `${baseUrl}?${params.toString()}`
+  }
+
+  const getTwitterShareUrl = () => {
+    const baseUrl = 'https://twitter.com/intent/tweet'
+    const params = new URLSearchParams({
+      url: window.location.href,
+      text: article.value?.title || ''
+    })
+    return `${baseUrl}?${params.toString()}`
+  }
+
+  const getFacebookShareUrl = () => {
+    const baseUrl = 'https://www.facebook.com/sharer/sharer.php'
+    const params = new URLSearchParams({
+      u: window.location.href
+    })
+    return `${baseUrl}?${params.toString()}`
+  }
 
   const article = ref(null)
   const relatedArticles = ref([])
@@ -102,15 +234,19 @@
   }
 
   // Share article
-  const shareArticle = () => {
-    if (navigator.share) {
-      navigator
-        .share({
-          title: article.value.title,
-          text: article.value.abstract,
-          url: window.location.href
-        })
-        .catch(console.error)
+  const shareArticle = async () => {
+    try {
+      await navigator.share({
+        title: article.value.title,
+        text: article.value.abstract,
+        url: window.location.href
+      })
+      showMessage(isEnglish.value ? 'Shared successfully' : '分享成功')
+    } catch (err) {
+      console.error('Failed to share:', err)
+      if (err.name !== 'AbortError') {
+        showMessage(isEnglish.value ? 'Failed to share' : '分享失败', 'error') // 忽略用户取消分享的情况
+      }
     }
   }
 
