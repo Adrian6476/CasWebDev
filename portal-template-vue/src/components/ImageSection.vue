@@ -14,7 +14,7 @@
       </v-col>
 
       <!-- Content Column -->
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="6" class="px-md-8">
         <div :class="{ 'text-right': imageRight && alignTextWithImage }">
           <section-title
             :title="title"
