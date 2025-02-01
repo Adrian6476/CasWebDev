@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Banner Section -->
-    <section class="news-banner">
+    <section v-if="!isMobile" class="news-banner">
       <v-parallax src="https://picsum.photos/1920/1080?random=3">
         <div
           class="d-flex flex-column align-center justify-center text-white text-center fill-height"
@@ -85,6 +85,9 @@
   import { useI18n } from 'vue-i18n'
   import NewsCard from '@/components/NewsCard.vue'
   import { newsApi } from '@/api'
+  import { useDevice } from '@/composables/useDevice'
+
+  const { isMobile } = useDevice()
 
   const { t } = useI18n()
 

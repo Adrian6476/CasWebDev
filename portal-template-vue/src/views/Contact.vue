@@ -10,7 +10,7 @@
     </v-snackbar>
 
     <!-- Banner Section -->
-    <section class="contact-banner">
+    <section v-if="!isMobile" class="contact-banner">
       <v-parallax src="https://picsum.photos/1920/1080?random=2">
         <div
           class="d-flex flex-column align-center justify-center text-white text-center fill-height"
@@ -173,6 +173,9 @@
   import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { contactApi } from '@/api'
+  import { useDevice } from '@/composables/useDevice'
+
+  const { isMobile } = useDevice()
 
   const snackbar = ref({
     visible: false,
