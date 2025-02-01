@@ -62,7 +62,7 @@
         <!-- Theme Toggle -->
         <v-btn
           variant="text"
-          class="mx-2"
+          class="mx-2 d-none d-md-flex"
           size="small"
           :icon="settingsStore.isDarkMode ? 'mdi-weather-night' : 'mdi-weather-sunny'"
           @click="toggleTheme"
