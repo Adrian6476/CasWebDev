@@ -132,7 +132,7 @@ export default defineConfig(({ command, mode }) => {
     server: {
       host: '0.0.0.0',
       port: parseInt(env.VITE_DEV_SERVER_PORT || 3000),
-      open: true,
+      open: false,
       cors: true,
       strictPort: false,
       hmr: {
