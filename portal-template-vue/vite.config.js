@@ -131,7 +131,7 @@ export default defineConfig(({ command, mode }) => {
     // 开发服务器配置
     server: {
       host: '0.0.0.0',
-      port: parseInt(env.VITE_DEV_SERVER_PORT || 3000),
+      port: parseInt(env.VITE_DEV_SERVER_PORT || 3001),
       open: false,
       cors: true,
       strictPort: false,
