@@ -33,7 +33,7 @@
         <!-- Navigation Menu -->
         <v-tabs v-model="activeTab" class="d-none d-md-flex mx-4" height="64">
           <v-tab v-for="item in menuItems" :key="item.title" :to="item.to" :value="item.to">
-            {{ $t(`nav.${item.title.toLowerCase()}`) }}
+            {{ $t(`nav.${item.title}`) }}
           </v-tab>
         </v-tabs>
 
@@ -52,7 +52,11 @@
             <v-list-item
               v-for="locale in availableLocales"
               :key="locale.value"
-              @click="currentLocale = locale.value"
+              @click="
+                () => {
+                  currentLocale = locale.value
+                }
+              "
             >
               <v-list-item-title>{{ locale.title }}</v-list-item-title>
             </v-list-item>
@@ -147,7 +151,7 @@
           v-for="item in menuItems"
           :key="item.title"
           :to="item.to"
-          :title="$t(`nav.${item.title.toLowerCase()}`)"
+          :title="$t(`nav.${item.title}`)"
           :value="item.title"
         ></v-list-item>
 
@@ -215,7 +219,7 @@
                 v-for="item in menuItems"
                 :key="item.title"
                 :to="item.to"
-                :title="$t(`nav.${item.title.toLowerCase()}`)"
+                :title="$t(`nav.${item.title}`)"
               ></v-list-item>
             </v-list>
           </v-col>
@@ -342,22 +346,17 @@
   })
 
   // Language settings
-  const currentLocale = ref(settingsStore.currentLanguage)
-
-  watch(currentLocale, newLang => {
-    if (newLang !== settingsStore.currentLanguage) {
-      settingsStore.setLanguage(newLang)
+  const currentLocale = computed({
+    get: () => settingsStore.currentLanguage,
+    set: value => {
+      settingsStore.setLanguage(value)
     }
   })
 
-  watch(
-    () => settingsStore.currentLanguage,
-    newLang => {
-      if (newLang !== currentLocale.value) {
-        currentLocale.value = newLang
-      }
-    }
-  )
+  const availableLocales = [
+    { title: 'English', value: 'en' },
+    { title: '中文', value: 'zh' }
+  ]
 
   // Keep i18n in sync with store
   watch(
@@ -370,15 +369,10 @@
     { immediate: true }
   )
 
-  const availableLocales = [
-    { title: 'English', value: 'en' },
-    { title: '中文', value: 'zh' }
-  ]
-
   const menuItems = [
-    { title: 'Home', to: '/' },
-    { title: 'News', to: '/news' },
-    { title: 'Contact', to: '/contact' }
+    { title: 'home', to: '/' },
+    { title: 'news', to: '/news' },
+    { title: 'about', to: '/about' }
   ]
 
   const activeTab = computed(() => route.path)

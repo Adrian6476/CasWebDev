@@ -3,7 +3,7 @@ export default {
     home: '首页',
     products: '产品',
     news: '新闻',
-    contact: '联系我们'
+    about: '关于我们'
   },
   home: {
     hero: {
@@ -55,30 +55,53 @@ export default {
       technology: '技术'
     }
   },
-  contact: {
-    title: '联系我们',
-    subtitle: '期待您的留言',
-    form: {
-      title: '发送消息',
-      getInTouch: '联系我们',
-      name: '姓名',
-      email: '邮箱',
-      message: '留言',
-      send: '发送消息',
-      nameRequired: '请输入姓名',
-      nameLength: '姓名至少需要2个字符',
-      emailRequired: '请输入邮箱',
-      emailValid: '请输入有效的邮箱地址',
-      messageRequired: '请输入留言内容',
-      messageLength: '留言内容至少需要10个字符',
-      success: '消息发送成功！',
-      error: '发送失败，请稍后重试。'
+  about: {
+    title: '关于我们',
+    subtitle: '创新与卓越的追求者',
+    company: {
+      title: '公司简介',
+      description:
+        '我们是一家致力于创新和卓越的科技公司。自成立以来，我们始终秉持"以客户为中心"的理念，提供最优质的产品和服务。我们的团队由行业专家组成，拥有丰富的经验和专业知识，致力于为客户创造价值。'
     },
-    info: {
-      title: '联系方式',
-      address: '地址',
-      phone: '电话',
-      email: '邮箱'
+    vision: {
+      title: '我们的愿景',
+      description: '成为行业领先的创新者，通过技术改变世界，为人类生活带来积极影响。'
+    },
+    mission: {
+      title: '我们的使命',
+      description: '通过持续创新和优质服务，为客户提供最佳解决方案，创造可持续的商业价值。'
+    },
+    stats: {
+      experience: '年行业经验',
+      clients: '服务客户',
+      projects: '成功项目',
+      awards: '荣誉奖项'
+    },
+    team: {
+      title: '核心团队',
+      description:
+        '我们的团队由充满激情的专业人士组成，他们在各自领域都有着深厚的专业背景和丰富的实践经验。我们相信，只有组建最优秀的团队，才能为客户提供最好的解决方案。'
+    },
+    contact: {
+      title: '联系我们',
+      formTitle: '给我们留言',
+      address: '公司地址',
+      phone: '联系电话',
+      email: '电子邮箱',
+      form: {
+        name: '姓名',
+        email: '邮箱',
+        message: '留言内容',
+        send: '发送留言',
+        nameRequired: '请输入姓名',
+        nameLength: '姓名至少需要2个字符',
+        emailRequired: '请输入邮箱',
+        emailValid: '请输入有效的邮箱地址',
+        messageRequired: '请输入留言内容',
+        messageLength: '留言内容至少需要10个字符',
+        success: '留言发送成功！',
+        error: '发送失败，请稍后重试。'
+      }
     },
     social: {
       title: '关注我们'

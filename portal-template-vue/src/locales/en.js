@@ -3,7 +3,7 @@ export default {
     home: 'Home',
     products: 'Products',
     news: 'News',
-    contact: 'Contact'
+    about: 'About Us'
   },
   home: {
     hero: {
@@ -57,30 +57,55 @@ export default {
       technology: 'Technology'
     }
   },
-  contact: {
-    title: 'Contact Us',
-    subtitle: "We'd love to hear from you",
-    form: {
-      title: 'Send us a Message',
-      getInTouch: 'Get in Touch',
-      name: 'Name',
-      email: 'Email',
-      message: 'Message',
-      send: 'Send Message',
-      nameRequired: 'Name is required',
-      nameLength: 'Name must be at least 2 characters',
-      emailRequired: 'Email is required',
-      emailValid: 'Please enter a valid email',
-      messageRequired: 'Message is required',
-      messageLength: 'Message must be at least 10 characters',
-      success: 'Your message has been sent successfully!',
-      error: 'Failed to send message. Please try again later.'
+  about: {
+    title: 'About Us',
+    subtitle: 'Pursuing Innovation and Excellence',
+    company: {
+      title: 'Company Profile',
+      description:
+        'We are a technology company dedicated to innovation and excellence. Since our establishment, we have always adhered to a customer-centric philosophy, providing the highest quality products and services. Our team consists of industry experts with rich experience and professional knowledge, committed to creating value for our customers.'
     },
-    info: {
-      title: 'Contact Information',
+    vision: {
+      title: 'Our Vision',
+      description:
+        'To become a leading innovator in the industry, changing the world through technology and making a positive impact on human life.'
+    },
+    mission: {
+      title: 'Our Mission',
+      description:
+        'To provide the best solutions for our customers through continuous innovation and quality service, creating sustainable business value.'
+    },
+    stats: {
+      experience: 'Years of Experience',
+      clients: 'Clients Served',
+      projects: 'Successful Projects',
+      awards: 'Awards Won'
+    },
+    team: {
+      title: 'Core Team',
+      description:
+        'Our team consists of passionate professionals who have deep expertise and rich practical experience in their respective fields. We believe that only by building the best team can we provide the best solutions for our customers.'
+    },
+    contact: {
+      title: 'Contact Us',
+      formTitle: 'Leave us a Message',
       address: 'Address',
       phone: 'Phone',
-      email: 'Email'
+      email: 'Email',
+      form: {
+        name: 'Name',
+        email: 'Email',
+        message: 'Message',
+        send: 'Send Message',
+        nameRequired: 'Name is required',
+        nameLength: 'Name must be at least 2 characters',
+        emailRequired: 'Email is required',
+        emailValid: 'Please enter a valid email',
+        messageRequired: 'Message is required',
+        messageLength: 'Message must be at least 10 characters',
+        success: 'Message sent successfully!',
+        error: 'Failed to send message. Please try again later.'
+      }
     },
     social: {
       title: 'Follow Us'
@@ -150,8 +175,10 @@ export default {
     bio: 'Bio',
     avatarUpdated: 'Profile picture updated successfully',
     avatarError: 'Failed to update profile picture',
+    displayNameUpdateWarning:
+      'Profile saved successfully, but display name update requires re-login',
     saved: 'Profile saved successfully',
-    error: 'Failed to save profile',
+    saveFailed: 'Failed to save profile',
     phoneRequired: 'Phone number is required',
     phoneValid: 'Please enter a valid phone number',
     bioLength: 'Bio cannot exceed 500 characters'
