@@ -9,7 +9,7 @@ export default {
     hero: {
       title: '产品名称',
       slogan: '产品口号展示位置',
-      getStarted: '立即开始'
+      learnMore: '了解更多'
     },
     about: {
       title: '关于我们',

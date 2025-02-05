@@ -1,18 +1,31 @@
 <template>
   <div>
-    <!-- Hero Banner -->
+    <!-- Hero Banner with Carousel -->
     <section class="hero-section">
-      <v-parallax src="https://picsum.photos/1920/1080?random">
-        <div
-          class="d-flex flex-column align-center justify-center text-white text-center fill-height"
+      <v-carousel
+        v-model="currentSlide"
+        cycle
+        height="100%"
+        hide-delimiter-background
+        show-arrows="hover"
+      >
+        <v-carousel-item
+          v-for="(slide, index) in carouselSlides"
+          :key="index"
+          :src="`https://picsum.photos/1920/1080?random=${index + 1}`"
+          cover
         >
-          <h1 class="text-h2 font-weight-bold mb-4">{{ $t('home.hero.title') }}</h1>
-          <div class="text-h5 mb-8">{{ $t('home.hero.slogan') }}</div>
-          <v-btn color="primary" size="x-large" rounded>
-            {{ $t('home.hero.getStarted') }}
-          </v-btn>
-        </div>
-      </v-parallax>
+          <div
+            class="d-flex flex-column align-center justify-center text-white text-center fill-height carousel-content"
+          >
+            <h1 class="text-h2 font-weight-bold mb-4">{{ slide.title }}</h1>
+            <div class="text-h5 mb-8">{{ slide.description }}</div>
+            <v-btn color="primary" size="x-large" rounded :to="`/products/${slide.productId}`">
+              {{ $t('home.hero.learnMore') }}
+            </v-btn>
+          </div>
+        </v-carousel-item>
+      </v-carousel>
     </section>
 
     <!-- About Section -->
@@ -103,6 +116,26 @@
   import { newsApi, teamApi } from '@/api'
 
   const { t } = useI18n()
+  const currentSlide = ref(0)
+
+  // Carousel slides data
+  const carouselSlides = [
+    {
+      title: '高性能工作站',
+      description: '专业级工作站，为创意工作者打造',
+      productId: 1
+    },
+    {
+      title: '智能监控系统',
+      description: '先进的AI监控解决方案',
+      productId: 2
+    },
+    {
+      title: '云存储服务器',
+      description: '高可靠性企业级存储方案',
+      productId: 3
+    }
+  ]
 
   // Features data - reactive to language changes
   const features = computed(() => [
@@ -179,19 +212,32 @@
     position: relative;
   }
 
-  .hero-section :deep(.v-parallax) {
+  .hero-section :deep(.v-carousel) {
     height: 100% !important;
   }
 
-  .hero-section :deep(.v-parallax__image) {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    transform: none !important;
+  .carousel-content {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
+    height: 100%;
+    padding: 0 1rem;
   }
 
-  .hero-section :deep(.v-parallax__content) {
-    padding: 0;
+  .hero-section :deep(.v-carousel__controls) {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
+    padding-bottom: 24px;
+  }
+
+  .hero-section :deep(.v-btn.v-btn--icon) {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+  }
+
+  .hero-section :deep(.v-btn.v-btn--icon:hover) {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
   }
 
   /* 移动端优化 */
