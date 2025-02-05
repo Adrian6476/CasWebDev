@@ -6,7 +6,6 @@ import { fileURLToPath, URL } from 'node:url'
 import compression from 'vite-plugin-compression'
 import { visualizer } from 'rollup-plugin-visualizer'
 import imagemin from 'vite-plugin-imagemin'
-import { federation } from '@module-federation/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -48,7 +47,7 @@ export default defineConfig(({ command, mode }) => {
           filename: 'dist/stats.html',
           gzipSize: true,
           brotliSize: true
-        }),
+        })
 
       // 图片压缩
       // Temporarily disable imagemin plugin to resolve potential conflicts
@@ -78,19 +77,7 @@ export default defineConfig(({ command, mode }) => {
       //       }
       //     ]
       //   }
-      // }),
-
-      // 微前端配置
-      // Manually implement Module Federation configuration
-      federation({
-        name: 'news-list-module',
-        filename: 'remoteEntry.js',
-        remotes: {},
-        exposes: {
-          './NewsList': './src/views/NewsList.vue'
-        },
-        shared: ['vue', 'vue-router']
-      })
+      // })
     ],
 
     // 路径解析配置

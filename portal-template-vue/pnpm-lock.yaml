@@ -11,9 +11,6 @@ importers:
       '@mdi/font':
         specifier: ^7.4.47
         version: 7.4.47
-      '@module-federation/vite':
-        specifier: ^1.2.1
-        version: 1.2.1(rollup@4.30.1)
       '@pinia/nuxt':
         specifier: ^0.9.0
         version: 0.9.0(magicast@0.3.5)(pinia@2.3.1(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3)))(rollup@4.30.1)
@@ -66,9 +63,6 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^18.6.0
         version: 18.6.3
-      '@originjs/vite-plugin-federation':
-        specifier: ^1.3.9
-        version: 1.3.9
       '@rushstack/eslint-patch':
         specifier: ^1.7.0
         version: 1.10.5
@@ -770,21 +764,6 @@ packages:
   '@mdi/font@7.4.47':
     resolution: {integrity: sha512-43MtGpd585SNzHZPcYowu/84Vz2a2g31TvPMTm9uTiCSWzaheQySUcSyUH/46fPnuPQWof2yd0pGBtzee/IQWw==}
 
-  '@module-federation/error-codes@0.8.9':
-    resolution: {integrity: sha512-yUA3GZjOy8Ll6l193faXir2veexDaUiLdmptbzC9tIee/iSQiSwIlibdTafCfqaJ62cLZaytOUdmAFAKLv8QQw==}
-
-  '@module-federation/runtime-core@0.6.17':
-    resolution: {integrity: sha512-PXFN/TT9f64Un6NQYqH1Z0QLhpytW15jkZvTEOV8W7Ed319BECFI0Rv4xAsAGa8zJGFoaM/c7QOQfdFXtKj5Og==}
-
-  '@module-federation/runtime@0.8.9':
-    resolution: {integrity: sha512-i+a+/hoT/c+EE52mT+gJrbA6DhL86PY9cd/dIv/oKpLz9i+yYBlG+RA+puc7YsUEO4irbFLvnIMq6AGDUKVzYA==}
-
-  '@module-federation/sdk@0.8.9':
-    resolution: {integrity: sha512-QJ60itWC/SPjqduT7wDiF8UGwVU/yJ/Sz+QbnoxB9b7gNLzvI//swAXTo9eOtKsCy/V2BMwjt0F3eOcfnaqllA==}
-
-  '@module-federation/vite@1.2.1':
-    resolution: {integrity: sha512-h5s+GONBnOrRfQZ7RvhWskDTZBWUxfWQaKALNFjTSHRpEyGc168HrYep+cRBeltH019C1PCLzSDOSqoiWN+IKw==}
-
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -807,10 +786,6 @@ packages:
 
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
-
-  '@originjs/vite-plugin-federation@1.3.9':
-    resolution: {integrity: sha512-2rm5ZD5L9I0geLOaaYwpXT6V6E3O8vDAVCTDHOmJ+QnmpnHctK/iToGJX1ZYFEnR/1s0w7yF7kDW4Ksjpxfa1w==}
-    engines: {node: '>=14.0.0', pnpm: '>=7.0.1'}
 
   '@parcel/watcher-android-arm64@2.5.0':
     resolution: {integrity: sha512-qlX4eS28bUcQCdribHkg/herLe+0A9RyYC+mm2PXpncit8z5b3nSqGVzMNR3CmtAOgRutiZ02eIJJgP/b1iEFQ==}
@@ -2954,10 +2929,6 @@ packages:
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
-  isomorphic-rslog@0.0.7:
-    resolution: {integrity: sha512-n6/XnKnZ5eLEj6VllG4XmamXG7/F69nls8dcynHyhcTpsPUYgcgx4ifEaCo4lQJ2uzwfmIT+F0KBGwBcMKmt5g==}
-    engines: {node: '>=14.17.6'}
-
   istanbul-lib-coverage@3.2.2:
     resolution: {integrity: sha512-O8dpsF+r0WV/8MNRKfnmrtCWhuKjxrq2w+jpzBL5UZKTi2LeVWnWOmWRxFlesJONmc+wLAGvKQZEOanko0LFTg==}
     engines: {node: '>=8'}
@@ -3235,10 +3206,6 @@ packages:
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
     hasBin: true
-
-  magic-string@0.27.0:
-    resolution: {integrity: sha512-8UnnX2PeRAPZuN12svgR9j7M1uWMovg/CEnIwIG0LFkXSJJe4PdfUGiTGl8V9bsBHFUtfVINcSyYxd7q+kx9fA==}
-    engines: {node: '>=12'}
 
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
@@ -5512,34 +5479,6 @@ snapshots:
 
   '@mdi/font@7.4.47': {}
 
-  '@module-federation/error-codes@0.8.9': {}
-
-  '@module-federation/runtime-core@0.6.17':
-    dependencies:
-      '@module-federation/error-codes': 0.8.9
-      '@module-federation/sdk': 0.8.9
-
-  '@module-federation/runtime@0.8.9':
-    dependencies:
-      '@module-federation/error-codes': 0.8.9
-      '@module-federation/runtime-core': 0.6.17
-      '@module-federation/sdk': 0.8.9
-
-  '@module-federation/sdk@0.8.9':
-    dependencies:
-      isomorphic-rslog: 0.0.7
-
-  '@module-federation/vite@1.2.1(rollup@4.30.1)':
-    dependencies:
-      '@module-federation/runtime': 0.8.9
-      '@rollup/pluginutils': 5.1.4(rollup@4.30.1)
-      defu: 6.1.4
-      estree-walker: 2.0.2
-      magic-string: 0.30.17
-      pathe: 1.1.2
-    transitivePeerDependencies:
-      - rollup
-
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -5588,11 +5527,6 @@ snapshots:
       std-env: 3.8.0
 
   '@one-ini/wasm@0.1.1': {}
-
-  '@originjs/vite-plugin-federation@1.3.9':
-    dependencies:
-      estree-walker: 3.0.3
-      magic-string: 0.27.0
 
   '@parcel/watcher-android-arm64@2.5.0':
     optional: true
@@ -7977,8 +7911,6 @@ snapshots:
 
   isexe@2.0.0: {}
 
-  isomorphic-rslog@0.0.7: {}
-
   istanbul-lib-coverage@3.2.2: {}
 
   istanbul-lib-report@3.0.1:
@@ -8279,10 +8211,6 @@ snapshots:
       yallist: 4.0.0
 
   lz-string@1.5.0: {}
-
-  magic-string@0.27.0:
-    dependencies:
-      '@jridgewell/sourcemap-codec': 1.5.0
 
   magic-string@0.30.17:
     dependencies:
