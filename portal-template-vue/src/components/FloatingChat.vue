@@ -65,6 +65,9 @@
     border-radius: 8px;
     overflow: hidden;
     animation: slide-up 0.3s ease;
+    background: rgb(var(--v-theme-surface));
+    border: 1px solid rgb(var(--v-theme-outline));
+    box-shadow: 0 4px 16px rgba(var(--v-theme-on-surface), 0.1);
   }
 
   .chat-header {
@@ -73,7 +76,7 @@
     justify-content: space-between;
     align-items: center;
     background: rgb(var(--v-theme-primary));
-    color: white;
+    color: rgb(var(--v-theme-on-primary));
   }
 
   .chat-container {
@@ -82,6 +85,7 @@
     display: flex;
     flex-direction: column;
     height: calc(100% - 56px); /* 减去头部高度 */
+    color: rgb(var(--v-theme-on-surface));
   }
 
   @keyframes slide-up {

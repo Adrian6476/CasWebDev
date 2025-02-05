@@ -118,10 +118,11 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    background: #fff;
+    background: rgb(var(--v-theme-surface));
     border-radius: 8px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid rgb(var(--v-theme-outline));
     position: relative;
+    color: rgb(var(--v-theme-on-surface));
   }
 
   .chat-messages {
@@ -147,13 +148,13 @@
   }
 
   .message-user .message-content {
-    background: #007bff;
-    color: white;
+    background: rgb(var(--v-theme-surface-variant));
+    color: rgb(var(--v-theme-on-surface-variant));
   }
 
   .message-assistant .message-content {
-    background: #f5f5f5;
-    color: #333;
+    background: rgb(var(--v-theme-primary));
+    color: rgb(var(--v-theme-on-primary));
   }
 
   .chat-input {
@@ -161,19 +162,19 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: #fff;
-    border-top: 1px solid #e0e0e0;
+    background: rgb(var(--v-theme-surface-container));
+    border-top: 1px solid rgb(var(--v-theme-outline));
     padding: 12px 16px;
     display: flex;
     gap: 12px;
     box-sizing: border-box;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 -2px 10px rgba(var(--v-theme-on-surface), 0.05);
     min-height: 64px; /* 设置最小高度，与按钮保持一致 */
   }
 
   .chat-input textarea {
     flex: 1;
-    border: 1px solid #e0e0e0;
+    border: 1px solid rgb(var(--v-theme-outline));
     border-radius: 4px;
     padding: 8px 12px;
     resize: none;
@@ -181,12 +182,14 @@
     line-height: 20px;
     min-height: 40px; /* 设置与按钮一致的高度 */
     height: 40px; /* 初始高度 */
+    background: rgb(var(--v-theme-surface-container-lowest));
+    color: rgb(var(--v-theme-on-surface));
   }
 
   .chat-input textarea:focus {
     outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    border-color: rgb(var(--v-theme-primary));
+    box-shadow: 0 0 0 2px rgba(var(--v-theme-primary), 0.25);
   }
 
   .chat-input .send-button {
@@ -207,8 +210,8 @@
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.5px;
-    color: #fff;
-    background-color: #007bff;
+    color: rgb(var(--v-theme-on-primary));
+    background-color: rgb(var(--v-theme-primary));
     border: none;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -218,12 +221,13 @@
   }
 
   .chat-input .send-button:hover:not(:disabled) {
-    background-color: #0056b3;
+    background-color: rgb(var(--v-theme-primary-darken-1));
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
 
   .chat-input .send-button:disabled {
-    background-color: #cccccc;
+    background-color: rgb(var(--v-theme-outline));
+    color: rgb(var(--v-theme-on-surface-disabled));
     box-shadow: none;
     cursor: not-allowed;
     opacity: 0.7;
