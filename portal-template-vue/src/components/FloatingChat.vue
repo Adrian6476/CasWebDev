@@ -76,14 +76,25 @@
     border: 1px solid rgb(var(--v-theme-outline));
     box-shadow: 0 4px 16px rgba(var(--v-theme-on-surface), 0.1);
   }
-
   .chat-header {
-    padding: 12px 16px;
+    padding: 16px; /* 均匀内边距 */
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background: rgb(var(--v-theme-primary));
     color: rgb(var(--v-theme-on-primary));
+    font-size: 16px;
+    font-weight: 500;
+    gap: 12px; /* 设置间距 */
+  }
+
+  .chat-header span {
+    margin-left: 8px;
+    flex-grow: 1; /* 让标题占据剩余空间 */
+  }
+
+  .chat-header span {
+    margin-left: 8px;
+    font-weight: 500;
   }
 
   .chat-container {
@@ -108,6 +119,11 @@
 
   /* 移动端适配 */
   @media (max-width: 600px) {
+    .floating-chat {
+      bottom: 0;
+      right: 0;
+    }
+
     .chat-window {
       position: fixed;
       top: 0;
@@ -115,8 +131,23 @@
       right: 0;
       bottom: 0;
       width: 100%;
-      height: 100%;
+      height: 100vh;
+      max-height: none;
       border-radius: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) 12px env(safe-area-inset-left);
+      min-height: 56px;
+    }
+
+    .chat-container {
+      flex: 1;
+      height: calc(100vh - 56px);
+      padding-bottom: env(safe-area-inset-bottom);
     }
   }
 </style>

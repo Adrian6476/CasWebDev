@@ -145,6 +145,8 @@
     padding: 12px;
     border-radius: 8px;
     word-break: break-word;
+    font-size: 15px;
+    line-height: 1.5;
   }
 
   .message-user .message-content {
@@ -249,6 +251,27 @@
     }
     66% {
       content: '...';
+    }
+  }
+
+  /* 移动端适配 */
+  @media (max-width: 600px) {
+    .chat-input {
+      padding: 8px 12px;
+      padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+
+    .chat-input textarea {
+      font-size: 16px; /* 避免 iOS 自动缩放 */
+    }
+
+    .chat-messages {
+      padding: 16px 16px 68px 16px;
+    }
+
+    .message-content {
+      max-width: 85%;
+      padding: 10px;
     }
   }
 </style>
