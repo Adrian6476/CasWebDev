@@ -342,15 +342,22 @@
   })
 
   // Language settings
-  const currentLocale = computed({
-    get: () => settingsStore.currentLanguage,
-    set: value => {
-      // Only update if actually changed
-      if (value !== settingsStore.currentLanguage) {
-        settingsStore.setLanguage(value)
-      }
+  const currentLocale = ref(settingsStore.currentLanguage)
+
+  watch(currentLocale, newLang => {
+    if (newLang !== settingsStore.currentLanguage) {
+      settingsStore.setLanguage(newLang)
     }
   })
+
+  watch(
+    () => settingsStore.currentLanguage,
+    newLang => {
+      if (newLang !== currentLocale.value) {
+        currentLocale.value = newLang
+      }
+    }
+  )
 
   // Keep i18n in sync with store
   watch(
