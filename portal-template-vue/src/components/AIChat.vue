@@ -22,7 +22,6 @@
         v-model="inputMessage"
         :disabled="loading"
         :placeholder="$t('aiSupport.placeholder')"
-        rows="3"
         @keydown.enter.prevent="handleEnter"
       />
       <button :disabled="loading || !inputMessage.trim()" class="send-button" @click="sendMessage">
@@ -118,19 +117,17 @@
   .ai-chat {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 120px);
-    max-height: 600px;
+    height: 100%;
     background: #fff;
     border-radius: 8px;
     border: 1px solid #e0e0e0;
-    overflow: hidden;
+    position: relative;
   }
 
   .chat-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
-    margin-bottom: 80px;
+    padding: 20px 20px 76px 20px; /* 调整底部内边距，适应新的输入框高度 */
   }
 
   .message {
@@ -160,19 +157,30 @@
   }
 
   .chat-input {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
     border-top: 1px solid #e0e0e0;
-    padding: 16px;
+    padding: 12px 16px;
     display: flex;
     gap: 12px;
+    box-sizing: border-box;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    min-height: 64px; /* 设置最小高度，与按钮保持一致 */
   }
 
   .chat-input textarea {
     flex: 1;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
-    padding: 8px;
+    padding: 8px 12px;
     resize: none;
     font-size: 14px;
+    line-height: 20px;
+    min-height: 40px; /* 设置与按钮一致的高度 */
+    height: 40px; /* 初始高度 */
   }
 
   .chat-input textarea:focus {

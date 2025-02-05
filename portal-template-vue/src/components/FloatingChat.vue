@@ -78,7 +78,10 @@
 
   .chat-container {
     flex: 1;
-    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 56px); /* 减去头部高度 */
   }
 
   @keyframes slide-up {
