@@ -10,7 +10,7 @@ export default {
     hero: {
       title: 'Your Product Name',
       slogan: 'Your product slogan goes here',
-      getStarted: 'Get Started'
+      learnMore: 'Learn More'
     },
     about: {
       title: 'About Us',
@@ -42,6 +42,38 @@ export default {
     team: {
       title: 'Our Team',
       subtitle: 'Meet the people behind our success'
+    }
+  },
+  products: {
+    search: 'Search products...',
+    allCategories: 'All Categories',
+    categories: {
+      computer: 'Computer Equipment',
+      security: 'Security Equipment',
+      server: 'Servers'
+    },
+    details: {
+      description: 'Product Description',
+      specifications: 'Technical Specifications',
+      dimensions: 'Dimensions',
+      weight: 'Weight',
+      material: 'Material',
+      power: 'Power',
+      voltage: 'Voltage'
+    },
+    items: {
+      workstation: {
+        name: 'High Performance Workstation',
+        shortDescription: 'Professional workstation designed for creative professionals'
+      },
+      surveillance: {
+        name: 'Smart Surveillance System',
+        shortDescription: 'Advanced AI-powered surveillance solution'
+      },
+      storage: {
+        name: 'Cloud Storage Server',
+        shortDescription: 'Enterprise-grade storage solution with high reliability'
+      }
     }
   },
   news: {

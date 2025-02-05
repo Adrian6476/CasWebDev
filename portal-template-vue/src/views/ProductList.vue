@@ -3,7 +3,12 @@
     <!-- 搜索和过滤区域 -->
     <div class="search-section glass-card">
       <div class="search-box">
-        <input v-model="searchQuery" type="text" placeholder="搜索产品..." class="search-input" />
+        <input
+          v-model="searchQuery"
+          type="text"
+          :placeholder="$t('products.search')"
+          class="search-input"
+        />
       </div>
       <div class="category-filters">
         <button
@@ -11,16 +16,16 @@
           :class="{ active: !selectedCategory }"
           @click="selectedCategory = ''"
         >
-          所有类别
+          {{ $t('products.allCategories') }}
         </button>
         <button
           v-for="category in categories"
-          :key="category"
+          :key="category.key"
           class="category-chip glass-button"
-          :class="{ active: selectedCategory === category }"
-          @click="selectedCategory = category"
+          :class="{ active: selectedCategory === category.key }"
+          @click="selectedCategory = category.key"
         >
-          {{ category }}
+          {{ category.label }}
         </button>
       </div>
     </div>
@@ -39,7 +44,7 @@
         <div class="product-info">
           <h3 class="product-name">{{ product.name }}</h3>
           <p class="product-description">{{ product.shortDescription }}</p>
-          <div class="product-category">{{ product.category }}</div>
+          <div class="product-category">{{ getCategoryLabel(product.category) }}</div>
         </div>
       </router-link>
     </div>
@@ -48,39 +53,55 @@
 
 <script setup>
   import { ref, computed } from 'vue'
+  import { useI18n } from 'vue-i18n'
+
+  const { t } = useI18n()
+
+  // 定义产品类别
+  const categoryMap = {
+    computer: 'products.categories.computer',
+    security: 'products.categories.security',
+    server: 'products.categories.server'
+  }
+
+  // 获取翻译后的类别标签
+  const getCategoryLabel = key => t(categoryMap[key])
+
+  // 类别列表
+  const categories = computed(() =>
+    Object.entries(categoryMap).map(([key, translationKey]) => ({
+      key,
+      label: t(translationKey)
+    }))
+  )
 
   // 模拟产品数据，实际项目中应该从API获取
   const products = ref([
     {
       id: 1,
-      name: '高性能工作站',
-      shortDescription: '专业级工作站，为创意工作者打造',
-      category: '电脑设备',
+      name: t('products.items.workstation.name'),
+      shortDescription: t('products.items.workstation.shortDescription'),
+      category: 'computer',
       imageUrl: '/src/assets/slide1.jpg'
     },
     {
       id: 2,
-      name: '智能监控系统',
-      shortDescription: '先进的AI监控解决方案',
-      category: '安防设备',
+      name: t('products.items.surveillance.name'),
+      shortDescription: t('products.items.surveillance.shortDescription'),
+      category: 'security',
       imageUrl: '/src/assets/slide2.jpg'
     },
     {
       id: 3,
-      name: '云存储服务器',
-      shortDescription: '高可靠性企业级存储方案',
-      category: '服务器',
+      name: t('products.items.storage.name'),
+      shortDescription: t('products.items.storage.shortDescription'),
+      category: 'server',
       imageUrl: '/src/assets/slide3.jpg'
     }
   ])
 
   const searchQuery = ref('')
   const selectedCategory = ref('')
-
-  // 提取所有unique的产品类别
-  const categories = computed(() => {
-    return [...new Set(products.value.map(product => product.category))]
-  })
 
   // 过滤产品列表
   const filteredProducts = computed(() => {

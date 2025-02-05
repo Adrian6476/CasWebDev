@@ -42,6 +42,38 @@ export default {
       subtitle: '遇见我们成功背后的团队'
     }
   },
+  products: {
+    search: '搜索产品...',
+    allCategories: '所有类别',
+    categories: {
+      computer: '电脑设备',
+      security: '安防设备',
+      server: '服务器'
+    },
+    details: {
+      description: '产品描述',
+      specifications: '技术参数',
+      dimensions: '尺寸',
+      weight: '重量',
+      material: '材质',
+      power: '功率',
+      voltage: '电压'
+    },
+    items: {
+      workstation: {
+        name: '高性能工作站',
+        shortDescription: '专业级工作站，为创意工作者打造'
+      },
+      surveillance: {
+        name: '智能监控系统',
+        shortDescription: '先进的AI监控解决方案'
+      },
+      storage: {
+        name: '云存储服务器',
+        shortDescription: '高可靠性企业级存储方案'
+      }
+    }
+  },
   news: {
     title: '最新动态',
     subtitle: '了解我们的最新消息',

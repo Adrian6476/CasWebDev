@@ -15,17 +15,17 @@
     <!-- 产品信息区 -->
     <section class="product-info glass-card">
       <div class="product-description">
-        <h2>产品描述</h2>
+        <h2>{{ $t('products.details.description') }}</h2>
         <p>{{ product.description }}</p>
       </div>
 
       <!-- 技术参数表格 -->
       <div class="product-specs">
-        <h2>技术参数</h2>
+        <h2>{{ $t('products.details.specifications') }}</h2>
         <table class="specs-table">
           <tbody>
             <tr v-for="(value, key) in product.specifications" :key="key">
-              <td class="spec-name">{{ key }}</td>
+              <td class="spec-name">{{ $t(`products.details.${key}`) }}</td>
               <td class="spec-value">{{ value }}</td>
             </tr>
           </tbody>
@@ -37,19 +37,21 @@
 
 <script setup>
   import { ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
 
-  // 模拟产品数据，实际项目中应该从API获取
+  const { t } = useI18n()
+
   const product = ref({
-    name: '示例产品名称',
-    shortDescription: '简短的产品描述文本',
-    description: '详细的产品描述内容，包含产品的主要特点和优势。',
+    name: t('products.items.workstation.name'),
+    shortDescription: t('products.items.workstation.shortDescription'),
+    description: t('about.company.description'),
     imageUrl: '/src/assets/slide1.jpg',
     specifications: {
-      尺寸: '200 x 300 x 400 mm',
-      重量: '2.5 kg',
-      材质: '高级航空铝材',
-      功率: '1000W',
-      电压: '220V'
+      dimensions: '200 x 300 x 400 mm',
+      weight: '2.5 kg',
+      material: t('products.details.material'),
+      power: '1000W',
+      voltage: '220V'
     }
   })
 </script>

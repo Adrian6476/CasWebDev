@@ -119,23 +119,23 @@
   const currentSlide = ref(0)
 
   // Carousel slides data
-  const carouselSlides = [
+  const carouselSlides = computed(() => [
     {
-      title: '高性能工作站',
-      description: '专业级工作站，为创意工作者打造',
+      title: t('products.items.workstation.name'),
+      description: t('products.items.workstation.shortDescription'),
       productId: 1
     },
     {
-      title: '智能监控系统',
-      description: '先进的AI监控解决方案',
+      title: t('products.items.surveillance.name'),
+      description: t('products.items.surveillance.shortDescription'),
       productId: 2
     },
     {
-      title: '云存储服务器',
-      description: '高可靠性企业级存储方案',
+      title: t('products.items.storage.name'),
+      description: t('products.items.storage.shortDescription'),
       productId: 3
     }
-  ]
+  ])
 
   // Features data - reactive to language changes
   const features = computed(() => [
