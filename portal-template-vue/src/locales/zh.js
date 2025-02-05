@@ -218,6 +218,7 @@ export default {
     send: '发送',
     thinking: '思考中',
     errorMessage: '抱歉，出现了一些错误：',
-    welcomeMessage: '你好！我是AI助手，请问有什么可以帮助您的吗？'
+    welcomeMessage: '你好！我是AI助手，请问有什么可以帮助您的吗？',
+    openChat: '打开聊天'
   }
 }

@@ -222,6 +222,7 @@ export default {
     send: 'Send',
     thinking: 'Thinking',
     errorMessage: 'Sorry, an error occurred: ',
-    welcomeMessage: 'Hello! I am an AI assistant. How can I help you?'
+    welcomeMessage: 'Hello! I am an AI assistant. How can I help you?',
+    openChat: 'Open Chat'
   }
 }

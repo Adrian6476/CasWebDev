@@ -72,6 +72,16 @@
           @click="toggleTheme"
         ></v-btn>
 
+        <!-- Chat Button -->
+        <v-btn
+          variant="text"
+          class="mx-2"
+          size="small"
+          :icon="chatStore.isOpen ? 'mdi-message-off' : 'mdi-message-text'"
+          :title="$t('aiSupport.openChat')"
+          @click="chatStore.toggleChat"
+        ></v-btn>
+
         <!-- Auth Buttons -->
         <template v-if="!authStore.isAuthenticated">
           <v-btn
@@ -157,6 +167,15 @@
 
         <v-divider class="my-2"></v-divider>
 
+        <!-- Chat Toggle -->
+        <v-list-item
+          :title="$t('aiSupport.openChat')"
+          :prepend-icon="chatStore.isOpen ? 'mdi-message-off' : 'mdi-message-text'"
+          @click="chatStore.toggleChat"
+        ></v-list-item>
+
+        <v-divider class="my-2"></v-divider>
+
         <!-- Theme Toggle -->
         <v-list-item
           :title="$t('settings.darkMode')"
@@ -192,9 +211,13 @@
     </v-navigation-drawer>
 
     <!-- Main Content -->
-    <v-main class="main-content">
+    <v-main class="main-content position-relative">
       <slot></slot>
     </v-main>
+
+    <Teleport to="body">
+      <FloatingChat />
+    </Teleport>
 
     <!-- Content Footer Divider -->
     <div class="content-divider"></div>
@@ -285,9 +308,12 @@
   import { useRoute, useRouter } from 'vue-router'
   import { useAuthStore } from '@/store/auth'
   import { useSettingsStore } from '@/store/settings'
+  import { useChatStore } from '@/store/chat'
   import vueLogo from '@/assets/vue.svg'
+  import FloatingChat from '@/components/FloatingChat.vue'
 
   const { t } = useI18n()
+  const chatStore = useChatStore()
   const i18n = useI18n()
   const route = useRoute()
   const router = useRouter()
@@ -373,8 +399,7 @@
     { title: 'home', to: '/' },
     { title: 'products', to: '/products' },
     { title: 'news', to: '/news' },
-    { title: 'about', to: '/about' },
-    { title: 'aiSupport', to: '/ai-support' }
+    { title: 'about', to: '/about' }
   ]
 
   const activeTab = computed(() => route.path)
@@ -392,6 +417,24 @@
 </script>
 
 <style scoped>
+  /* Reset styles for proper positioning */
+  html,
+  body,
+  #app {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: visible !important;
+  }
+
+  /* Ensure fixed positioning works correctly */
+  .floating-chat {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    z-index: 99999 !important;
+    pointer-events: auto !important;
+  }
   .language-select :deep(.v-field__input) {
     padding-top: 5px !important;
     min-height: 32px;

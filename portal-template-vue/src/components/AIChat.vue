@@ -25,8 +25,8 @@
         rows="3"
         @keydown.enter.prevent="handleEnter"
       />
-      <button :disabled="loading || !inputMessage.trim()" @click="sendMessage">
-        {{ $t('aiSupport.send') }}
+      <button :disabled="loading || !inputMessage.trim()" class="send-button" @click="sendMessage">
+        {{ $t('aiSupport.send') || 'Send' }}
       </button>
     </div>
   </div>
@@ -118,7 +118,8 @@
   .ai-chat {
     display: flex;
     flex-direction: column;
-    height: 600px;
+    height: calc(100vh - 120px);
+    max-height: 600px;
     background: #fff;
     border-radius: 8px;
     border: 1px solid #e0e0e0;
@@ -129,6 +130,7 @@
     flex: 1;
     overflow-y: auto;
     padding: 20px;
+    margin-bottom: 80px;
   }
 
   .message {
@@ -173,18 +175,50 @@
     font-size: 14px;
   }
 
-  .chat-input button {
-    padding: 8px 24px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  .chat-input textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
   }
 
-  .chat-input button:disabled {
-    background: #cccccc;
+  .chat-input .send-button {
+    height: 40px; /* 与输入框相同高度 */
+    min-width: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chat-input .send-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 96px;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: capitalize;
+  }
+
+  .chat-input .send-button:hover:not(:disabled) {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .chat-input .send-button:disabled {
+    background-color: #cccccc;
+    box-shadow: none;
     cursor: not-allowed;
+    opacity: 0.7;
   }
 
   .loading-dots::after {
