@@ -18,7 +18,14 @@
     <v-card v-show="chatStore.isOpen" class="chat-window">
       <v-card-title class="chat-header">
         <span>{{ $t('aiSupport.title') }}</span>
-        <v-btn icon size="small" :aria-label="$t('common.close')" @click="chatStore.closeChat">
+        <v-btn
+          icon
+          size="small"
+          :aria-label="$t('common.close')"
+          variant="text"
+          color="white"
+          @click="chatStore.closeChat"
+        >
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
