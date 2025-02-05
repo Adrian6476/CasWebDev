@@ -37,14 +37,29 @@
   import { useI18n } from 'vue-i18n'
   import { aiApi } from '@/api/ai'
 
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
 
-  const messages = ref([
-    {
-      role: 'assistant',
-      content: t('aiSupport.welcomeMessage')
-    }
-  ])
+  const messages = ref([])
+
+  // 初始化和监听语言变化
+  watch(
+    locale,
+    () => {
+      // 只有在消息列表为空时（初始化）或只有一条欢迎消息时更新
+      if (
+        messages.value.length === 0 ||
+        (messages.value.length === 1 && messages.value[0].role === 'assistant')
+      ) {
+        messages.value = [
+          {
+            role: 'assistant',
+            content: t('aiSupport.welcomeMessage')
+          }
+        ]
+      }
+    },
+    { immediate: true }
+  )
   const inputMessage = ref('')
   const loading = ref(false)
   const messagesContainer = ref(null)
@@ -81,7 +96,7 @@
       inputMessage.value = ''
 
       // 发送到 AI API
-      const response = await aiApi.sendMessage([...messages.value])
+      const response = await aiApi.sendMessage([...messages.value], locale.value)
 
       // 添加 AI 回复
       messages.value.push({
