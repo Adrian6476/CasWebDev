@@ -7,7 +7,7 @@
         cycle
         height="100%"
         hide-delimiter-background
-        show-arrows="hover"
+        :show-arrows="false"
       >
         <v-carousel-item
           v-for="(slide, index) in carouselSlides"
@@ -224,20 +224,37 @@
     padding: 0 1rem;
   }
 
+  /* 自定义轮播指示器样式 */
   .hero-section :deep(.v-carousel__controls) {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
-    padding-bottom: 24px;
+    background: none;
+    padding-bottom: 32px;
   }
 
-  .hero-section :deep(.v-btn.v-btn--icon) {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(4px);
-    transition: all 0.3s ease;
+  .hero-section :deep(.v-carousel__controls > .v-btn) {
+    min-width: 24px;
+    width: 24px;
+    height: 3px;
+    margin: 0 4px;
+    padding: 0;
+    border-radius: 1.5px;
+    background: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    transform: none !important;
   }
 
-  .hero-section :deep(.v-btn.v-btn--icon:hover) {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.1);
+  .hero-section :deep(.v-carousel__controls > .v-btn--active) {
+    background: white;
+    width: 48px;
+    transform: none !important;
+  }
+
+  /* 隐藏默认按钮样式 */
+  .hero-section :deep(.v-carousel__controls > .v-btn::before),
+  .hero-section :deep(.v-carousel__controls > .v-btn::after),
+  .hero-section :deep(.v-carousel__controls > .v-btn .v-btn__content),
+  .hero-section :deep(.v-carousel__controls > .v-btn .v-btn__overlay) {
+    display: none;
   }
 
   /* 移动端优化 */
