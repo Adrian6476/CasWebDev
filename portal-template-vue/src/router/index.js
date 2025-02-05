@@ -5,6 +5,7 @@ import { useAuthStore } from '@/store/auth'
 import Home from '@/views/Home.vue'
 import NewsDetail from '@/views/NewsDetail.vue'
 import About from '@/views/About.vue'
+import ProductDetail from '@/views/ProductDetail.vue'
 
 const routes = [
   {
@@ -61,6 +62,22 @@ const routes = [
     component: About,
     meta: {
       title: 'About Us'
+    }
+  },
+  {
+    path: '/products',
+    name: 'ProductList',
+    component: () => import('@/views/ProductList.vue'),
+    meta: {
+      title: 'Products'
+    }
+  },
+  {
+    path: '/products/:id',
+    name: 'ProductDetail',
+    component: ProductDetail,
+    meta: {
+      title: 'Product Detail'
     }
   },
   {
