@@ -373,7 +373,8 @@
     { title: 'home', to: '/' },
     { title: 'products', to: '/products' },
     { title: 'news', to: '/news' },
-    { title: 'about', to: '/about' }
+    { title: 'about', to: '/about' },
+    { title: 'aiSupport', to: '/ai-support' }
   ]
 
   const activeTab = computed(() => route.path)

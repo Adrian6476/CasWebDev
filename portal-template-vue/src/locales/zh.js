@@ -3,7 +3,8 @@ export default {
     home: '首页',
     products: '产品',
     news: '新闻',
-    about: '关于我们'
+    about: '关于我们',
+    aiSupport: '智能客服'
   },
   home: {
     hero: {
@@ -178,5 +179,13 @@ export default {
     phoneRequired: '请输入手机号码',
     phoneValid: '请输入有效的手机号码',
     bioLength: '个人简介不能超过500字'
+  },
+  aiSupport: {
+    title: '智能客服',
+    placeholder: '请输入您的问题...',
+    send: '发送',
+    thinking: '思考中',
+    errorMessage: '抱歉，出现了一些错误：',
+    welcomeMessage: '你好！我是AI助手，请问有什么可以帮助您的吗？'
   }
 }

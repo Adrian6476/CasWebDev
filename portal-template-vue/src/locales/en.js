@@ -3,7 +3,8 @@ export default {
     home: 'Home',
     products: 'Products',
     news: 'News',
-    about: 'About Us'
+    about: 'About Us',
+    aiSupport: 'AI Support'
   },
   home: {
     hero: {
@@ -182,5 +183,13 @@ export default {
     phoneRequired: 'Phone number is required',
     phoneValid: 'Please enter a valid phone number',
     bioLength: 'Bio cannot exceed 500 characters'
+  },
+  aiSupport: {
+    title: 'AI Support',
+    placeholder: 'Please enter your question...',
+    send: 'Send',
+    thinking: 'Thinking',
+    errorMessage: 'Sorry, an error occurred: ',
+    welcomeMessage: 'Hello! I am an AI assistant. How can I help you?'
   }
 }

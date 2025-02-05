@@ -97,6 +97,14 @@ const routes = [
       title: 'Settings',
       requiresAuth: true
     }
+  },
+  {
+    path: '/ai-support',
+    name: 'AISupport',
+    component: () => import('@/views/AISupport.vue'),
+    meta: {
+      title: '智能客服'
+    }
   }
 ]
 
