@@ -93,29 +93,4 @@ describe('FloatingChat.vue', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.findComponent(AIChat).exists()).toBe(true)
   })
-
-  it('logs state changes to console', async () => {
-    const spy = vi.spyOn(console, 'log')
-
-    try {
-      // Initial state is false
-      wrapper = mountComponent()
-      await flushPromises()
-
-      // Should log initial state
-      expect(spy).toHaveBeenCalledWith('Chat state changed:', false)
-
-      // Clear previous call records
-      spy.mockClear()
-
-      // Change state
-      mockChatStore.isOpen = true
-      await flushPromises()
-
-      // Should log state change
-      expect(spy).toHaveBeenCalledWith('Chat state changed:', true)
-    } finally {
-      spy.mockRestore()
-    }
-  })
 })

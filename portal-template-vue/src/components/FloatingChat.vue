@@ -1,19 +1,5 @@
 <template>
   <div class="floating-chat">
-    <div
-      v-if="false"
-      style="
-        position: fixed;
-        top: 0;
-        right: 0;
-        background: red;
-        color: white;
-        padding: 10px;
-        z-index: 99999;
-      "
-    >
-      Debug: {{ chatStore.isOpen }}
-    </div>
     <!-- Chat window -->
     <v-card v-show="chatStore.isOpen" class="chat-window">
       <v-card-title class="chat-header">
@@ -44,15 +30,6 @@
 
   const chatComponent = ref(null)
   const chatStore = useChatStore()
-
-  // Debugging: Watch state changes
-  watch(
-    () => chatStore.isOpen,
-    newVal => {
-      console.log('Chat state changed:', newVal)
-    },
-    { immediate: true, flush: 'sync' }
-  )
 </script>
 
 <style scoped>
