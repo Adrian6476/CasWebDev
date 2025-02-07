@@ -14,7 +14,7 @@
     >
       Debug: {{ chatStore.isOpen }}
     </div>
-    <!-- 聊天窗口 -->
+    <!-- Chat window -->
     <v-card v-show="chatStore.isOpen" class="chat-window">
       <v-card-title class="chat-header">
         <span>{{ $t('aiSupport.title') }}</span>
@@ -50,23 +50,24 @@
     () => chatStore.isOpen,
     newVal => {
       console.log('Chat state changed:', newVal)
-    }
+    },
+    { immediate: true, flush: 'sync' }
   )
 </script>
 
 <style scoped>
   .floating-chat {
     position: fixed;
-    bottom: 32px; /* 增加底部间距 */
+    bottom: 32px; /* Increased bottom spacing */
     right: 24px;
-    z-index: 99999; /* 提高优先级 */
-    pointer-events: auto; /* 确保可交互 */
+    z-index: 99999; /* Higher priority */
+    pointer-events: auto; /* Ensure interactivity */
   }
 
   .chat-window {
     width: 360px;
-    height: calc(100vh - 80px); /* 动态计算高度 */
-    max-height: 600px; /* 最大高度限制 */
+    height: calc(100vh - 80px); /* Dynamic height calculation */
+    max-height: 600px; /* Maximum height limit */
     display: flex;
     flex-direction: column;
     border-radius: 8px;
@@ -77,19 +78,19 @@
     box-shadow: 0 4px 16px rgba(var(--v-theme-on-surface), 0.1);
   }
   .chat-header {
-    padding: 16px; /* 均匀内边距 */
+    padding: 16px; /* Uniform padding */
     display: flex;
     align-items: center;
     background: rgb(var(--v-theme-primary));
     color: rgb(var(--v-theme-on-primary));
     font-size: 16px;
     font-weight: 500;
-    gap: 12px; /* 设置间距 */
+    gap: 12px; /* Set spacing */
   }
 
   .chat-header span {
     margin-left: 8px;
-    flex-grow: 1; /* 让标题占据剩余空间 */
+    flex-grow: 1; /* Let title occupy remaining space */
   }
 
   .chat-header span {
@@ -102,7 +103,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    height: calc(100% - 56px); /* 减去头部高度 */
+    height: calc(100% - 56px); /* Subtract header height */
     color: rgb(var(--v-theme-on-surface));
   }
 
@@ -117,7 +118,7 @@
     }
   }
 
-  /* 移动端适配 */
+  /* Mobile adaptation */
   @media (max-width: 600px) {
     .floating-chat {
       bottom: 0;
