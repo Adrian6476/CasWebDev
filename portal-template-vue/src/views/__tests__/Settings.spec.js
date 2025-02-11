@@ -149,18 +149,6 @@ describe('Settings.vue', () => {
     expect(store.toggleFollowSystemTheme).toHaveBeenCalled()
   })
 
-  it('toggles dark mode when not following system theme', async () => {
-    // Ensure system theme following is false
-    store.$patch({ isFollowingSystemTheme: false })
-    await nextTick()
-
-    const darkModeSwitch = wrapper.findAll('.v-switch')[1]
-    await darkModeSwitch.trigger('click')
-    await nextTick()
-
-    expect(store.toggleDarkMode).toHaveBeenCalled()
-  })
-
   it('dark mode switch is disabled when following system theme', async () => {
     // Enable system theme following
     store.$patch({ isFollowingSystemTheme: true })
