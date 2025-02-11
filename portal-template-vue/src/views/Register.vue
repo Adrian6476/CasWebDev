@@ -9,20 +9,23 @@
           <v-card-title class="text-center text-h5 font-weight-bold mb-4">
             {{ $t('auth.createAccount') }}
           </v-card-title>
-          <v-form ref="form" @submit.prevent="handleRegister">
+          <v-form ref="form" validate-on="submit" @submit.prevent="handleRegister">
             <v-text-field
               v-model="username"
               :label="$t('auth.username')"
+              :error-messages="usernameErrors"
               :rules="[v => !!v || $t('auth.usernameRequired')]"
               required
               variant="outlined"
               prepend-inner-icon="mdi-account"
               class="mb-4"
+              validate-on="blur"
             />
             <v-text-field
               v-model="email"
               :label="$t('auth.email')"
               type="email"
+              :error-messages="emailErrors"
               :rules="[
                 v => !!v || $t('auth.emailRequired'),
                 v => /.+@.+\..+/.test(v) || $t('contact.form.emailValid')
@@ -30,11 +33,13 @@
               required
               variant="outlined"
               prepend-inner-icon="mdi-email"
+              validate-on="blur"
             />
             <v-text-field
               v-model="password"
               :label="$t('auth.password')"
               :type="showPassword ? 'text' : 'password'"
+              :error-messages="passwordErrors"
               :rules="[
                 v => !!v || $t('auth.passwordRequired'),
                 v => v.length >= 8 || $t('auth.passwordRequirements')
@@ -43,12 +48,14 @@
               variant="outlined"
               prepend-inner-icon="mdi-lock"
               :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              validate-on="blur"
               @click:append-inner="showPassword = !showPassword"
             />
             <v-text-field
               v-model="confirmPassword"
               :label="$t('auth.confirmPassword')"
               :type="showConfirmPassword ? 'text' : 'password'"
+              :error-messages="confirmPasswordErrors"
               :rules="[
                 v => !!v || $t('auth.passwordRequired'),
                 v => v === password || $t('auth.passwordMatch')
@@ -57,10 +64,21 @@
               variant="outlined"
               prepend-inner-icon="mdi-lock-check"
               :append-inner-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              validate-on="blur"
               @click:append-inner="showConfirmPassword = !showConfirmPassword"
             />
-            <v-btn type="submit" color="primary" block :loading="loading" class="mb-4">
+            <v-btn
+              type="submit"
+              color="primary"
+              block
+              :loading="loading"
+              :disabled="loading"
+              class="mb-4"
+            >
               {{ $t('auth.signUp') }}
+              <template #loader>
+                <v-progress-circular indeterminate />
+              </template>
             </v-btn>
           </v-form>
           <v-divider class="mb-4" />
@@ -97,12 +115,27 @@
     visible: false,
     message: '',
     color: 'success',
-    timeout: 10000
+    timeout: 3000
   })
 
+  const usernameErrors = ref([])
+  const emailErrors = ref([])
+  const passwordErrors = ref([])
+  const confirmPasswordErrors = ref([])
+
   const handleRegister = async () => {
+    if (!form.value) return
+
     const { valid } = await form.value.validate()
-    if (!valid) return
+    if (!valid) {
+      // Force validation messages to show
+      const errors = form.value.errors ?? {}
+      usernameErrors.value = errors.username?.errorMessages ?? []
+      emailErrors.value = errors.email?.errorMessages ?? []
+      passwordErrors.value = errors.password?.errorMessages ?? []
+      confirmPasswordErrors.value = errors.confirmPassword?.errorMessages ?? []
+      return
+    }
 
     loading.value = true
     try {
@@ -115,15 +148,13 @@
         t
       )
 
-      // 如果注册成功
       snackbar.value = {
         visible: true,
         message: t('auth.accountCreated'),
         color: 'success',
-        timeout: 10000
+        timeout: 3000
       }
 
-      // 等待提示显示完成后再跳转
       setTimeout(() => {
         router.push({ name: 'login' })
       }, 1000)
@@ -133,7 +164,7 @@
         visible: true,
         message: error.message || t('auth.registrationError'),
         color: 'error',
-        timeout: 10000
+        timeout: 3000
       }
     } finally {
       loading.value = false
