@@ -134,7 +134,9 @@
   // Methods
   const fetchNews = async (currentPage = 1) => {
     try {
-      loading.value = true
+      if (currentPage === 1) {
+        loading.value = true
+      }
       const data = await newsApi.getNewsList(currentPage, 9)
       // Transform the data
       const formattedNews = data.map(item => ({
@@ -145,7 +147,6 @@
         date: new Date().toISOString(),
         category: ['Product', 'Company', 'Technology'][Math.floor(Math.random() * 3)]
       }))
-
       if (currentPage === 1) {
         newsList.value = formattedNews
       } else {
