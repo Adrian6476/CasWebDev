@@ -155,7 +155,8 @@
   }
 
   const saveProfile = async () => {
-    if (!form.value.validate()) return
+    const isValid = await form.value?.validate()
+    if (!isValid) return
 
     loading.value = true
     try {
