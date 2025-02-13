@@ -2,22 +2,22 @@ import { ref, computed } from 'vue'
 import { useTheme } from 'vuetify'
 import debounce from 'lodash/debounce'
 
-// 使用 WeakMap 缓存主题计算结果
+// Use a WeakMap to cache theme calculation results
 const themeCache = new WeakMap()
 
 export function useThemeManager(settingsStore) {
   const theme = useTheme()
   const isTransitioning = ref(false)
 
-  // 缓存系统主题媒体查询
+  // Cache the system theme media query
   const systemThemeMedia = window.matchMedia('(prefers-color-scheme: dark)')
 
-  // 使用防抖处理主题切换
+  // Debounce theme switching
   const debouncedApplyTheme = debounce(newTheme => {
     applyTheme(newTheme)
   }, 300)
 
-  // 计算当前主题
+  // Calculate the current theme
   const currentTheme = computed(() => {
     if (settingsStore.isFollowingSystemTheme) {
       return systemThemeMedia.matches ? 'dark' : 'light'
@@ -25,26 +25,26 @@ export function useThemeManager(settingsStore) {
     return settingsStore.isDarkMode ? 'dark' : 'light'
   })
 
-  // 应用主题设置
+  // Apply theme settings
   const applyTheme = async (themeName = currentTheme.value) => {
     if (isTransitioning.value) return
 
     isTransitioning.value = true
     document.body.classList.add('theme-transitioning')
 
-    // 使用 requestAnimationFrame 确保过渡类已被应用
+    // Use requestAnimationFrame to ensure the transition class has been applied
     requestAnimationFrame(() => {
-      // 更新主题
+      // Update the theme
       theme.global.name.value = themeName
 
-      // 更新主题颜色
+      // Update theme colors
       const colors = {
         primary: settingsStore.primaryColor,
         secondary: settingsStore.secondaryColor,
         accent: settingsStore.accentColor
       }
 
-      // 使用缓存减少重复计算
+      // Use caching to reduce redundant calculations
       if (!themeCache.has(colors)) {
         themeCache.set(colors, {
           light: {
@@ -62,7 +62,7 @@ export function useThemeManager(settingsStore) {
       theme.themes.value.light = cachedThemes.light
       theme.themes.value.dark = cachedThemes.dark
 
-      // 在过渡结束后移除过渡类
+      // Remove the transition class after the transition ends
       setTimeout(() => {
         document.body.classList.remove('theme-transitioning')
         isTransitioning.value = false
@@ -70,14 +70,14 @@ export function useThemeManager(settingsStore) {
     })
   }
 
-  // 处理系统主题变化
+  // Handle system theme changes
   const handleSystemThemeChange = () => {
     if (settingsStore.isFollowingSystemTheme) {
       debouncedApplyTheme(systemThemeMedia.matches ? 'dark' : 'light')
     }
   }
 
-  // 清理函数
+  // Cleanup function
   const cleanup = () => {
     systemThemeMedia.removeEventListener('change', handleSystemThemeChange)
     debouncedApplyTheme.cancel()

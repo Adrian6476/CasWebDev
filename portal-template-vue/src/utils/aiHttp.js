@@ -32,7 +32,9 @@ aiHttp.interceptors.response.use(
     // Handle errors and provide meaningful error messages.
     if (error.response) {
       console.error('AI API Error:', error.response.data)
-      return Promise.reject(new Error(error.response.data.error?.message || 'AI service encountered an error'))
+      return Promise.reject(
+        new Error(error.response.data.error?.message || 'AI service encountered an error')
+      )
     } else if (error.request) {
       console.error('Network Error:', error.request)
       return Promise.reject(new Error('Network error: Please check your internet connection'))
