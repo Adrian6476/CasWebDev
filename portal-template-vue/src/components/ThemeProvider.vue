@@ -12,7 +12,7 @@
   const { currentTheme, applyTheme, handleSystemThemeChange, cleanup } =
     useThemeManager(settingsStore)
 
-  // 监听主题设置变化
+  // Watch for changes in theme settings
   watch(
     () => settingsStore.theme,
     () => {
@@ -21,24 +21,24 @@
     { deep: true }
   )
 
-  // 组件挂载时加载和应用设置
+  // Load and apply settings when the component is mounted
   onMounted(async () => {
     await settingsStore.loadSettings()
 
-    // 初始化时检查系统主题
+    // Check the system theme on initialization
     if (settingsStore.isFollowingSystemTheme) {
       settingsStore.updateSystemTheme()
     }
 
     applyTheme(currentTheme.value)
 
-    // 添加系统主题变化监听
+    // Add a listener for system theme changes
     window
       .matchMedia('(prefers-color-scheme: dark)')
       .addEventListener('change', handleSystemThemeChange)
   })
 
-  // 组件卸载时清理
+  // Cleanup when the component is unmounted
   onUnmounted(() => {
     cleanup()
   })

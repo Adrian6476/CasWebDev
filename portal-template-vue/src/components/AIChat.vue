@@ -40,11 +40,11 @@
 
   const messages = ref([])
 
-  // 初始化和监听语言变化
+  // Initialize and watch for language changes
   watch(
     locale,
     () => {
-      // 只有在消息列表为空时（初始化）或只有一条欢迎消息时更新
+      // Only update if the message list is empty (initialization) or has only one welcome message
       if (
         messages.value.length === 0 ||
         (messages.value.length === 1 && messages.value[0].role === 'assistant')
@@ -63,7 +63,7 @@
   const loading = ref(false)
   const messagesContainer = ref(null)
 
-  // 自动滚动到底部
+  // Automatically scroll to the bottom
   watch(
     messages,
     () => {
@@ -77,7 +77,7 @@
   )
 
   const handleEnter = e => {
-    if (e.shiftKey) return // Shift + Enter 换行
+    if (e.shiftKey) return // Shift + Enter for new line
     sendMessage()
   }
 
@@ -87,17 +87,17 @@
 
     try {
       loading.value = true
-      // 添加用户消息
+      // Add user message
       messages.value.push({
         role: 'user',
         content: userMessage
       })
       inputMessage.value = ''
 
-      // 发送到 AI API
+      // Send to AI API
       const response = await aiApi.sendMessage([...messages.value], locale.value)
 
-      // 添加 AI 回复
+      // Add AI response
       messages.value.push({
         role: response.role,
         content: response.content

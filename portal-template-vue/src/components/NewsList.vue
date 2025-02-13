@@ -26,6 +26,7 @@
   import { ref, computed } from 'vue'
   import NewsCard from './NewsCard.vue'
 
+  // Define the props for the component
   const props = defineProps({
     news: {
       type: Array,

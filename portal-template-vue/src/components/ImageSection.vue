@@ -46,6 +46,7 @@
 <script setup>
   import SectionTitle from './SectionTitle.vue'
 
+  // Define the props for the component
   defineProps({
     image: {
       type: String,

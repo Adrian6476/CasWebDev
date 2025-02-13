@@ -44,6 +44,7 @@
 
   const hover = ref(false)
 
+  // Define the props for the component
   defineProps({
     title: {
       type: String,
@@ -111,7 +112,7 @@
 
   .news-title {
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -119,7 +120,7 @@
 
   .v-card-text {
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;

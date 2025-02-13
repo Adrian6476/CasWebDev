@@ -15,6 +15,7 @@
 </template>
 
 <script setup>
+  // Define the props for the component
   defineProps({
     title: {
       type: String,

@@ -28,7 +28,9 @@
   import AIChat from './AIChat.vue'
   import { useChatStore } from '@/store/chat'
 
+  // Reference to the AIChat component
   const chatComponent = ref(null)
+  // Store for managing chat state
   const chatStore = useChatStore()
 </script>
 
