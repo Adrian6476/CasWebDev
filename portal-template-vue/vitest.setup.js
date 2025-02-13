@@ -5,7 +5,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-// 处理Vuetify CSS导入
+// Handle Vuetify CSS import
 // @ts-ignore
 // eslint-disable-next-line
 global.CSS = { supports: () => false }

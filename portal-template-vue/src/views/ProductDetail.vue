@@ -1,6 +1,6 @@
 <template>
   <div class="product-detail">
-    <!-- 产品展示区 -->
+    <!-- Product display area -->
     <section class="product-hero">
       <div class="product-image-container">
         <img :src="product.imageUrl" :alt="product.name" class="product-image" />
@@ -12,14 +12,14 @@
       </div>
     </section>
 
-    <!-- 产品信息区 -->
+    <!-- Product information area -->
     <section class="product-info glass-card">
       <div class="product-description">
         <h2>{{ $t('products.details.description') }}</h2>
         <p>{{ product.description }}</p>
       </div>
 
-      <!-- 技术参数表格 -->
+      <!-- Technical specifications table -->
       <div class="product-specs">
         <h2>{{ $t('products.details.specifications') }}</h2>
         <table class="specs-table">
@@ -156,7 +156,7 @@
     color: rgba(255, 255, 255, 0.8);
   }
 
-  /* 响应式设计 */
+  /* Responsive styles */
   @media (max-width: 768px) {
     .product-info {
       grid-template-columns: 1fr;
@@ -171,7 +171,7 @@
     }
   }
 
-  /* 主题过渡效果 */
+  /* Theme Transition styles */
   .product-detail * {
     transition: var(--theme-transition-duration) ease;
   }

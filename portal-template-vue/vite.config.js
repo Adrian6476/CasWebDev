@@ -12,7 +12,7 @@ export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd())
 
   return {
-    // 基础配置
+    // Base configuration
     base: '/',
 
     // 插件配置

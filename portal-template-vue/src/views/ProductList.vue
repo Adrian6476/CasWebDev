@@ -1,6 +1,6 @@
 <template>
   <div class="product-list">
-    <!-- 搜索和过滤区域 -->
+    <!-- Search and filter area -->
     <div class="search-section glass-card">
       <div class="search-box">
         <input
@@ -57,17 +57,17 @@
 
   const { t } = useI18n()
 
-  // 定义产品类别
+  // Define product categories
   const categoryMap = {
     computer: 'products.categories.computer',
     security: 'products.categories.security',
     server: 'products.categories.server'
   }
 
-  // 获取翻译后的类别标签
+  // Get translated category label
   const getCategoryLabel = key => t(categoryMap[key])
 
-  // 类别列表
+  // Categories list
   const categories = computed(() =>
     Object.entries(categoryMap).map(([key, translationKey]) => ({
       key,
@@ -75,7 +75,7 @@
     }))
   )
 
-  // 模拟产品数据，实际项目中应该从API获取
+  // Simulate product data, in actual implementation, it should be fetched from an API
   const products = ref([
     {
       id: 1,
@@ -103,7 +103,7 @@
   const searchQuery = ref('')
   const selectedCategory = ref('')
 
-  // 过滤产品列表
+  // Filter products list
   const filteredProducts = computed(() => {
     return products.value.filter(product => {
       const matchesSearch =
@@ -272,7 +272,7 @@
     font-size: 0.75rem;
   }
 
-  /* 响应式设计 */
+  /* Responsive design */
   @media (max-width: 768px) {
     .product-list {
       padding: 1rem;
@@ -287,7 +287,7 @@
     }
   }
 
-  /* 主题过渡效果 */
+  /* Theme transition */
   .product-list * {
     transition: var(--theme-transition-duration) ease;
   }

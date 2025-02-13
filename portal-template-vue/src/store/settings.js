@@ -71,7 +71,7 @@ export const useSettingsStore = defineStore('settings', {
       }
     },
 
-    // 从本地存储加载设置
+    // Load settings from local storage
     async loadSettings() {
       try {
         const savedSettings = localStorage.getItem('settings')
@@ -90,7 +90,7 @@ export const useSettingsStore = defineStore('settings', {
       }
     },
 
-    // 使用节流处理保存设置
+    // Use throttle to save settings
     saveSettings: throttle(function () {
       try {
         const settingsToSave = {
