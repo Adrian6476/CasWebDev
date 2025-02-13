@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-// Create axios instance for AI API
+// Create an axios instance for interacting with the AI API.
+// Base URL and authentication credentials are configured via environment variables.
 const aiHttp = axios.create({
   baseURL: import.meta.env.VITE_OPENAI_API_BASE_URL || '',
   timeout: 30000,
@@ -10,9 +11,10 @@ const aiHttp = axios.create({
   }
 })
 
-// Request interceptors
+// Request interceptor: Allows modification of the request configuration before sending.
 aiHttp.interceptors.request.use(
   config => {
+    // Optionally add custom logic here, such as logging or modifying headers.
     return config
   },
   error => {
@@ -20,18 +22,20 @@ aiHttp.interceptors.request.use(
   }
 )
 
-// Response interceptors
+// Response interceptor: Processes responses uniformly.
 aiHttp.interceptors.response.use(
   response => {
+    // Return the data property from the response.
     return response.data
   },
   error => {
+    // Handle errors and provide meaningful error messages.
     if (error.response) {
       console.error('AI API Error:', error.response.data)
-      return Promise.reject(new Error(error.response.data.error?.message || 'AI服务出错'))
+      return Promise.reject(new Error(error.response.data.error?.message || 'AI service encountered an error'))
     } else if (error.request) {
       console.error('Network Error:', error.request)
-      return Promise.reject(new Error('网络错误，请检查网络连接'))
+      return Promise.reject(new Error('Network error: Please check your internet connection'))
     } else {
       console.error('Request Error:', error.message)
       return Promise.reject(error)

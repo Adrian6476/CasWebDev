@@ -1,12 +1,12 @@
 import http from '@/utils/http'
 
-// News API
+// News API for fetching news-related data.
 export const newsApi = {
   /**
-   * Get news list
-   * @param {number} page - Page number
-   * @param {number} limit - Items per page
-   * @returns {Promise<Array>}
+   * Retrieve a list of news items.
+   * @param {number} page - The page number to retrieve.
+   * @param {number} limit - The number of items per page.
+   * @returns {Promise<Array>} - A promise that resolves to an array of news items.
    */
   getNewsList: (page = 1, limit = 10) => {
     return http.get('/posts', {
@@ -18,47 +18,47 @@ export const newsApi = {
   },
 
   /**
-   * Get news detail by ID
-   * @param {string|number} id - News ID
-   * @returns {Promise<Object>}
+   * Retrieve detailed information for a specific news item.
+   * @param {string|number} id - The unique identifier of the news item.
+   * @returns {Promise<Object>} - A promise that resolves to the news item details.
    */
   getNewsDetail: id => {
     return http.get(`/posts/${id}`)
   },
 
   /**
-   * Get related news
-   * @param {string|number} _id - Current news ID (unused in demo)
-   * @returns {Promise<Array>}
+   * Retrieve related news for demonstration purposes.
+   * Note: This fetches 3 random posts instead of using actual related criteria.
+   * @param {string|number} _id - The current news item ID (unused in demo).
+   * @returns {Promise<Array>} - A promise that resolves to an array of related news items.
    */
   getRelatedNews: _id => {
-    // For demonstration purposes, fetching 3 random posts instead of actual related news
     return http.get('/posts', {
       params: {
         _limit: 3,
-        _start: Math.floor(Math.random() * 97) // Random start position
+        _start: Math.floor(Math.random() * 97) // Generate a random starting index.
       }
     })
   }
 }
 
-// Team API
+// Team API for fetching team-related data.
 export const teamApi = {
   /**
-   * Get team members
-   * @returns {Promise<Array>}
+   * Retrieve a list of team members.
+   * @returns {Promise<Array>} - A promise that resolves to an array of team member objects.
    */
   getTeamMembers: () => {
     return http.get('/users')
   }
 }
 
-// Contact API
+// Contact API for handling contact form submissions.
 export const contactApi = {
   /**
-   * Send contact form
-   * @param {Object} data - Form data
-   * @returns {Promise<Object>}
+   * Submit a contact form.
+   * @param {Object} data - The form data to be sent.
+   * @returns {Promise<Object>} - A promise that resolves to the server response.
    */
   sendContactForm: data => {
     return http.post('/posts', data)
