@@ -44,7 +44,8 @@ portal-template-vue/
 ├── .env               # Environment variables
 ├── index.html
 ├── package.json
-└── vite.config.js
+├── vite.config.js
+└── vite.setup.js
 ```
 
 ## Getting Started
@@ -83,6 +84,16 @@ Add new languages in `src/locales/`:
 1. Create a new language file (e.g., `fr.js`)
 2. Add the language option in `src/locales/index.js`
 3. Import and register in `main.js`
+
+### Environment Configuration
+
+Ensure you have an `.env` file in the root directory. You can use the provided `.env.example` for reference:
+
+1. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+2. Update the environment variables in `.env` with your actual configuration.
 
 ## Components
 
