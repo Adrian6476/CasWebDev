@@ -1,10 +1,9 @@
-// Firebase App (the core Firebase SDK) is always required
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 import { getStorage } from 'firebase/storage'
 import { getFirestore } from 'firebase/firestore'
 
-// Check required environment variables
+// Define required environment variables for Firebase configuration.
 const requiredEnvVars = [
   'VITE_FIREBASE_API_KEY',
   'VITE_FIREBASE_AUTH_DOMAIN',
@@ -14,6 +13,7 @@ const requiredEnvVars = [
   'VITE_FIREBASE_APP_ID'
 ]
 
+// Filter out any missing environment variables.
 const missingEnvVars = requiredEnvVars.filter(varName => !import.meta.env[varName])
 
 if (missingEnvVars.length > 0) {
@@ -23,11 +23,11 @@ if (missingEnvVars.length > 0) {
     ${missingEnvVars.join('\n    ')}
     
     Please follow these steps to resolve:
-    1. Check if .env file exists
-    2. Copy contents from .env.example to .env
-    3. Fill in .env file with your actual Firebase configuration
+    1. Verify that the .env file exists.
+    2. Copy contents from .env.example to .env.
+    3. Provide your actual Firebase configuration in the .env file.
     
-    You can obtain these values from your Firebase Console:
+    You can retrieve these values from your Firebase Console:
     Firebase Console → Your Project → Project Settings → General → Your Apps
     ===============================================
   `
@@ -40,7 +40,7 @@ if (missingEnvVars.length > 0) {
   throw new Error('Missing required environment variables. Please check your .env file.')
 }
 
-// Your web app's Firebase configuration
+// Firebase configuration object.
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -51,7 +51,7 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 }
 
-// Function to show error page
+// Display an error page with the provided title, message, and additional details.
 function showErrorPage(title, message, details = []) {
   document.body.innerHTML = `
     <div style="
@@ -79,11 +79,16 @@ function showErrorPage(title, message, details = []) {
       }
       <p><strong>Resolution Steps:</strong></p>
       <ol>
-        <li>Ensure <code>.env</code> file exists in the project root directory</li>
-        <li>Copy the contents from <code>.env.example</code> to <code>.env</code></li>
-        <li>Fill in the <code>.env</code> file with your actual Firebase configuration values</li>
+        <li>Ensure that the <code>.env</code> file exists in the project root.</li>
+        <li>Copy the contents from <code>.env.example</code> to <code>.env</code>.</li>
+        <li>Fill in the <code>.env</code> file with your actual Firebase configuration values.</li>
       </ol>
-      <p>Configuration values can be found in your <a href="https://console.firebase.google.com" target="_blank" style="color: #1976d2">Firebase Console</a>.</p>
+      <p>
+        Configuration values can be obtained from your 
+        <a href="https://console.firebase.google.com" target="_blank" style="color: #1976d2">
+          Firebase Console
+        </a>.
+      </p>
     </div>
   `
 }
@@ -91,16 +96,16 @@ function showErrorPage(title, message, details = []) {
 let app, auth, storage, db
 
 try {
-  // Initialize Firebase
+  // Initialize Firebase with the configuration object.
   app = initializeApp(firebaseConfig)
 
-  // Initialize Firebase Authentication and get a reference to the service
+  // Initialize Firebase Authentication service.
   auth = getAuth(app)
 
-  // Initialize Firebase Storage and get a reference to the service
+  // Initialize Firebase Storage service.
   storage = getStorage(app)
 
-  // Initialize Firestore
+  // Initialize Firestore database.
   db = getFirestore(app)
 } catch (error) {
   console.error('Firebase initialization error:', error)
@@ -118,6 +123,7 @@ try {
     errorDetails = [error.message]
   }
 
+  // Display an error page with the configuration error details.
   showErrorPage('Firebase Configuration Error', errorMessage, errorDetails)
   throw error
 }
