@@ -15,7 +15,7 @@ export default defineConfig(({ command, mode }) => {
     // Base configuration
     base: '/',
 
-    // 插件配置
+    // Plugin configuration
     plugins: [
       vue(),
       vuetify(),
@@ -32,7 +32,7 @@ export default defineConfig(({ command, mode }) => {
       //   overrideConfigFile: '.eslintrc.cjs'
       // }),
 
-      // Gzip 压缩
+      // Gzip compression
       env.VITE_ENABLE_COMPRESS === 'true' &&
         compression({
           verbose: true,
@@ -40,7 +40,7 @@ export default defineConfig(({ command, mode }) => {
           threshold: 10240 // 10KB
         }),
 
-      // 构建分析
+      // Build analysis
       env.VITE_ENABLE_ANALYZE === 'true' &&
         visualizer({
           open: true,
@@ -49,7 +49,7 @@ export default defineConfig(({ command, mode }) => {
           brotliSize: true
         })
 
-      // 图片压缩
+      // Image compression
       // Temporarily disable imagemin plugin to resolve potential conflicts
       // imagemin({
       //   gifsicle: {
@@ -80,14 +80,14 @@ export default defineConfig(({ command, mode }) => {
       // })
     ],
 
-    // 路径解析配置
+    // Path resolution configuration
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))
       }
     },
 
-    // 构建配置
+    // Build configuration
     build: {
       target: 'es2022',
       outDir: env.VITE_OUTPUT_DIR || 'dist',
@@ -95,18 +95,18 @@ export default defineConfig(({ command, mode }) => {
       cssCodeSplit: true,
       sourcemap: env.VITE_SOURCEMAP === 'true',
 
-      // 代码分割配置
+      // Code splitting configuration
       rollupOptions: {
         output: {
           chunkFileNames: 'js/[name]-[hash].js',
           entryFileNames: 'js/[name]-[hash].js',
           assetFileNames: '[ext]/[name]-[hash].[ext]',
           manualChunks(id) {
-            // 将 node_modules 中的代码单独打包
+            // Separate node_modules code
             if (id.includes('node_modules')) {
               return 'vendor'
             }
-            // 将异步加载的路由组件单独打包
+            // Separate the asynchronously loaded route components
             if (id.includes('src/views/')) {
               return 'pages'
             }
@@ -114,7 +114,7 @@ export default defineConfig(({ command, mode }) => {
         }
       },
 
-      // 使用 esbuild 进行压缩（Vite 默认）
+      // Use esbuild for minification (default in Vite)
       minify: 'esbuild',
       esbuild: {
         drop: [
@@ -123,14 +123,14 @@ export default defineConfig(({ command, mode }) => {
         ].filter(Boolean)
       },
 
-      // 资源内联限制
+      // Asset inline limit
       assetsInlineLimit: env.VITE_IMAGE_INLINE_SIZE_LIMIT || 4096,
 
-      // 警告大小限制
+      // Warning size limit
       chunkSizeWarningLimit: env.VITE_CHUNK_SIZE_WARNING_LIMIT || 2000
     },
 
-    // 开发服务器配置
+    // Development server configuration
     server: {
       host: '0.0.0.0',
       port: parseInt(env.VITE_DEV_SERVER_PORT || 3001),
@@ -142,7 +142,7 @@ export default defineConfig(({ command, mode }) => {
       }
     },
 
-    // 测试配置
+    // Test configuration
     test: {
       globals: true,
       environment: 'jsdom',
@@ -176,7 +176,7 @@ export default defineConfig(({ command, mode }) => {
       }
     },
 
-    // 优化依赖预构建
+    // Optimize dependency pre-build
     optimizeDeps: {
       include: ['vue', 'vue-router', '@vueuse/core', 'pinia'],
       exclude: ['chunk-NA75W7IT'], // Exclude problematic dependency
@@ -185,7 +185,7 @@ export default defineConfig(({ command, mode }) => {
       }
     },
 
-    // CSS 相关配置
+    // CSS related configuration
     css: {
       preprocessorOptions: {
         scss: {

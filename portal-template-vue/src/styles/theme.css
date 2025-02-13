@@ -2,7 +2,7 @@
   --theme-transition-duration: 400ms;
 }
 
-/* 主题切换过渡效果 */
+/* Theme transition effect */
 .theme-transitioning,
 .theme-transitioning * {
   transition:
@@ -13,14 +13,14 @@
   will-change: background-color, color, border-color, box-shadow;
 }
 
-/* 优化性能：禁用不必要的过渡效果 */
+/* Disable unnecessary transition effects */
 .theme-transitioning img,
 .theme-transitioning video,
 .theme-transitioning canvas {
   transition: none !important;
 }
 
-/* 优化渲染性能 */
+/* Optimize rendering performance */
 .v-application {
   will-change: background-color;
   contain: content;

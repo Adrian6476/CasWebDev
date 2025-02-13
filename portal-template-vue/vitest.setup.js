@@ -12,13 +12,13 @@ global.CSS = { supports: () => false }
 
 expect.extend(matchers)
 
-// 全局Vuetify实例
+// Global Vuetify instance
 export const vuetify = createVuetify({
   components,
   directives
 })
 
-// 清理测试
+// Clean tests
 afterEach(() => {
   cleanup()
 })

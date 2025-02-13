@@ -11,7 +11,6 @@ A modern, responsive portal website template built with Vue 3, Vuetify, and Vite
 - 📝 Contact form
 - 🎯 SEO friendly
 - 🚀 Fast development with Vite
-- 🎭 Theme customization
 - 🔍 Search functionality
 - 📊 Category filtering
 
@@ -51,11 +50,13 @@ portal-template-vue/
 ## Getting Started
 
 1. Install dependencies:
+
    ```bash
    pnpm install
    ```
 
 2. Start development server:
+
    ```bash
    pnpm dev
    ```
@@ -66,17 +67,6 @@ portal-template-vue/
    ```
 
 ## Configuration
-
-### Theme Customization
-
-You can customize the theme in `src/styles/settings.scss`:
-
-```scss
-// Customizing primary colors
-$primary: #1867C0;
-$secondary: #5CBBF6;
-$accent: #FF4081;
-```
 
 ### API Configuration
 
