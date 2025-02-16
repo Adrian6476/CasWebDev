@@ -1,44 +1,51 @@
-# CasWebDev
+# CasWebDev  
 
-Welcome to the CasWebDev repository. This repository contains a modern, responsive portal website template built with Vue 3, Vuetify, and Vite.
+Welcome to the CasWebDev repository. This repository contains a modern, responsive portal website template built with Vue 3, Vuetify, and Vite.  
 
-## Portal Template
+## 🌐 Live Demo  
 
-The main project is located in the `portal-template-vue` directory. This template offers a versatile foundation for creating a comprehensive portal website, featuring:
+[![Live Demo](https://img.shields.io/badge/Live_Demo-View_Online-green?style=for-the-badge&logo=vercel)](https://caswebdev.adrian6476.top/)  
 
-- Modern UI with Vuetify 3
-- Internationalization (i18n) support
-- Fully responsive design
-- News/Blog system
-- Contact form
-- SEO friendly
-- Fast development with Vite
-- Search functionality
-- Category filtering
+## Portal Template  
 
-## Quick Start
+The main project is located in the `portal-template-vue` directory. This template offers a versatile foundation for creating a comprehensive portal website, featuring:  
 
-To get started with the portal template, follow these steps:
+- Modern UI with Vuetify 3  
+- Internationalization (i18n) support  
+- Fully responsive design  
+- News/Blog system  
+- Contact form  
+- SEO friendly  
+- Fast development with Vite  
+- Search functionality  
+- Category filtering  
 
-1. Navigate to the `portal-template-vue` directory:
-   ```bash
-   cd portal-template-vue
+## Quick Start  
+
+To get started with the portal template, follow these steps:  
+
+1. Navigate to the `portal-template-vue` directory:  
+
+   ```bash  
+   cd portal-template-vue  
    ```
 
-2. Install dependencies:
-   ```bash
-   pnpm install
+2. Install dependencies:  
+
+   ```bash  
+   pnpm install  
    ```
 
-3. Start the development server:
-   ```bash
-   pnpm dev
+3. Start the development server:  
+
+   ```bash  
+   pnpm dev  
    ```
 
-## More Information
+## More Information  
 
-For more detailed information on the project structure, configuration, and development guidelines, please refer to the [README](./portal-template-vue/README.md) file in the `portal-template-vue` directory.
+For more detailed information on the project structure, configuration, and development guidelines, please refer to the [README](./portal-template-vue/README.md) file in the `portal-template-vue` directory.  
 
-## License
+## License  
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License.  
