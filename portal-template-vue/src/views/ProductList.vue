@@ -54,6 +54,9 @@
 <script setup>
   import { ref, computed } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import slide1 from '@/assets/slide1.jpg'
+  import slide2 from '@/assets/slide2.jpg'
+  import slide3 from '@/assets/slide3.jpg'
 
   const { t } = useI18n()
 
@@ -82,21 +85,21 @@
       name: t('products.items.workstation.name'),
       shortDescription: t('products.items.workstation.shortDescription'),
       category: 'computer',
-      imageUrl: '/src/assets/slide1.jpg'
+      imageUrl: slide1
     },
     {
       id: 2,
       name: t('products.items.surveillance.name'),
       shortDescription: t('products.items.surveillance.shortDescription'),
       category: 'security',
-      imageUrl: '/src/assets/slide2.jpg'
+      imageUrl: slide2
     },
     {
       id: 3,
       name: t('products.items.storage.name'),
       shortDescription: t('products.items.storage.shortDescription'),
       category: 'server',
-      imageUrl: '/src/assets/slide3.jpg'
+      imageUrl: slide3
     }
   ])
 
