@@ -38,6 +38,7 @@
 <script setup>
   import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import slide1Image from '@/assets/slide1.jpg'
 
   const { t } = useI18n()
 
@@ -45,7 +46,7 @@
     name: t('products.items.workstation.name'),
     shortDescription: t('products.items.workstation.shortDescription'),
     description: t('about.company.description'),
-    imageUrl: '/src/assets/slide1.jpg',
+    imageUrl: slide1Image,
     specifications: {
       dimensions: '200 x 300 x 400 mm',
       weight: '2.5 kg',

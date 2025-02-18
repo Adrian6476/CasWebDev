@@ -11,7 +11,7 @@
 
     <!-- Banner Section -->
     <section v-if="!isMobile" class="about-banner">
-      <v-parallax src="/src/assets/about-us.jpg">
+      <v-parallax :src="aboutUsImage">
         <div
           class="d-flex flex-column align-center justify-center text-white text-center fill-height"
         >
@@ -43,7 +43,7 @@
         </v-col>
         <v-col cols="12" md="6" class="d-flex align-center">
           <div class="about-image-wrapper">
-            <v-img src="/src/assets/about-us.jpg" cover class="rounded-lg" :height="450"></v-img>
+            <v-img :src="aboutUsImage" cover class="rounded-lg" :height="450"></v-img>
           </div>
         </v-col>
       </v-row>
@@ -261,6 +261,7 @@
   import { contactApi, teamApi } from '@/api'
   import { useDevice } from '@/composables/useDevice'
   import SectionTitle from '@/components/SectionTitle.vue'
+  import aboutUsImage from '@/assets/about-us.jpg'
 
   const { isMobile } = useDevice()
 
